@@ -49,10 +49,12 @@
 
 .mes-ano-label {
     width: 200px;
+    user-select: none;
 }
 
 .mes-ano-back,
 .mes-ano-forward {
+    user-select: none;
     cursor: pointer;
     font-weight: bold;
     width: 40px;
@@ -114,7 +116,8 @@
     width: calc((100% / 7) - 4px);
     border-radius: 100%;
     margin: 0 2px 0 2px;
-    cursor: pointer
+    cursor: pointer;
+    user-select: none;
 }
 
 .mesAnterior,.mesSeguinte{
