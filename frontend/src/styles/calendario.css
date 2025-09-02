@@ -119,3 +119,7 @@
 .mesAnterior,.mesSeguinte{
     color: rgba(0,0,0,0.45)
 }
+
+.diaAtual.mesAtual{
+    background: var(--highlightPinkWhite) !important
+}

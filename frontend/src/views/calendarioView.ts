@@ -7,14 +7,14 @@ class CalendarioView {
     posicaoDoPrimeiroDiaDoMes: any;
     anoAtual: number;
 
-    constructor() {
-        const data = new Date()
-        // this.mesAtual = data.getMonth() + 1;
-        this.mesAtual = 1;
-        this.diaAtual = data.getDate();
-        this.diaAtualSemana = data.getDay()
-        // this.anoAtual = data.getFullYear()
-        this.anoAtual = 2003;
+    constructor(data: Date) {
+        const dataLocal = new Date(data)
+        this.mesAtual = dataLocal.getMonth() + 1;
+        // this.mesAtual = 1;
+        this.diaAtual = dataLocal.getDate();
+        this.diaAtualSemana = dataLocal.getDay()
+        this.anoAtual = dataLocal.getFullYear()
+        // this.anoAtual = 2003;
         this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay()
     }
 
@@ -79,7 +79,7 @@ class CalendarioView {
         // Armazena dado da posicao do primeiro dia do mes atual sendo processado
         var posicaoDoPrimeiroDiaDoMes: number = this.posicaoDoPrimeiroDiaDoMes;
         // Armazena dia atual em diaDeHoje
-        var diaDeHoje:number = this.diaAtual;
+        var diaDeHoje: number = this.diaAtual;
         // Lista de elementos de dia do DOM
         var elementosDia: NodeListOf<Element> = document.querySelectorAll(".dia");
 
@@ -92,6 +92,8 @@ class CalendarioView {
                 elementosDia[i].classList.remove("mesAnterior")
                 elementosDia[i].classList.remove("mesAtual")
                 elementosDia[i].classList.remove("mesSeguinte")
+                elementosDia[i].classList.remove("diaSelecionado")
+                elementosDia[i].classList.remove("diaAtual")
             }
 
             // Inicializa contadador de dias
@@ -100,7 +102,7 @@ class CalendarioView {
             // Loop para adicionar numeros aos elementos DOM
             for (let i = posicaoDoPrimeiroDiaDoMes; i <= elementosDia.length - 1; i++) {
 
-                if (diaImpresso == diaDeHoje){
+                if (diaImpresso == diaDeHoje) {
                     elementosDia[i].classList.add("diaAtual")
                 }
 
@@ -138,6 +140,64 @@ class CalendarioView {
 
         // Por fim, chama as funções para iniciar o processamento
         adicionaAosElementos(qtdDiasNoMes("atual"))
+    }
+
+    retornaDataSelecionada() {
+        // Faz tratamento para seleção precisa
+        var elementosDia: NodeListOf<Element> = document.querySelectorAll(".dia")
+
+        // Dia
+        // Primeiro inicializa diaSelecionado
+        var elementoDiaSelecionado: Element | null = null;
+        var diaSelecionado: number = 0;
+        // Depois armazena o dia selecionado na variavel
+        for (let i = 0; i < 41; i++) {
+            if (elementosDia[i].classList.contains("diaSelecionado")) {
+                diaSelecionado = Number(elementosDia[i].textContent);
+                elementoDiaSelecionado = elementosDia[i];
+            }
+        }
+
+        console.log(elementoDiaSelecionado)
+
+        // Mes
+        // Inicializa mesSelecionado
+        var mesSelecionado: number = 0;
+        if (elementoDiaSelecionado)
+            // Se o dia selecionado pertence ao mes anterior, o mes selecionado é mes - 1
+            if (elementoDiaSelecionado.classList.contains("mesAnterior")) {
+                mesSelecionado = this.mesAtual - 1 < 1 ? 12 : this.mesAtual - 1
+            }
+            // Se o dia selecionado pertence ao mes seguinte, o mes selecionado é mes + 1
+            else if (elementoDiaSelecionado.classList.contains("mesSeguinte")) {
+                mesSelecionado = this.mesAtual + 1 > 12 ? 1 : this.mesAtual + 1
+            }
+            // Se for do mes atual, mantém igual
+            else {
+                mesSelecionado = this.mesAtual
+            }
+
+        return {
+            "dia": Number(diaSelecionado),
+            "mes": mesSelecionado,
+            "ano": this.anoAtual
+
+        }
+    }
+
+    navegar(direcao: string) {
+        switch (direcao) {
+            case "frente":
+                this.mesAtual < 12 ? this.mesAtual++ : (this.mesAtual = 1, this.anoAtual++)
+                break
+            case "tras":
+                this.mesAtual > 1 ? this.mesAtual-- : (this.mesAtual = 12, this.anoAtual--)
+                break
+        }
+        this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay()
+        this.adicionaDatas()
+        console.log(`${this.mesAtual}/${this.anoAtual}`)
+
     }
 }
 // Exporta view para o controlador
