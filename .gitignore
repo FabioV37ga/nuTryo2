@@ -3,3 +3,4 @@ frontent/dist
 backend/dist
 .env
 Nutryo.rar
+*.code-workspace
