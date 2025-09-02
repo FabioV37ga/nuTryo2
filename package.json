@@ -7,17 +7,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "lite-server --baseDir=frontend/dist",
-    "start": "concurrently \"npm run watch\" \"npm run server\"",
+    "start": "npm-run-all copyToDist:frontend dev server",
     "dev": "tsc -p frontend/tsconfig.json",
     "watch": "tsc -w -p frontend/tsconfig.json",
-    "clearfront": "powershell -Command \"Get-ChildItem frontend/dist | Where-Object { $_.Name -notin @('styles','images','index.html') } | Remove-Item -Recurse -Force\""
+    "copyToDist:frontend": "xcopy frontend\\src\\images frontend\\dist\\images /E /I /Y && xcopy frontend\\src\\styles frontend\\dist\\styles /E /I /Y && copy frontend\\src\\index.html frontend\\dist\\index.html /Y",
+    "clearfront": "powershell -Command \"Remove-Item -Recurse -Force frontend/dist/*\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^9.2.1",
     "lite-server": "^2.6.1",
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }
