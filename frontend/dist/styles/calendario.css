@@ -1,0 +1,125 @@
+.calendario {
+    /* display: flex;
+    justify-content: center;
+    align-items: flex-start; */
+    flex-wrap: wrap;
+    width: 400px;
+    height: 600px;
+    margin-left: 90px;
+    margin-top: 90px;
+    border-radius: 20px;
+    background: var(--pinkWhite);
+    box-shadow: 0px 14px 42px -8px rgba(0, 0, 0, 0.67);
+}
+
+.calendario-titulo {
+    width: 400px;
+    height: 70px;
+    background: var(--lightBlue);
+    /* background: red; */
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: white;
+}
+
+.calendario-mes-ano {
+    margin: 18px auto;
+    width: fit-content;
+    height: 40px;
+    border-radius: 10px;
+    /* background: red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.calendario-mes-ano>* {
+    background: var(--lightBlue);
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 23px;
+}
+
+.mes-ano-label {
+    width: 200px;
+}
+
+.mes-ano-back,
+.mes-ano-forward {
+    cursor: pointer;
+    font-weight: bold;
+    width: 40px;
+}
+
+.mes-ano-back {
+    border-radius: 10px 0 0 10px;
+    margin-right: 2px
+}
+
+.mes-ano-forward {
+    border-radius: 0 10px 10px 0;
+    margin-left: 2px
+}
+
+.calendario-corpo {
+    margin: 0 auto;
+    width: 90%;
+    height: 430px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 16px -10px rgba(0, 0, 0, 0.67);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /* background: red; */
+}
+
+.calendario-corpo-semana {
+    height: 50px;
+    width: 100%;
+    background: var(--lightBlue);
+    color: white;
+    border-radius: 10px 10px 0 0
+}
+
+.calendario-corpo-semana,
+.dia-semana {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dia-semana {
+    width: calc(100% / 7);
+    text-transform: capitalize
+}
+
+/* Elementos criados dinamicamente */
+
+.dia {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background: var(--darkPinkWhite);
+    height: 45px;
+    width: calc((100% / 7) - 4px);
+    border-radius: 100%;
+    margin: 0 2px 0 2px
+}
+
+.mesAnterior,.mesSeguinte{
+    color: rgba(0,0,0,0.45)
+}
+
+.diaAtual.mesAtual{
+    background: var(--highlightPinkWhite) !important
+}

@@ -22,7 +22,12 @@ class CalendarioController {
                     dias[j].classList.remove("diaSelecionado")
                 }
                 dias[i].classList.add("diaSelecionado")
-                console.log(this.calendarioView.retornaDataSelecionada())
+                
+                var dataSelecionada = this.calendarioView.retornaDataSelecionada()
+                console.log(dataSelecionada)
+                var display:Element = document.querySelector("#data-display") as Element
+                console.log("teste")
+                display.textContent = `${dataSelecionada.dia}/${dataSelecionada.mes}/${dataSelecionada.ano}`
             })
         }
 

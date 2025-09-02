@@ -1,0 +1,24 @@
+:root {
+    --lightBlue: #3a98b9;
+    --darkBlue: #2a728c;
+    --pinkWhite: #fff1dc;
+    --highlightPinkWhite: #ebd8bb;
+    --darkPinkWhite: #d3a57c14;
+}
+
+body {
+    height: 100vh;
+}
+
+main {
+    display: flex;
+    /* align-items: center; */
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+*,
+*>* {
+    font-family: 'Roboto Condensed', sans-serif;
+}
