@@ -1,5 +1,7 @@
 node_modules/
-frontent/dist
+frontent/dist/*
+!frontent/dist/styles
+!frontent/dist/*.html
 backend/dist
 .env
 Nutryo.rar
