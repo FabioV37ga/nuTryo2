@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NuTryo 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="dist/styles/document.css">
+    <link rel="stylesheet" type="text/css" href="dist/styles/sideBar.css">
+    <link rel="stylesheet" type="text/css" href="dist/styles/calendario.css">
+    <link rel="stylesheet" type="text/css" href="dist/styles/reset.css">
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <main>
+
+        <section class="sideBar">
+            <div class="logo" tabindex="0">
+                <img src="dist/images/nutryo-logo.png" class="logo-img">
+                <img src="dist/images/nutryo-text.png" class="logo-text">
+            </div>
+
+            <section class="user">
+                <a href="" class="user-click">
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                </a>
+                <div class="user-label">PERFIL</div>
+            </section>
+
+            <section class="git">
+                <a href="https://github.com/FabioV37ga/NuTryo" class="git-click" target="__blank">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+            </section>
+        </section>
+
+        <section class="calendario">
+
+            <div class="calendario-titulo">Calendário</div>
+
+            <div class="calendario-mes-ano">
+                <div class="mes-ano-back">&lt;</div>
+                <div class="mes-ano-label">Setembro / 2025</div>
+                <div class="mes-ano-forward">></div>
+            </div>
+
+            <div class="calendario-corpo">
+                <div class="calendario-corpo-semana">
+                    <div class="dia-semana">dom</div>
+                    <div class="dia-semana">seg</div>
+                    <div class="dia-semana">ter</div>
+                    <div class="dia-semana">qua</div>
+                    <div class="dia-semana">qui</div>
+                    <div class="dia-semana">sex</div>
+                    <div class="dia-semana">sab</div>
+                </div>
+            </div>
+        </section>
+        <section class="janela">
+            <nav class="janela-abas">
+                <a href="" class="aba"></a>
+                <a href="" class="aba"></a>
+                <a href="" class="aba"></a>
+            </nav>
+            <section class="dia-aba"></section>
+            <section class="refeicoes-aba"></section>
+            <section class="alimentos-aba"></section>
+        </section>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="dist/app.js"></script>
+</body>
+
+</html>
