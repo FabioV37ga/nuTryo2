@@ -3,7 +3,7 @@
 - 2. Instale dependências com `npm install`
 - 3. Rode o sistema com `npm run start`
 
-# Funcionalidade (até agora):
+# Funcionalidades (até agora):
 - Lógica de criação dinâmica de calendário
 
 # Tecnologias usadas:
