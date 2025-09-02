@@ -9,7 +9,8 @@
     "server": "lite-server --baseDir=frontend/dist",
     "start": "concurrently \"npm run watch\" \"npm run server\"",
     "dev": "tsc -p frontend/tsconfig.json",
-    "watch": "tsc -w -p frontend/tsconfig.json"
+    "watch": "tsc -w -p frontend/tsconfig.json",
+    "clearfront": "powershell -Command \"Get-ChildItem frontend/dist | Where-Object { $_.Name -notin @('styles','images','index.html') } | Remove-Item -Recurse -Force\""
   },
   "keywords": [],
   "author": "",
