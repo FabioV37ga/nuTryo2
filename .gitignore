@@ -1,6 +1,7 @@
 node_modules/
 frontent/dist/*
-!frontent/dist/styles
+!frontent/dist/styles/
+!frontent/dist/images/
 !frontent/dist/*.html
 backend/dist
 .env

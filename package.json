@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "lite-server --baseDir=frontend/dist",
     "start": "concurrently \"npm run watch\" \"npm run server\"",
-    "compile": "tsc",
+    "dev": "tsc -p frontend/tsconfig.json",
     "watch": "tsc -w -p frontend/tsconfig.json"
   },
   "keywords": [],
