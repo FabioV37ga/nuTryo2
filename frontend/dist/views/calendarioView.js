@@ -83,18 +83,26 @@ class CalendarioView {
         }
         adicionaAosElementos(qtdDiasNoMes("atual"));
     }
+    atualizaHeader() {
+        var label = document.querySelector(".mes-ano-label");
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        const mesString = meses[this.mesAtual - 1];
+        label.textContent = `${mesString} / ${this.anoAtual}`;
+    }
     retornaDataSelecionada() {
         var elementosDia = document.querySelectorAll(".dia");
         var elementoDiaSelecionado = null;
-        var diaSelecionado = 0;
-        for (let i = 0; i < 41; i++) {
+        var diaSelecionado = this.diaAtual;
+        for (let i = 0; i < 42; i++) {
             if (elementosDia[i].classList.contains("diaSelecionado")) {
                 diaSelecionado = Number(elementosDia[i].textContent);
                 elementoDiaSelecionado = elementosDia[i];
             }
         }
-        console.log(elementoDiaSelecionado);
-        var mesSelecionado = 0;
+        var mesSelecionado = this.mesAtual;
         if (elementoDiaSelecionado)
             if (elementoDiaSelecionado.classList.contains("mesAnterior")) {
                 mesSelecionado = this.mesAtual - 1 < 1 ? 12 : this.mesAtual - 1;
@@ -122,6 +130,7 @@ class CalendarioView {
         }
         this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay();
         this.adicionaDatas();
+        this.atualizaHeader();
         console.log(`${this.mesAtual}/${this.anoAtual}`);
     }
 }

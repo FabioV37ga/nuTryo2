@@ -6,6 +6,10 @@ class CalendarioController {
         console.log("CalendarioController Criado");
         this.calendarioView.criarElementos();
         this.adicionaEventosDeClick();
+        var dataSelecionada = this.calendarioView.retornaDataSelecionada();
+        var display = document.querySelector("#data-display");
+        display.textContent =
+            `${String(dataSelecionada.dia).padStart(2, "0")}/${String(dataSelecionada.mes).padStart(2, "0")}/${dataSelecionada.ano}`;
     }
     adicionaEventosDeClick() {
         var _a, _b;
@@ -23,10 +27,9 @@ class CalendarioController {
                 }
                 dias[i].classList.add("diaSelecionado");
                 var dataSelecionada = this.calendarioView.retornaDataSelecionada();
-                console.log(dataSelecionada);
                 var display = document.querySelector("#data-display");
-                console.log("teste");
-                display.textContent = `${dataSelecionada.dia}/${dataSelecionada.mes}/${dataSelecionada.ano}`;
+                display.textContent =
+                    `${String(dataSelecionada.dia).padStart(2, "0")}/${String(dataSelecionada.mes).padStart(2, "0")}/${dataSelecionada.ano}`;
             });
         }
     }

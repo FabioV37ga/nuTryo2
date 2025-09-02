@@ -142,6 +142,17 @@ class CalendarioView {
         adicionaAosElementos(qtdDiasNoMes("atual"))
     }
 
+    atualizaHeader() {
+        var label:Element = document.querySelector(".mes-ano-label") as Element
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        const mesString:string = meses[this.mesAtual - 1];
+
+        label.textContent = `${mesString} / ${this.anoAtual}`
+    }
+
     retornaDataSelecionada() {
         // Faz tratamento para seleção precisa
         var elementosDia: NodeListOf<Element> = document.querySelectorAll(".dia")
@@ -149,20 +160,20 @@ class CalendarioView {
         // Dia
         // Primeiro inicializa diaSelecionado
         var elementoDiaSelecionado: Element | null = null;
-        var diaSelecionado: number = 0;
+        var diaSelecionado: number = this.diaAtual;
         // Depois armazena o dia selecionado na variavel
-        for (let i = 0; i < 41; i++) {
+        for (let i = 0; i < 42; i++) {
             if (elementosDia[i].classList.contains("diaSelecionado")) {
                 diaSelecionado = Number(elementosDia[i].textContent);
                 elementoDiaSelecionado = elementosDia[i];
             }
         }
 
-        console.log(elementoDiaSelecionado)
+        // console.log(elementoDiaSelecionado)
 
         // Mes
         // Inicializa mesSelecionado
-        var mesSelecionado: number = 0;
+        var mesSelecionado: number = this.mesAtual;
         if (elementoDiaSelecionado)
             // Se o dia selecionado pertence ao mes anterior, o mes selecionado é mes - 1
             if (elementoDiaSelecionado.classList.contains("mesAnterior")) {
@@ -196,6 +207,7 @@ class CalendarioView {
         }
         this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay()
         this.adicionaDatas()
+        this.atualizaHeader()
         console.log(`${this.mesAtual}/${this.anoAtual}`)
 
     }
