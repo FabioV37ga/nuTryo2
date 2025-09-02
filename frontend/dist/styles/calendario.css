@@ -113,7 +113,8 @@
     height: 45px;
     width: calc((100% / 7) - 4px);
     border-radius: 100%;
-    margin: 0 2px 0 2px
+    margin: 0 2px 0 2px;
+    cursor: pointer
 }
 
 .mesAnterior,.mesSeguinte{
@@ -122,4 +123,8 @@
 
 .diaAtual.mesAtual{
     background: var(--highlightPinkWhite) !important
+}
+
+.calendario-corpo .dia.diaSelecionado{
+    background: var(--lightBlue) !important
 }
