@@ -9,10 +9,12 @@ class CalendarioView {
 
     constructor() {
         const data = new Date()
-        this.mesAtual = data.getMonth() + 1;
+        // this.mesAtual = data.getMonth() + 1;
+        this.mesAtual = 1;
         this.diaAtual = data.getDate();
         this.diaAtualSemana = data.getDay()
-        this.anoAtual = data.getFullYear()
+        // this.anoAtual = data.getFullYear()
+        this.anoAtual = 2003;
         this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay()
     }
 
@@ -75,9 +77,11 @@ class CalendarioView {
         }
 
         // Armazena dado da posicao do primeiro dia do mes atual sendo processado
-        var posicaoDoPrimeiroDiaDoMes: number = this.posicaoDoPrimeiroDiaDoMes
+        var posicaoDoPrimeiroDiaDoMes: number = this.posicaoDoPrimeiroDiaDoMes;
+        // Armazena dia atual em diaDeHoje
+        var diaDeHoje:number = this.diaAtual;
         // Lista de elementos de dia do DOM
-        var elementosDia: NodeListOf<Element> = document.querySelectorAll(".dia")
+        var elementosDia: NodeListOf<Element> = document.querySelectorAll(".dia");
 
         // Função responsável por adicionar números aos elementos de dias
         function adicionaAosElementos(quantidadeDeDias: number) {
@@ -95,6 +99,10 @@ class CalendarioView {
 
             // Loop para adicionar numeros aos elementos DOM
             for (let i = posicaoDoPrimeiroDiaDoMes; i <= elementosDia.length - 1; i++) {
+
+                if (diaImpresso == diaDeHoje){
+                    elementosDia[i].classList.add("diaAtual")
+                }
 
                 // Trecho responsável por adicionar os dias do mes atual sendo processado
                 if (diaImpresso >= 1 && diaImpresso <= quantidadeDeDias) {

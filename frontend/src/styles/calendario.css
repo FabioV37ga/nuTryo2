@@ -16,6 +16,7 @@
     width: 400px;
     height: 70px;
     background: var(--lightBlue);
+    /* background: red; */
     border-radius: 20px 20px 0 0;
     display: flex;
     justify-content: center;
