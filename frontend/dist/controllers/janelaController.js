@@ -14,17 +14,20 @@ class JanelaController {
                     var id = Number(this.itemRefeicao[i].getAttribute("value"));
                     console.log(id);
                     this.janelaView.criaAba(titulo, id);
+                    this.janelaView.selecionaAba(id);
                     this.adicionaEventosDeClick();
                 });
             }
         }
-        this.abas = document.querySelectorAll(".aba");
-        for (let i = 1; i <= this.abas.length - 1; i++) {
+        this.abas = document.querySelectorAll(".abaSelecionavel");
+        for (let i = 0; i <= this.abas.length - 1; i++) {
             if (!this.abas[i].classList.contains("hasEvent")) {
                 this.abas[i].classList.add("hasEvent");
                 this.abas[i].addEventListener("click", (event) => {
                     event.stopPropagation();
-                    this.janelaView.selecionaAba(i);
+                    var id = Number(this.abas[i].getAttribute("value"));
+                    console.log(id);
+                    this.janelaView.selecionaAba(id);
                 });
             }
         }
@@ -36,7 +39,7 @@ class JanelaController {
                     var _a;
                     e.stopPropagation();
                     (_a = this.closeRefeicao[i].parentElement) === null || _a === void 0 ? void 0 : _a.remove();
-                    this.janelaView.selecionaAba(1);
+                    this.janelaView.selecionaAba(0);
                 });
             }
         }

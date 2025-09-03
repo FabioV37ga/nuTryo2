@@ -18,22 +18,25 @@ class JanelaController {
                 this.itemRefeicao[i].children[0].addEventListener("click", () => {
                     // console.log("aqui")
                     var titulo = this.itemRefeicao[i].textContent.toString().trim().split(" ")[0]
-                    var id: number = Number(this.itemRefeicao[i].getAttribute("value"))
+                    var id: number = Number(this.itemRefeicao[i].getAttribute("value"));
                     console.log(id)
-                    this.janelaView.criaAba(titulo, id)
+                    this.janelaView.criaAba(titulo, id);
+                    this.janelaView.selecionaAba(id);
                     this.adicionaEventosDeClick()
                 })
             }
         }
 
         // Evento responsável por alternar entre janelas ao clicar nelas
-        this.abas = document.querySelectorAll(".aba")
-        for (let i = 1; i <= this.abas.length - 1; i++) {
+        this.abas = document.querySelectorAll(".abaSelecionavel");
+        for (let i = 0; i <= this.abas.length - 1; i++) {
             if (!this.abas[i].classList.contains("hasEvent")) {
-                this.abas[i].classList.add("hasEvent")
+                this.abas[i].classList.add("hasEvent");
                 this.abas[i].addEventListener("click", (event) => {
-                    event.stopPropagation()
-                    this.janelaView.selecionaAba(i)
+                    event.stopPropagation();
+                    var id:number = Number(this.abas[i].getAttribute("value"));
+                    console.log(id)
+                    this.janelaView.selecionaAba(id);
 
                 })
             }
@@ -46,8 +49,8 @@ class JanelaController {
                 this.closeRefeicao[i].classList.add("hasEvent")
                 this.closeRefeicao[i].addEventListener("click", (e) => {
                     e.stopPropagation()
-                    this.closeRefeicao[i].parentElement?.remove()
-                    this.janelaView.selecionaAba(1)
+                        this.closeRefeicao[i].parentElement?.remove()
+                    this.janelaView.selecionaAba(0)
                 })
             }
         }

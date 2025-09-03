@@ -5,13 +5,12 @@ class JanelaView {
     }
     criaAba(titulo: string, id: number) {
         const elementoAba: string =
-            `<a class="aba refeicao-aba" value="${id}">
+            `<a class="aba abaSelecionavel refeicao-aba" value="${id}">
                     <div class="refeicao-label">${titulo}</div>
                     <span class="refeicao-fechar">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </span>
                 </a>`
-        console.log("aqui!")
         const elementosAbaDOM: NodeListOf<Element> = document.querySelectorAll(".refeicao-aba")
         if (elementosAbaDOM && elementosAbaDOM.length > 0) {
             for (let i = 0; i <= elementosAbaDOM.length - 1; i++) {
@@ -22,20 +21,21 @@ class JanelaView {
                     $(".janela-abas").append(elementoAba)
                 }
             }
-        }else{
+        } else {
             $(".janela-abas").append(elementoAba)
         }
     }
 
     selecionaAba(aba: number) {
-        console.log("aba!")
-        const elementosAba = document.querySelectorAll(".aba")
+        const elementosAba = document.querySelectorAll(".abaSelecionavel")
+        // isso não funciona
         for (let i = 0; i < elementosAba.length; i++) {
-            if (aba === i) {
-                elementosAba[i].classList.add("abaSelecionada")
-            } else {
-                elementosAba[i].classList.remove("abaSelecionada")
-            }
+            if (elementosAba.length >= 1)
+                if (Number(elementosAba[i].getAttribute("value")) === aba) {
+                    elementosAba[i].classList.add("abaSelecionada")
+                } else {
+                    elementosAba[i].classList.remove("abaSelecionada")
+                }
         }
     }
 }
