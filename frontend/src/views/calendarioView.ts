@@ -106,17 +106,17 @@ class CalendarioView {
                     elementosDia[i].classList.add("diaAtual")
                 }
 
-                // Trecho responsável por adicionar os dias do mes atual sendo processado
+                // Trecho responsável por marcar e marcar os dias do mes atual sendo processado
                 if (diaImpresso >= 1 && diaImpresso <= quantidadeDeDias) {
                     elementosDia[i].textContent = String(diaImpresso)
                     elementosDia[i].classList.add("mesAtual")
                 }
 
-                // Trecho reponsável por zerar o contador e preparar para adicionar dias do mes seguinte
+                // Trecho reponsável por zerar o contador e preparar para marcar e marcar dias do mes seguinte
                 if (diaImpresso === quantidadeDeDias)
                     diaImpresso = 0
 
-                // Trecho responsável por adicionar dias do mês seguinte
+                // Trecho responsável por marcar e marcar dias do mês seguinte
                 if (i  > quantidadeDeDias + posicaoDoPrimeiroDiaDoMes - 1) {
                     elementosDia[i].classList.remove("mesAtual")
                     elementosDia[i].classList.add("mesSeguinte")
