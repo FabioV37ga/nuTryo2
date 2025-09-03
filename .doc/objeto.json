@@ -3,7 +3,7 @@
     "refeicoes": [
         {
             "_id": 1,
-            "tipo": "almoço",
+            "tipo": "Almoço",
             "alimentos": [
                 {
                     "_id": 1,
@@ -25,7 +25,7 @@
         },
         {
             "_id": 2,
-            "tipo": "almoço",
+            "tipo": "Lanche da Tarde",
             "alimentos": [
                 {
                     "_id": 1,
