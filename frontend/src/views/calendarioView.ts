@@ -117,7 +117,7 @@ class CalendarioView {
                     diaImpresso = 0
 
                 // Trecho responsável por adicionar dias do mês seguinte
-                if (i > quantidadeDeDias) {
+                if (i  > quantidadeDeDias + posicaoDoPrimeiroDiaDoMes - 1) {
                     elementosDia[i].classList.remove("mesAtual")
                     elementosDia[i].classList.add("mesSeguinte")
                 }

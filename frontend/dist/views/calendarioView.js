@@ -68,7 +68,7 @@ class CalendarioView {
                 }
                 if (diaImpresso === quantidadeDeDias)
                     diaImpresso = 0;
-                if (i > quantidadeDeDias) {
+                if (i > quantidadeDeDias + posicaoDoPrimeiroDiaDoMes - 1) {
                     elementosDia[i].classList.remove("mesAtual");
                     elementosDia[i].classList.add("mesSeguinte");
                 }
