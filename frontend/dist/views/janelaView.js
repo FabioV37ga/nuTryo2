@@ -1,6 +1,4 @@
 class JanelaView {
-    constructor() {
-    }
     criaAba(titulo, id) {
         const elementoAba = `<a class="aba abaSelecionavel refeicao-aba" value="${id}">
                     <div class="refeicao-label">${titulo}</div>
@@ -22,18 +20,18 @@ class JanelaView {
         else {
             $(".janela-abas").append(elementoAba);
         }
+        var elementoDOMCriado = document.querySelectorAll(".abaSelecionavel");
+        return elementoDOMCriado[elementoDOMCriado.length - 1];
     }
     selecionaAba(aba) {
-        const elementosAba = document.querySelectorAll(".abaSelecionavel");
-        for (let i = 0; i < elementosAba.length; i++) {
-            if (elementosAba.length >= 1)
-                if (Number(elementosAba[i].getAttribute("value")) === aba) {
-                    elementosAba[i].classList.add("abaSelecionada");
-                }
-                else {
-                    elementosAba[i].classList.remove("abaSelecionada");
-                }
+        const abasSelecionaveis = document.querySelectorAll(".abaSelecionavel");
+        for (let i = 0; i <= abasSelecionaveis.length - 1; i++) {
+            abasSelecionaveis[i].classList.remove("abaSelecionada");
         }
+        aba.classList.add("abaSelecionada");
+    }
+    apagaAba(aba) {
+        aba.remove();
     }
 }
 export default JanelaView;

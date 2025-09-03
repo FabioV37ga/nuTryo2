@@ -5,29 +5,14 @@ class JanelaController {
         this.adicionaEventosDeClick();
     }
     adicionaEventosDeClick() {
-        this.itemRefeicao = document.querySelectorAll(".refeicao");
-        for (let i = 1; i <= this.itemRefeicao.length - 1; i++) {
-            if (!this.itemRefeicao[i].classList.contains("hasEvent")) {
-                this.itemRefeicao[i].classList.add("hasEvent");
-                this.itemRefeicao[i].children[0].addEventListener("click", () => {
-                    var titulo = this.itemRefeicao[i].textContent.toString().trim().split(" ")[0];
-                    var id = Number(this.itemRefeicao[i].getAttribute("value"));
-                    console.log(id);
-                    this.janelaView.criaAba(titulo, id);
-                    this.janelaView.selecionaAba(id);
-                    this.adicionaEventosDeClick();
-                });
-            }
-        }
-        this.abas = document.querySelectorAll(".abaSelecionavel");
-        for (let i = 0; i <= this.abas.length - 1; i++) {
-            if (!this.abas[i].classList.contains("hasEvent")) {
-                this.abas[i].classList.add("hasEvent");
-                this.abas[i].addEventListener("click", (event) => {
+        this.abasSelecionaveis = document.querySelectorAll(".abaSelecionavel");
+        for (let i = 0; i <= this.abasSelecionaveis.length - 1; i++) {
+            if (!this.abasSelecionaveis[i].classList.contains("hasEvent")) {
+                this.abasSelecionaveis[i].classList.add("hasEvent");
+                this.abasSelecionaveis[i].addEventListener("click", (event) => {
                     event.stopPropagation();
-                    var id = Number(this.abas[i].getAttribute("value"));
-                    console.log(id);
-                    this.janelaView.selecionaAba(id);
+                    var abaClicada = event.currentTarget;
+                    this.janelaView.selecionaAba(abaClicada);
                 });
             }
         }
@@ -36,13 +21,13 @@ class JanelaController {
             if (!this.closeRefeicao[i].classList.contains("hasEvent")) {
                 this.closeRefeicao[i].classList.add("hasEvent");
                 this.closeRefeicao[i].addEventListener("click", (e) => {
-                    var _a, _b;
                     e.stopPropagation();
-                    console.log(this.closeRefeicao[i].parentElement);
-                    if ((_a = this.closeRefeicao[i].parentElement) === null || _a === void 0 ? void 0 : _a.classList.contains("abaSelecionada")) {
-                        this.janelaView.selecionaAba(0);
+                    var abaClicada = e.currentTarget;
+                    abaClicada = abaClicada.parentElement;
+                    if (abaClicada.classList.contains("abaSelecionada")) {
+                        this.janelaView.selecionaAba(this.abasSelecionaveis[0]);
                     }
-                    (_b = this.closeRefeicao[i].parentElement) === null || _b === void 0 ? void 0 : _b.remove();
+                    this.janelaView.apagaAba(abaClicada);
                 });
             }
         }
