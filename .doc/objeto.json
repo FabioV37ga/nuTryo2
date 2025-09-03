@@ -1,0 +1,49 @@
+{
+    "_id": "03-09-25",
+    "refeicoes": [
+        {
+            "_id": 1,
+            "tipo": "almoço",
+            "alimentos": [
+                {
+                    "_id": 1,
+                    "alimento": "arroz",
+                    "calorias": 130,
+                    "proteinas": 3,
+                    "carboidratos": 30,
+                    "gorduras": 10
+                },
+                {
+                    "_id": 2,
+                    "alimento": "feijao",
+                    "calorias": 155,
+                    "proteinas": 6,
+                    "carboidratos": 40,
+                    "gorduras": 10
+                }
+            ]
+        },
+        {
+            "_id": 2,
+            "tipo": "almoço",
+            "alimentos": [
+                {
+                    "_id": 1,
+                    "alimento": "pao",
+                    "calorias": 130,
+                    "proteinas": 3,
+                    "carboidratos": 30,
+                    "gorduras": 10
+                },
+                {
+                    "_id": 2,
+                    "alimento": "quejo",
+                    "calorias": 155,
+                    "proteinas": 6,
+                    "carboidratos": 40,
+                    "gorduras": 10
+                }
+            ]
+        }
+    ]
+}
