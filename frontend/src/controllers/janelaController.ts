@@ -34,7 +34,7 @@ class JanelaController {
                 this.abas[i].classList.add("hasEvent");
                 this.abas[i].addEventListener("click", (event) => {
                     event.stopPropagation();
-                    var id:number = Number(this.abas[i].getAttribute("value"));
+                    var id: number = Number(this.abas[i].getAttribute("value"));
                     console.log(id)
                     this.janelaView.selecionaAba(id);
 
@@ -49,8 +49,11 @@ class JanelaController {
                 this.closeRefeicao[i].classList.add("hasEvent")
                 this.closeRefeicao[i].addEventListener("click", (e) => {
                     e.stopPropagation()
-                        this.closeRefeicao[i].parentElement?.remove()
-                    this.janelaView.selecionaAba(0)
+                    console.log(this.closeRefeicao[i].parentElement)
+                    if (this.closeRefeicao[i].parentElement?.classList.contains("abaSelecionada")){
+                        this.janelaView.selecionaAba(0)
+                    }
+                    this.closeRefeicao[i].parentElement?.remove()
                 })
             }
         }

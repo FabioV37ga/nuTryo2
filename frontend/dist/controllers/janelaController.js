@@ -36,10 +36,13 @@ class JanelaController {
             if (!this.closeRefeicao[i].classList.contains("hasEvent")) {
                 this.closeRefeicao[i].classList.add("hasEvent");
                 this.closeRefeicao[i].addEventListener("click", (e) => {
-                    var _a;
+                    var _a, _b;
                     e.stopPropagation();
-                    (_a = this.closeRefeicao[i].parentElement) === null || _a === void 0 ? void 0 : _a.remove();
-                    this.janelaView.selecionaAba(0);
+                    console.log(this.closeRefeicao[i].parentElement);
+                    if ((_a = this.closeRefeicao[i].parentElement) === null || _a === void 0 ? void 0 : _a.classList.contains("abaSelecionada")) {
+                        this.janelaView.selecionaAba(0);
+                    }
+                    (_b = this.closeRefeicao[i].parentElement) === null || _b === void 0 ? void 0 : _b.remove();
                 });
             }
         }
