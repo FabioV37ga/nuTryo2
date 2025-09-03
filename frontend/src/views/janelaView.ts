@@ -1,7 +1,10 @@
 declare var $: any;
 class JanelaView {
 
+    // Função responsável por criar um elemento DOM de aba
     criaAba(titulo: string, id: number) {
+
+        // modelo do elemento a partir dos argumentos fornecidos ao chamar essa função
         const elementoAba: string =
             `<a class="aba abaSelecionavel refeicao-aba" value="${id}">
                     <div class="refeicao-label">${titulo}</div>
@@ -9,32 +12,48 @@ class JanelaView {
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </span>
                 </a>`
+        
+        // Armazena abas existentes em elementosAbaDOM
         const elementosAbaDOM: NodeListOf<Element> = document.querySelectorAll(".refeicao-aba")
+
+        // Só executa caso existam abas
         if (elementosAbaDOM && elementosAbaDOM.length > 0) {
+            
+            // Esse trecho impede a criação de duas abas iguais, se ela já está aberta, não cria outra.
             for (let i = 0; i <= elementosAbaDOM.length - 1; i++) {
                 if (Number(elementosAbaDOM[i].getAttribute("value")) == id) {
                     break;
                 }
                 if (i == elementosAbaDOM.length - 1) {
+                    // Caso já não exista uma instância dessa aba criada, cria essa instância
                     $(".janela-abas").append(elementoAba)
                 }
             }
         } else {
+            // Caso não tenha nenhuma aba, cria essa instância
             $(".janela-abas").append(elementoAba)
         }
 
+        // Por fim, retorno lógico da referência do elemento que foi criado
         var elementoDOMCriado = document.querySelectorAll(".abaSelecionavel")
         return elementoDOMCriado[elementoDOMCriado.length - 1]
     }
 
+    // Seleção visual da aba
     selecionaAba(aba: Element) {
+        // Armazena elemento de abas selecionaveis do DOM
         const abasSelecionaveis = document.querySelectorAll(".abaSelecionavel")
+
+        // Primeiro reseta estilização de todas as abas
         for (let i = 0; i <= abasSelecionaveis.length - 1; i++) {
             abasSelecionaveis[i].classList.remove("abaSelecionada")
         }
+
+        // Seleciona a aba chamada como argumento
         aba.classList.add("abaSelecionada")
     }
 
+    // Apenas apaga/fecha a aba chamada como argumento
     apagaAba(aba: Element) {
             aba.remove()
     }
