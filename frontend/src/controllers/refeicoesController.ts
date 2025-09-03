@@ -1,9 +1,8 @@
-import DiaView from "../views/diaView.js"
+import RefeicoesView from "../views/refeicoesView.js"
 import JanelaController from "./janelaController.js";
 
-class DiaController extends JanelaController{
-    private diaView = new DiaView()
-    // itemRefeicao: NodeListOf<Element>
+class RefeicoesController extends JanelaController{
+    private RefeicoesView = new RefeicoesView()
 
     constructor() {
         super()
@@ -16,18 +15,28 @@ class DiaController extends JanelaController{
         for (let i = 1; i <= this.itemRefeicao.length - 1; i++) {
             if (!this.itemRefeicao[i].classList.contains("hasEvent")) {
                 this.itemRefeicao[i].classList.add("hasEvent")
+
+                // adicionar ou editar
                 this.itemRefeicao[i].children[0].addEventListener("click", (e) => {
-                    // console.log("aqui")
+                    
                     var titulo = this.itemRefeicao[i].textContent.toString().trim().split(" ")[0]
                     var id: number = Number(this.itemRefeicao[i].getAttribute("value"));
-                    // console.log(id)
-                    var abaCriada = this.diaView.criaAba(titulo, id);
-                    this.diaView.selecionaAba(abaCriada);
+                    
+                    var abaCriada = this.RefeicoesView.criaAba(titulo, id);
+
+                    this.RefeicoesView.selecionaAba(abaCriada);
+
                     this.adicionaEventosDeClick()
                     super.adicionaEventosDeClick()
+                })
+
+                this.itemRefeicao[i].children[2].addEventListener("click", (e)=>{
+                    var item = e.currentTarget as Element
+                    this.RefeicoesView.removerRefeicao(item.parentElement as Element)
                 })
             }
         }
     }
 }
-export default DiaController
+
+export default RefeicoesController

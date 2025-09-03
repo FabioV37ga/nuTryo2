@@ -1,0 +1,65 @@
+.refeicoes-conteudo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.lista-de-refeicoes {
+    margin-top: 30px;
+    width: 720px;
+    height: 490px;
+    overflow-y: scroll;
+}
+
+.lista-de-refeicoes::-webkit-scrollbar {
+    width: 10px
+}
+
+.lista-de-refeicoes::-webkit-scrollbar-thumb {
+    background: var(--lightBlue);
+    border-radius: 10px
+}
+
+.refeicao {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    height: 70px;
+    background: var(--lightBlue);
+    color: white;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    border-radius: 5px;
+}
+
+.botao-editar-refeicao,
+.botao-adicionar-refeicao,
+.botao-apagar-refeicao {
+    display: flex;
+    align-items: center;
+    justify-content: center;;
+    height: 100%;
+    width: 70px;
+    cursor: pointer;
+}
+
+.botao-editar-refeicao{
+    border-right: 3px solid var(--pinkWhite);
+    font-size: 25px;
+}
+
+.botao-adicionar-refeicao{
+    border-right: 3px solid var(--pinkWhite);
+    font-size: 40px;
+}
+
+.botao-apagar-refeicao{
+    font-size: 30px;
+    border-left: 3px solid var(--pinkWhite)
+}
+
+.refeicao-list-label{
+    margin-left: 12px;
+    font-size: 18px;
+}
