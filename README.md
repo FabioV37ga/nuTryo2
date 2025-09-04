@@ -5,11 +5,17 @@
 
 # Funcionalidades (até agora):
 - Lógica de criação dinâmica de calendário
+- Criação dinamica de elementos referentes a refeições
+- Criação dinamica de elementos referentes a alimentos
 
 # Tecnologias usadas:
 - TypeScript
 - Jquery
 - Node.js
+
+# Ambiente de desenvolvimento:
+- Servidor que detecta e atualiza mudanças
+- Sistema para que mudanças nos arquivos .html e .css em dist/ atualizem arquivos em src/
 
 # Todo:
 - 1. Finalizar telas
