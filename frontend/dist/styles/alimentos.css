@@ -11,7 +11,7 @@
 
 .alimentos-titulo {
     /* margin-left: 30px; */
-    margin: 30px 0 0 30px;
+    margin: 12px 0 0 14px;
     color: var(--lightBlue);
     font-size: 20px;
 }
@@ -22,4 +22,69 @@
     height: 3px;
     background: var(--lightBlue);
     border-radius: 10px;
+}
+
+.alimentos-adicionados {
+    margin-top: 10px;
+    width: 100%;
+    height: 335px;
+    overflow-y: scroll;
+    /* background: red; */
+}
+
+.alimentos-adicionados::-webkit-scrollbar {
+    width: 10px
+}
+
+.alimentos-adicionados::-webkit-scrollbar-thumb {
+    background: var(--lightBlue);
+    border-radius: 10px
+}
+
+.alimento-item {
+    width: 90%;
+    height: 60px;
+    background: var(--lightBlue);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    color: white;
+    position: relative
+}
+
+.botao-editar-alimento,
+.botao-adicionar-alimento,
+.botao-apagar-alimento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 60px;
+    cursor: pointer;
+}
+
+.botao-editar-alimento,
+.botao-adicionar-alimento {
+    border-right: 2px solid var(--pinkWhite)
+}
+
+.botao-adicionar-alimento {
+    font-size: 30px;
+}
+
+.botao-editar-alimento {
+    font-size: 26px;
+}
+
+.botao-apagar-alimento {
+    font-size: 28px;
+    border-left: 2px solid var(--pinkWhite);
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
+.alimento-label {
+    margin-left: 10px;
 }

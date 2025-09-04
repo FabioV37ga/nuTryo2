@@ -74,9 +74,11 @@
     margin-bottom: 6px;
     height: 30px;
     width: 160px;
+    color: var(--lightBlue)
 }
 
 .listaTipoAberta {
+    z-index: 1;
     display: flex !important;
     animation: abrirListaDeTipo .35s linear forwards
 }

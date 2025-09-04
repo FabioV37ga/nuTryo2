@@ -15,7 +15,6 @@ class RefeicaoController {
     private adicionaEventosDeClick() {
 
         // Abre a lista ao clicar no tipo selecionado
-
         // Previne adição multipla de eventos de click
         if (!this.listaTipoLabel.classList.contains("hasEvent")) {
             this.listaTipoLabel.classList.add("hasEvent")
