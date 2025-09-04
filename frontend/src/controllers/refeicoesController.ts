@@ -10,7 +10,7 @@ class RefeicoesController extends JanelaController {
         this.refeicoesView = new RefeicoesView();
         this.adicionaEventosDeClick()
     }
-    
+
     protected adicionaEventosDeClick() {
         this.itemRefeicao = document.querySelectorAll(".refeicao")
 
@@ -29,10 +29,22 @@ class RefeicoesController extends JanelaController {
 
                     this.refeicoesView.selecionaAba(abaCriada);
 
-                    console.log(this.refeicoesView)
+                    // console.log(this.refeicoesView)
 
                     this.adicionaEventosDeClick()
                     super.adicionaEventosDeClick()
+
+                    async function testaBanco() {
+                        const resposta = await fetch("http://localhost:3001/refeicoes", {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        let refeicoes = await resposta.json();
+                        console.log(refeicoes)
+                    }
+                    testaBanco()
                 })
 
                 this.itemRefeicao[i].children[2].addEventListener("click", (e) => {
@@ -45,7 +57,7 @@ class RefeicoesController extends JanelaController {
         this.botaoAdicionarRefeicao = document.querySelector(".botao-adicionar-refeicao") as Element
         if (!this.botaoAdicionarRefeicao.classList.contains("hasEvent")) {
             this.botaoAdicionarRefeicao.classList.add("hasEvent")
-            this.botaoAdicionarRefeicao.addEventListener("click", ()=>{
+            this.botaoAdicionarRefeicao.addEventListener("click", () => {
                 this.refeicoesView.adicionarRefeicao()
                 this.adicionaEventosDeClick()
             })

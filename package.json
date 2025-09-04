@@ -2,37 +2,40 @@
   "name": "nutryo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "backend/server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-
-    "server": "lite-server --baseDir=frontend/dist",
-
-    "start": "npm run copyToDist:frontend && npm run dev:once && npm-run-all --parallel watch:sync server",
-
+    "server:front": "lite-server --baseDir=frontend/dist",
+    "server:back": "npm run back && nodemon backend/dist/server.js",
+    "start": "npm run copyToDist:frontend && npm run dev:once && npm-run-all --parallel watch:sync server:front",
     "dev": "tsc -p frontend/tsconfig.json",
     "dev:once": "tsc -p frontend/tsconfig.json",
-
     "watch": "tsc -w -p frontend/tsconfig.json",
-
     "copyToDist:frontend": "xcopy frontend\\src\\images frontend\\dist\\images /E /I /Y && xcopy frontend\\src\\styles frontend\\dist\\styles /E /I /Y && copy frontend\\src\\index.html frontend\\dist\\index.html /Y",
-
     "clearfront": "powershell -Command \"Get-ChildItem -Path frontend/dist | Remove-Item -Recurse -Force\"",
-
     "sync": "xcopy frontend\\dist\\index.html frontend\\src\\index.html /Y && xcopy frontend\\dist\\styles frontend\\src\\styles /E /I /Y && xcopy frontend\\dist\\images frontend\\src\\images /E /I /Y",
-
-    "watch:sync": "chokidar \"frontend/dist/index.html\" \"frontend/dist/styles/**/*\" \"frontend/dist/images/**/*\" -c \"npm run sync\""
+    "watch:sync": "chokidar \"frontend/dist/index.html\" \"frontend/dist/styles/**/*\" \"frontend/dist/images/**/*\" -c \"npm run sync\"",
+    "back": "tsc -p backend/tsconfig.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
     "lite-server": "^2.6.1",
+    "mongodb": "^6.19.0",
+    "mongoose": "^8.18.0",
+    "nodemon": "^3.1.10",
     "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "npm-run-all": "^4.1.5",
-    "chokidar-cli": "^3.0.0"
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.1",
+    "chokidar-cli": "^3.0.0",
+    "npm-run-all": "^4.1.5"
   }
 }

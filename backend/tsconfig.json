@@ -1,12 +1,16 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "dist/js",
-        "target": "ES6",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "target": "es2017",
         "noEmitOnError": true,
         "noImplicitAny": true,
         "removeComments": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "allowSyntheticDefaultImports": true,
+        "module":"NodeNext",
+        "moduleResolution": "nodenext",
+        "esModuleInterop": true
     },
     "include": [
         "src/**/*"
