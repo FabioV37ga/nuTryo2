@@ -1,7 +1,8 @@
 # Instalando:
 - 1. Clone o repositorio com `git clone https://github.com/FabioV37ga/nuTryo2`
 - 2. Instale dependências com `npm install`
-- 3. Rode o sistema com `npm run start`
+- 3. Rode o front-end com `npm run start:front`
+- 4. Rode o back-end com `npm run start:back`
 
 # Funcionalidades (até agora):
 - Lógica de criação dinâmica de calendário
