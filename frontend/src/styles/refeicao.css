@@ -1,5 +1,6 @@
 .refeicao-conteudo {
     display: none;
+    /* display: flex; */
     width: 95%;
     height: calc(100% - 115px);
     margin-top: 20px;

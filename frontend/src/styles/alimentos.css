@@ -50,7 +50,24 @@
     align-items: center;
     border-radius: 10px;
     color: white;
-    position: relative
+    position: relative;
+    transition:
+        border-radius .1s
+}
+
+.editando {
+    border-radius: 10px 10px 0 0;
+    animation: abreEspacoAbaixo .35s forwards
+}
+
+@keyframes abreEspacoAbaixo {
+    from {
+        margin-bottom: 10px;
+    }
+
+    to {
+        margin-bottom: 170px;
+    }
 }
 
 .botao-editar-alimento,
@@ -87,4 +104,135 @@
 
 .alimento-label {
     margin-left: 10px;
+}
+
+/* Janela de edição do alimento */
+
+.alimento-item-janelaEdicao {
+    width: calc(100% - 10px);
+    border-radius: 0 0 10px 10px;
+    /* height: 200px; */
+    max-height: 0;
+    overflow: hidden;
+    /* background: red; */
+    border: 5px solid transparent;
+    top: 60px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0%;
+    transition:
+        max-height 0.4s,
+        border-color 0s,
+        opacity 0.4s;
+}
+
+.alimento-consumo,
+.alimento-macros {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    color: white;
+}
+
+.alimento-consumo {
+    width: 245px;
+    height: 150px;
+    /* background-color: red; */
+}
+
+.alimento-consumo>* {
+    width: 245px;
+    height: 50px;
+    background: var(--lightBlue);
+    display: flex;
+    align-items: center;
+    border-radius: 6px
+}
+
+.alimento-macros {
+    /* background: blue; */
+    height: 150px;
+    width: 385px;
+    margin-left: 22px;
+    padding-left: 20px;
+    border-left: 2px solid var(--lightBlue)
+}
+
+.alimento-macros>* {
+    border-radius: 6px;
+    width: 185px;
+    height: 50px;
+    background: var(--lightBlue);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.calorias,
+.carboidratos {
+    margin-right: 10px
+}
+
+.selecao-label,
+.peso-label {
+    height: 100%;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selecao-valor,
+.peso-valor {
+    height: 40px;
+    width: 140px;
+    background: var(--pinkWhite);
+    display: flex;
+    align-items: center;
+    border-radius: 3px;
+}
+
+.selecao-valor-texto,
+.peso-valor-texto {
+    margin-left: 5px;
+    color: var(--lightBlue);
+    background: transparent;
+    border: none;
+    height: 100%;
+    width: 127px
+}
+
+.selecao-valor-texto:focus,
+.peso-valor-texto:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.macros-label {
+    height: 40px;
+    margin-left: 10px;
+    width: 103px;
+    display: flex;
+    align-items: center;
+}
+
+.macros-valor {
+    height: 40px;
+    width: 66px;
+    border-radius: 3px;
+    color: var(--lightBlue);
+    background-color: var(--pinkWhite);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.janelaEdicao-aberta {
+    max-height: 200px;
+    border-color: var(--lightBlue);
+    opacity: 100%;
 }

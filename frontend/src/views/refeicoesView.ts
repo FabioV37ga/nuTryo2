@@ -8,19 +8,18 @@ class RefeicoesView extends JanelaView {
     constructor() {
         super()
     }
-    
+
     adicionarRefeicao() {
 
         this.id = RefeicoesView._id
         RefeicoesView._id += 1
-        
-        const elemento = 
-        `<div class="refeicao" value="${this.id}">
+
+        const elemento =
+            `<div class="refeicao" value="${this.id}">
             <a class="botao-editar-refeicao">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
-            <span class="refeicao-list-label">Café da Manhã • Alimento1 • Alimento2 • Alimento3 • Alimento4
-                •...
+            <span class="refeicao-list-label">
             </span>
             <div class="botao-apagar-refeicao">
                 <i class="fa fa-trash" aria-hidden="true"></i>
@@ -33,7 +32,7 @@ class RefeicoesView extends JanelaView {
     removerRefeicao(refeicao: Element) {
         refeicao.remove()
     }
-    log(){
+    log() {
         console.log("Aves!")
     }
 }
