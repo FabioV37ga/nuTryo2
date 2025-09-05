@@ -64,33 +64,44 @@ class AuthController {
     }
 
     private logIn() {
+        // Referencia this em self
         const self = this;
 
+        // Campos html referentes a email e senha
         const campoEmail = document.querySelector(".login-usuario") as HTMLFormElement
         const campoSenha = document.querySelector(".login-senha") as HTMLFormElement
 
+        // Conteúdo dos inputs acima
         const email = campoEmail.value
         const senha = campoSenha.value
 
-        // Consistência de campo
+        // # Consistência de campo
+        // Consistência de email
         if (email.length >= 7 &&
             email.includes("@") &&
             email.includes(".")
         ) {
+            // Consistência de senha
             if (senha.trim() != '') {
+                // Consistências bem-sucedidas, efetua login
                 efetuaLogin()
             } else {
+                // Exibe erro de login
                 this.exibeMensagemDeAuth("login")
             }
         } else {
+            // Exibe erro de login
             this.exibeMensagemDeAuth("login")
         }
 
 
+        // # Função de login
         async function efetuaLogin() {
             try {
+                // Animação de loading
                 self.authView.toggleLoading()
 
+                // Inicia requisição
                 const resposta = await fetch("http://localhost:3001/auth/login", {
                     method: "POST",
                     headers: {
@@ -99,22 +110,25 @@ class AuthController {
                     body: JSON.stringify({ email, senha })
                 })
 
+                // Armazena em dados
                 const dados = await resposta.json()
 
+                // Se os dados forem validos, realiza login
                 if (resposta.ok) {
-                    console.log("Login realizado")
-                    console.log(dados.email)
+                    // Realiza fetch dos dados referente ao usuário conectado
                     const nutryo = new NutryoFetch(dados.email)
-
+                    
+                    // Inicia aplicação fechando janela de autenticação
                     var intervalo = setInterval(() => {
                         if (NutryoFetch.objects) {
-                            console.log(NutryoFetch.objects)
                             var tela = document.querySelector(".overlay-auth") as HTMLElement
                             tela.style = "display: none" 
                             clearInterval(intervalo)
                         }
                     }, 1);
-                } else {
+                } 
+                // Se os dados forem invalidos, exibe mensagem de erro
+                else {
                     console.log("falha no login")
                     self.exibeMensagemDeAuth("login")
                 }
