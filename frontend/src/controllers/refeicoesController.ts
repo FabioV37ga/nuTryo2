@@ -33,18 +33,6 @@ class RefeicoesController extends JanelaController {
 
                     this.adicionaEventosDeClick()
                     super.adicionaEventosDeClick()
-
-                    async function testaBanco() {
-                        const resposta = await fetch("http://localhost:3001/refeicoes", {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json"
-                            }
-                        })
-                        let refeicoes = await resposta.json();
-                        console.log(refeicoes)
-                    }
-                    testaBanco()
                 })
 
                 this.itemRefeicao[i].children[2].addEventListener("click", (e) => {
