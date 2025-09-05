@@ -14,16 +14,3 @@ const refeicoesController = new RefeicoesController();
 const refeicaoController = new RefeicaoController();
 const alimentoController = new AlimentoController();
 const authController = new AuthController();
-
-window.onload = ()=>{
-    new NutryoFetch()
-    var timer = 0;
-    var intervalo = setInterval(() => {
-        if (NutryoFetch.objects){
-            timer++
-            console.log("Fetch realizado em " + timer + "ms")
-            console.log(NutryoFetch.objects)
-            clearInterval(intervalo)
-        }
-    }, 1);
-}

@@ -1,3 +1,4 @@
+import NutryoFetch from "../utils/nutryoFetch.js";
 import AuthView from "../views/authView.js";
 
 class AuthController {
@@ -84,16 +85,46 @@ class AuthController {
 
             const dados = await resposta.json()
 
-            if (resposta.ok){
+            if (resposta.ok) {
                 console.log("Login realizado")
-            }else{
+                console.log(dados.email)
+                const nutryo = new NutryoFetch(dados.email)
+
+                var intervalo = setInterval(() => {
+                    if (NutryoFetch.objects){
+                        console.log(NutryoFetch.objects)
+                        clearInterval(intervalo)
+                    }
+                }, 1);
+            } else {
                 console.log("falha no login")
+                this.exibeErroDeAuth("login")
             }
         }
     }
 
     private exibeErroDeAuth(tipo: string) {
 
+        // Campo de notificar erro do login
+        const mensagemLogin = document.querySelector(".login-erro") as HTMLElement
+
+        // Campo de notificar erro do registro
+        const mensagemRegistro = document.querySelector(".registro-erro") as HTMLElement
+
+        // Seleção do erro
+        switch (tipo) {
+            case "login":
+                mensagemLogin.textContent = "Dados incorretos ou inexistentes!"
+                mostraEEscondeErro(mensagemLogin)
+                break;
+        }
+
+        function mostraEEscondeErro(elemento: HTMLElement) {
+            elemento.style.display = "initial"
+            setTimeout(() => {
+                elemento.style.display = "none"
+            }, 2000);
+        }
     }
 }
 

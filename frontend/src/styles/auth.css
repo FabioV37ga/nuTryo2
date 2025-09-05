@@ -92,10 +92,20 @@
 }
 
 .auth-enviar {
+    cursor: pointer;
     background: white;
     color: var(--lightBlue);
     padding: 20px 65px;
     border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    /* sem sombra inicialmente */
+    transition: box-shadow 0.3s ease;
+    /* suaviza a transição */
+}
+
+.auth-enviar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65);
+    /* sombra leve ao hover */
 }
 
 .auth-switch {
@@ -117,4 +127,18 @@ form {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
+}
+
+.login-erro,
+.registro-erro {
+    position: absolute;
+    color: white;
+}
+
+.login-erro {
+    bottom: 292px;
+}
+
+.registro-erro {
+    bottom: 196px;
 }

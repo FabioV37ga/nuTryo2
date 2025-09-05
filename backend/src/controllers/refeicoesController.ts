@@ -13,8 +13,8 @@ class RefeicoesController {
 
     static async listarRefeicoesPorUsuario(req: Request, res: Response) {
         try {
-            const usuario = req.params._usuario;
-            const listaRefeicoesDoUsuario = await refeicoes.find({ _usuario: usuario });
+            const email = req.params._usuario;
+            const listaRefeicoesDoUsuario = await refeicoes.find({ _usuario: email });
             res.status(200).json(listaRefeicoesDoUsuario);
         } catch (error) {
             res.status(500).json({ erro: error.message });

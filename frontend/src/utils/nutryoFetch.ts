@@ -1,19 +1,25 @@
 class NutryoFetch {
     static objects: JSON
-    constructor() {
-        this.fetchObjects();
+    private user:string;
+
+    constructor(user:string){
+        this.user = user
+        this.fetchObjects(this.user)
     }
+    
+    private async fetchObjects(user:string) {
 
-    private async fetchObjects() {
 
-        const resposta = await fetch("http://localhost:3001/refeicoes", {
+        console.log(`http://localhost:3001/refeicoes/${user}`)
+        const resposta = await fetch(`http://localhost:3001/refeicoes/${user}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
         })
+
         let refeicoes = await resposta.json();
-        NutryoFetch.objects = refeicoes
+        NutryoFetch.objects = await refeicoes
     }
 }
 
