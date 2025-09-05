@@ -128,42 +128,53 @@ class AuthController {
     }
 
     private register() {
+        // Referencia this em self, para usar dentro da função
         const self = this;
-        console.log("iniciando registro")
+        
+        // Campo html do email
         const campoEmail = document.querySelector(".register-email") as HTMLFormElement
+        // Campo html do nome
         const campoNome = document.querySelector(".register-usuario") as HTMLFormElement
+        // Campo html da senha
         const campoSenha = document.querySelector(".register-senha") as HTMLFormElement
 
+        // Valor inserido nos campos
         const email = campoEmail.value
         const nome = campoNome.value
         const senha = campoSenha.value
 
-        // Consistência de campo
+        // # Consistência dos campos
+
+        // Consistência do email
         if (email.length >= 7 &&
             email.includes("@") &&
             email.includes(".")
         ) {
-            console.log("passou email")
+            // Consistência da senha
             if (senha.trim() != '') {
-                console.log("passou senha")
+                // Consistência do nome
                 if (nome.trim() != '') {
-                    console.log("passou nome")
+                    // Se os 3 campos estiverem válidos, efetua registro
                     efetuaRegistro()
                 } else {
+                    // Emite erro de nome
                     this.exibeMensagemDeAuth("register-nome")
                 }
             } else {
+                // Emite erro de senha
                 this.exibeMensagemDeAuth("register-senha")
             }
         } else {
+            // Emite erro de email
             this.exibeMensagemDeAuth("register-mail")
         }
 
+        // Função para efetuar registro
         async function efetuaRegistro() {
-            console.log("Campos validos, iniciando requisição")
-            var resposta: AnyObject = [];
+
             try {
-                resposta = await fetch("http://localhost:3001/auth/registro", {
+                // Faz requisição
+                const resposta = await fetch("http://localhost:3001/auth/registro", {
                     method: "POST",
                     headers: {
                         "Content-Type": "Application/json",
@@ -171,17 +182,17 @@ class AuthController {
                     body: JSON.stringify({ email, senha, nome })
                 })
 
+                // Error 400: Email duplicado
                 if (resposta.status == 400) {
                     console.log("E-mail duplicado")
                     self.exibeMensagemDeAuth("email-duplicado")
+                    return
                 }
-
+                // Sucesso: Exibe mensagem de registro bem-sucedido
                 self.exibeMensagemDeAuth("sucess-register")
-
-                // console.log(resposta)
             } catch (error) {
-                console.log("Deu pau!")
-
+                // Erro no registro
+                console.log("Erro no registro")
             }
 
         }
