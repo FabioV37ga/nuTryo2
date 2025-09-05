@@ -9,6 +9,23 @@
     z-index: 3;
 }
 
+.auth-loading{
+    animation: spin 1s linear infinite;
+    position:absolute;
+    top: 560px;
+    font-size: 70px;
+    z-index: 4;
+    color: white
+}
+
+.blur{
+    filter: blur(7px) !important
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
 .auth-janela {
     box-shadow: 0px 0px 92px 17px rgba(0, 0, 0, 0.67);
     width: 500px;

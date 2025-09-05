@@ -18,5 +18,20 @@ class AuthView {
                 break;
         }
     }
+
+    toggleLoading(){
+        console.log("here")
+        const spinner = document.querySelector(".auth-loading") as HTMLElement
+
+        const janelaAuth = document.querySelector(".auth-janela") as HTMLElement
+
+        if (!janelaAuth.classList.contains("blur")){
+            janelaAuth.classList.add("blur")
+            spinner.style.display = "initial"
+        }else{
+            janelaAuth.classList.remove("blur")
+            spinner.style.display = "none"
+        }
+    }
 }
 export default AuthView

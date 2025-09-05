@@ -1,8 +1,9 @@
+import { AnyObject } from "mongoose";
 import NutryoFetch from "../utils/nutryoFetch.js";
 import AuthView from "../views/authView.js";
 
 class AuthController {
-    private authView = new AuthView
+    private authView = new AuthView()
     constructor() {
         this.adicionaEventosDeClick()
     }
@@ -63,6 +64,8 @@ class AuthController {
     }
 
     private logIn() {
+        const self = this;
+
         const campoEmail = document.querySelector(".login-usuario") as HTMLFormElement
         const campoSenha = document.querySelector(".login-senha") as HTMLFormElement
 
@@ -77,43 +80,57 @@ class AuthController {
             if (senha.trim() != '') {
                 efetuaLogin()
             } else {
-                this.exibeErroDeAuth("login")
+                this.exibeMensagemDeAuth("login")
             }
         } else {
-            this.exibeErroDeAuth("login")
+            this.exibeMensagemDeAuth("login")
         }
 
+
         async function efetuaLogin() {
-            const resposta = await fetch("http://localhost:3001/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "Application/json",
-                },
-                body: JSON.stringify({ email, senha })
-            })
+            try {
+                self.authView.toggleLoading()
 
-            const dados = await resposta.json()
+                const resposta = await fetch("http://localhost:3001/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/json",
+                    },
+                    body: JSON.stringify({ email, senha })
+                })
 
-            if (resposta.ok) {
-                console.log("Login realizado")
-                console.log(dados.email)
-                const nutryo = new NutryoFetch(dados.email)
+                const dados = await resposta.json()
 
-                var intervalo = setInterval(() => {
-                    if (NutryoFetch.objects) {
-                        console.log(NutryoFetch.objects)
-                        clearInterval(intervalo)
-                    }
-                }, 1);
-            } else {
-                console.log("falha no login")
-                this.exibeErroDeAuth("login")
+                if (resposta.ok) {
+                    console.log("Login realizado")
+                    console.log(dados.email)
+                    const nutryo = new NutryoFetch(dados.email)
+
+                    var intervalo = setInterval(() => {
+                        if (NutryoFetch.objects) {
+                            console.log(NutryoFetch.objects)
+                            var tela = document.querySelector(".overlay-auth") as HTMLElement
+                            tela.style = "display: none" 
+                            clearInterval(intervalo)
+                        }
+                    }, 1);
+                } else {
+                    console.log("falha no login")
+                    self.exibeMensagemDeAuth("login")
+                }
+            } catch (error) {
+
+            } finally {
+                self.authView.toggleLoading()
             }
+
         }
     }
 
     private register() {
-        const campoEmail = document.querySelector(".register-usuario") as HTMLFormElement
+        const self = this;
+        console.log("iniciando registro")
+        const campoEmail = document.querySelector(".register-email") as HTMLFormElement
         const campoNome = document.querySelector(".register-usuario") as HTMLFormElement
         const campoSenha = document.querySelector(".register-senha") as HTMLFormElement
 
@@ -126,31 +143,54 @@ class AuthController {
             email.includes("@") &&
             email.includes(".")
         ) {
+            console.log("passou email")
             if (senha.trim() != '') {
+                console.log("passou senha")
                 if (nome.trim() != '') {
+                    console.log("passou nome")
                     efetuaRegistro()
                 } else {
-                    this.exibeErroDeAuth("register-nome")
+                    this.exibeMensagemDeAuth("register-nome")
                 }
             } else {
-                this.exibeErroDeAuth("register-senha")
+                this.exibeMensagemDeAuth("register-senha")
             }
         } else {
-            this.exibeErroDeAuth("register-mail")
+            this.exibeMensagemDeAuth("register-mail")
         }
 
         async function efetuaRegistro() {
-            const resposta = await fetch("http://localhost:3001/auth/registro", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "Application/json",
-                },
-                body: JSON.stringify({ email, senha, nome })
-            })
+            console.log("Campos validos, iniciando requisição")
+            var resposta: AnyObject = [];
+            try {
+                resposta = await fetch("http://localhost:3001/auth/registro", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/json",
+                    },
+                    body: JSON.stringify({ email, senha, nome })
+                })
+
+                if (resposta.status == 400) {
+                    console.log("E-mail duplicado")
+                    self.exibeMensagemDeAuth("email-duplicado")
+                }
+
+                self.exibeMensagemDeAuth("sucess-register")
+
+                // console.log(resposta)
+            } catch (error) {
+                console.log("Deu pau!")
+
+            }
+
         }
     }
 
-    private exibeErroDeAuth(tipo: string) {
+    private exibeMensagemDeAuth(tipo: string) {
+
+        // Campo email
+        const campoEmail = document.querySelector(".register-email") as HTMLFormElement
 
         // Campo de notificar erro do login
         const mensagemLogin = document.querySelector(".login-erro") as HTMLElement
@@ -162,15 +202,37 @@ class AuthController {
         switch (tipo) {
             case "login":
                 mensagemLogin.textContent = "Dados incorretos ou inexistentes!"
-                mostraEEscondeErro(mensagemLogin)
+                mostraEEscondeMensagem(mensagemLogin)
                 break;
+            case "register-nome":
+                mensagemRegistro.textContent = "Nome inválido."
+                mostraEEscondeMensagem(mensagemRegistro)
+                break
+            case "register-mail":
+                mensagemRegistro.textContent = "Email inválido"
+                mostraEEscondeMensagem(mensagemRegistro)
+                break
+            case "register-senha":
+                mensagemRegistro.textContent = "Senha inválida"
+                mostraEEscondeMensagem(mensagemRegistro)
+                break
+            case "email-duplicado":
+                mensagemRegistro.textContent = "Email já cadastrado!"
+                campoEmail.value = ""
+                mostraEEscondeMensagem(mensagemRegistro)
+                break
+            case "sucess-register":
+                this.authView.switchRegisterLogin("login")
+                mensagemLogin.textContent = "Conta criada com sucesso! Faça o login."
+                mostraEEscondeMensagem(mensagemLogin)
+                break
         }
 
-        function mostraEEscondeErro(elemento: HTMLElement) {
+        function mostraEEscondeMensagem(elemento: HTMLElement) {
             elemento.style.display = "initial"
             setTimeout(() => {
                 elemento.style.display = "none"
-            }, 2000);
+            }, 3000);
         }
     }
 }
