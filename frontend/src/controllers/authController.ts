@@ -50,6 +50,16 @@ class AuthController {
         }
 
         // # Adiciona evento de click para efetuar registro
+
+        const botaoRegister = document.querySelector(".submitRegistro") as Element
+
+        if (!botaoRegister.classList.contains("hasEvent")) {
+            botaoRegister.classList.add("hasEvent")
+
+            botaoRegister.addEventListener("click", () => {
+                this.register()
+            })
+        }
     }
 
     private logIn() {
@@ -58,7 +68,6 @@ class AuthController {
 
         const email = campoEmail.value
         const senha = campoSenha.value
-        console.log(campoEmail)
 
         // Consistência de campo
         if (email.length >= 7 &&
@@ -91,7 +100,7 @@ class AuthController {
                 const nutryo = new NutryoFetch(dados.email)
 
                 var intervalo = setInterval(() => {
-                    if (NutryoFetch.objects){
+                    if (NutryoFetch.objects) {
                         console.log(NutryoFetch.objects)
                         clearInterval(intervalo)
                     }
@@ -100,6 +109,44 @@ class AuthController {
                 console.log("falha no login")
                 this.exibeErroDeAuth("login")
             }
+        }
+    }
+
+    private register() {
+        const campoEmail = document.querySelector(".register-usuario") as HTMLFormElement
+        const campoNome = document.querySelector(".register-usuario") as HTMLFormElement
+        const campoSenha = document.querySelector(".register-senha") as HTMLFormElement
+
+        const email = campoEmail.value
+        const nome = campoNome.value
+        const senha = campoSenha.value
+
+        // Consistência de campo
+        if (email.length >= 7 &&
+            email.includes("@") &&
+            email.includes(".")
+        ) {
+            if (senha.trim() != '') {
+                if (nome.trim() != '') {
+                    efetuaRegistro()
+                } else {
+                    this.exibeErroDeAuth("register-nome")
+                }
+            } else {
+                this.exibeErroDeAuth("register-senha")
+            }
+        } else {
+            this.exibeErroDeAuth("register-mail")
+        }
+
+        async function efetuaRegistro() {
+            const resposta = await fetch("http://localhost:3001/auth/registro", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "Application/json",
+                },
+                body: JSON.stringify({ email, senha, nome })
+            })
         }
     }
 
