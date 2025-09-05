@@ -11,3 +11,7 @@ const janelaController = new JanelaController();
 const refeicoesController = new RefeicoesController();
 const refeicaoController = new RefeicaoController();
 const alimentoController = new AlimentoController();
+
+window.onload = ()=>{
+
+}
