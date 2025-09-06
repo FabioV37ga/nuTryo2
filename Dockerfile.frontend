@@ -4,14 +4,14 @@ FROM node:24.3-alpine
 WORKDIR /app
 
 # Copiar package.json e instalar dependências
-COPY package-docker.json package-lock.json./
+COPY package*.json ./
 RUN npm install
 
 # Copiar todo o projeto
 COPY . .
 
 # Build TypeScript do frontend e copiar arquivos necessários
-RUN npm run copyToDist:frontend && npm run dev:front
+RUN npm run copyToDist:frontend:unix && npm run dev:front
 
 # Definir porta
 EXPOSE 3000

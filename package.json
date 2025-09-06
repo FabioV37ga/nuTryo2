@@ -7,18 +7,28 @@
   "scripts": {
     "start:front": "npm run copyToDist:frontend && npm run dev:front && npm-run-all --parallel watch:sync server:front",
     "start:back": "npm run dev:back && npm run server:back",
+
     "server:front": "lite-server --baseDir=frontend/dist",
     "server:back": "nodemon backend/dist/server.js",
     "server:back:prod": "node backend/dist/server.js",
+
     "dev:front": "tsc -p frontend/tsconfig.json",
     "dev:back": "tsc -p backend/tsconfig.json",
     "watch": "tsc -w -p frontend/tsconfig.json",
+
     "copyToDist:frontend": "xcopy frontend\\src\\images frontend\\dist\\images /E /I /Y && xcopy frontend\\src\\styles frontend\\dist\\styles /E /I /Y && copy frontend\\src\\index.html frontend\\dist\\index.html /Y",
     "sync": "xcopy frontend\\dist\\index.html frontend\\src\\index.html /Y && xcopy frontend\\dist\\styles frontend\\src\\styles /E /I /Y && xcopy frontend\\dist\\images frontend\\src\\images /E /I /Y",
     "watch:sync": "chokidar \"frontend/dist/index.html\" \"frontend/dist/styles/**/*\" \"frontend/dist/images/**/*\" -c \"npm run sync\"",
     "clearfront": "powershell -Command \"Get-ChildItem -Path frontend/dist | Remove-Item -Recurse -Force\"",
-    "prod:front":"npm run copyToDist:frontend && npm run dev:front && npm run server:front",
-    "prod:back":"npm run dev:back && npm run server:back:prod"
+
+    "prod:front": "npm run copyToDist:frontend && npm run dev:front && npm run server:front",
+    "prod:back": "npm run dev:back && npm run server:back:prod",
+
+    "--- LINUX/DOCKER VERSÕES ---": "",
+    "copyToDist:frontend:unix": "mkdir -p frontend/dist/images frontend/dist/styles && cp -r frontend/src/images/* frontend/dist/images/ && cp -r frontend/src/styles/* frontend/dist/styles/ && cp frontend/src/index.html frontend/dist/index.html",
+    "clearfront:unix": "shx rm -rf frontend/dist/*",
+    "prod:front:unix": "npm run copyToDist:frontend:unix && npm run dev:front && npm run server:front",
+    "prod:back:unix": "npm run dev:back && npm run server:back:prod"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +50,7 @@
     "@types/node": "^24.3.1",
     "@types/xlsx": "^0.0.36",
     "chokidar-cli": "^3.0.0",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "shx": "^0.3.4"
   }
 }
