@@ -15,7 +15,9 @@
     "copyToDist:frontend": "xcopy frontend\\src\\images frontend\\dist\\images /E /I /Y && xcopy frontend\\src\\styles frontend\\dist\\styles /E /I /Y && copy frontend\\src\\index.html frontend\\dist\\index.html /Y",
     "sync": "xcopy frontend\\dist\\index.html frontend\\src\\index.html /Y && xcopy frontend\\dist\\styles frontend\\src\\styles /E /I /Y && xcopy frontend\\dist\\images frontend\\src\\images /E /I /Y",
     "watch:sync": "chokidar \"frontend/dist/index.html\" \"frontend/dist/styles/**/*\" \"frontend/dist/images/**/*\" -c \"npm run sync\"",
-    "clearfront": "powershell -Command \"Get-ChildItem -Path frontend/dist | Remove-Item -Recurse -Force\""
+    "clearfront": "powershell -Command \"Get-ChildItem -Path frontend/dist | Remove-Item -Recurse -Force\"",
+    "prod:front":"npm run dev:front && lite-server --base-Dir=frontend/dist",
+    "prod:back":"npm run dev:back && nodemon backend/dist/server"
   },
   "keywords": [],
   "author": "",
