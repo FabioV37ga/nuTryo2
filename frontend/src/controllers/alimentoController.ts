@@ -99,16 +99,16 @@ class AlimentoController {
         const alimentoPesquisado = campoPesquisa.value
         alimentoPesquisado.trim().replaceAll(" ", "+")
 
-        const resposta = await fetch(`http://localhost:3001/api/foods?q=${alimentoPesquisado}`, {
-            method: "GET",
-            headers:{
-                "Content-Type": "Application/json"
-            }
-        })
-        const dados = await resposta.json()
-        if (dados){
-            console.log(dados)
-        }
+        // const resposta = await fetch(`http://localhost:3001/api/foods?q=${alimentoPesquisado}`, {
+        //     method: "GET",
+        //     headers:{
+        //         "Content-Type": "Application/json"
+        //     }
+        // })
+        // const dados = await resposta.json()
+        // if (dados){
+        //     console.log(dados)
+        // }
     }
 }
 
