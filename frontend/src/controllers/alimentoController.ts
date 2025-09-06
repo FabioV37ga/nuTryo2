@@ -98,17 +98,49 @@ class AlimentoController {
     private async pesquisa() {
         const campoPesquisa: HTMLFormElement = document.querySelector("#selecao-valor-texto") as HTMLFormElement
         const alimentoPesquisado = campoPesquisa.value
-        alimentoPesquisado.trim().replaceAll(" ", "%20")
-
-        const resposta = await fetch(`${backend}/alimentos/buscar?nome=${alimentoPesquisado}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "Application/json"
+        if (alimentoPesquisado.replaceAll(" ", "") != ""){
+            alimentoPesquisado.trim().replaceAll(" ", "%20")
+    
+            const resposta = await fetch(`${backend}/alimentos/buscar?nome=${alimentoPesquisado}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "Application/json"
+                }
+            })
+            const dados = await resposta.json()
+            if (dados) {
+                console.log(dados)
+                this.mostraResultadosNaLista(dados)
             }
-        })
-        const dados = await resposta.json()
-        if (dados) {
-            console.log(dados)
+        }
+    }
+
+    private mostraResultadosNaLista(dados: object[] | any) {
+
+        const resultadoItens = document.querySelectorAll(".alimento-selecao-lista-item") as NodeListOf<HTMLElement>
+
+        for (let i = 0; i<=9;i++){
+            resultadoItens[i].style.display = 'none'
+        }
+
+        for (let i = 0; i <= 9; i++) {
+            var dado = dados[i]
+            var calorias = dado.calorias
+            console.log(typeof(calorias))
+            var proteinas = dado.proteinas
+            // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
+            var textoFormatado = `${dados[i].nome}`
+
+
+            resultadoItens[i].style.display = 'initial'
+            resultadoItens[i].textContent = textoFormatado
+            if (dados.length - 1 == i){
+                return
+            }
+        }
+
+        function formataDado(dado:number){
+            return parseInt(dado.toFixed(0))
         }
     }
 }

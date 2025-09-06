@@ -22,6 +22,18 @@ class AlimentoView {
                             <span class="selecao-valor">
                                 <input type="text" id="selecao-valor-texto" class="selecao-valor-texto" placeholder="Selecione alimento">
                             </span>
+                            <ul class="alimento-selecao-lista">
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                            </ul>
                         </div>
                         <div class="alimento-pesoConsumido">
                             <div class="peso-label">
@@ -56,7 +68,7 @@ class AlimentoView {
                         <div class="carboidratos">
                             <div class="macros-label">
                                 <span class="macros-label-valor">
-                                    Carboidratos:
+                                    Carbos:
                                 </span>
                             </div>
                             <span class="macros-valor">

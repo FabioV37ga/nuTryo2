@@ -67,7 +67,9 @@ export default class AlimentoController {
         const resultados = AlimentoController.alimentos.filter(alimento => {
             const palavrasNome = normalizar(alimento.nome).split(" ");
             // Verifica se todas as palavras do termo estão no nome (em qualquer ordem)
-            return palavrasBusca.every(palavra => palavrasNome.includes(palavra));
+            return palavrasBusca.every(palavraBusca =>
+                palavrasNome.some(palavraNome => palavraNome.startsWith(palavraBusca))
+            );
         });
 
         res.json(resultados);
