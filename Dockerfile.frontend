@@ -1,0 +1,20 @@
+# Base Node Alpine
+FROM node:24.3-alpine
+
+WORKDIR /app
+
+# Copiar package.json e instalar dependências
+COPY package*.json ./
+RUN npm install
+
+# Copiar todo o projeto
+COPY . .
+
+# Build TypeScript do frontend e copiar arquivos necessários
+RUN npm run copyToDist:frontend && npm run dev:front
+
+# Definir porta
+EXPOSE 3000
+
+# Rodar frontend no container
+CMD ["npx", "lite-server", "--baseDir=frontend/dist"]

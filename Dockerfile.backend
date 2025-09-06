@@ -1,0 +1,20 @@
+# Base Node Alpine
+FROM node:24.3-alpine
+
+WORKDIR /app
+
+# Copiar package.json e instalar dependências
+COPY package*.json ./
+RUN npm install
+
+# Copiar todo o projeto
+COPY . .
+
+# Build TypeScript do backend
+RUN npm run dev:back
+
+# Definir porta
+EXPOSE 3001
+
+# Rodar backend no container
+CMD ["node", "backend/dist/server.js"]
