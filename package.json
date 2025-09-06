@@ -9,6 +9,7 @@
     "start:back": "npm run dev:back && npm run server:back",
     "server:front": "lite-server --baseDir=frontend/dist",
     "server:back": "nodemon backend/dist/server.js",
+    "server:back:prod": "node backend/dist/server.js",
     "dev:front": "tsc -p frontend/tsconfig.json",
     "dev:back": "tsc -p backend/tsconfig.json",
     "watch": "tsc -w -p frontend/tsconfig.json",
@@ -17,7 +18,7 @@
     "watch:sync": "chokidar \"frontend/dist/index.html\" \"frontend/dist/styles/**/*\" \"frontend/dist/images/**/*\" -c \"npm run sync\"",
     "clearfront": "powershell -Command \"Get-ChildItem -Path frontend/dist | Remove-Item -Recurse -Force\"",
     "prod:front":"npm run copyToDist:frontend && npm run dev:front && npm run server:front",
-    "prod:back":"npm run dev:back && npm run server:back"
+    "prod:back":"npm run dev:back && npm run server:back:prod"
   },
   "keywords": [],
   "author": "",
