@@ -97,18 +97,18 @@ class AlimentoController {
     private async pesquisa(){
         const campoPesquisa:HTMLFormElement = document.querySelector("#selecao-valor-texto") as HTMLFormElement
         const alimentoPesquisado = campoPesquisa.value
-        alimentoPesquisado.trim().replaceAll(" ", "+")
+        alimentoPesquisado.trim().replaceAll(" ", "%20")
 
-        // const resposta = await fetch(`http://localhost:3001/api/foods?q=${alimentoPesquisado}`, {
-        //     method: "GET",
-        //     headers:{
-        //         "Content-Type": "Application/json"
-        //     }
-        // })
-        // const dados = await resposta.json()
-        // if (dados){
-        //     console.log(dados)
-        // }
+        const resposta = await fetch(`http://localhost:3001/alimentos/buscar?nome=${alimentoPesquisado}`, {
+            method: "GET",
+            headers:{
+                "Content-Type": "Application/json"
+            }
+        })
+        const dados = await resposta.json()
+        if (dados){
+            console.log(dados)
+        }
     }
 }
 

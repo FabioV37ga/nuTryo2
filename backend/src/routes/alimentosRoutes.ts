@@ -4,7 +4,7 @@ import AlimentoController from "../controllers/alimentoController.js";
 const router = express.Router();
 
 router.get("/alimentos", AlimentoController.listar);
-router.get("/alimentos/busca", AlimentoController.buscar);
-router.get("/alimentos/fuzzy", AlimentoController.buscarFuzzy);
+router.get("/alimentos/buscar", AlimentoController.buscarNome);
+router.get("/alimentos/:id", AlimentoController.buscarId);
 
 export default router;

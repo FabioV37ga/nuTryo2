@@ -9,7 +9,6 @@ class NutryoFetch {
     
     private async fetchObjects(user:string) {
 
-
         console.log(`http://localhost:3001/refeicoes/${user}`)
         const resposta = await fetch(`http://localhost:3001/refeicoes/${user}`, {
             method: "GET",

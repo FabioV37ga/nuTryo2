@@ -3,6 +3,7 @@ import XLSX from "xlsx";
 
 // Tipo do alimento
 interface Alimento {
+    id: number,
     nome: string;
     calorias?: string;
     proteinas?: string;
@@ -28,19 +29,26 @@ export default class AlimentoController {
         res.json(AlimentoController.alimentos);
     }
 
-    // Busca simples por substring (case-insensitive)
-    static buscar(req: Request, res: Response) {
-        const termo = ((req.query.nome as string) || "").toLowerCase();
+    // Busca alimento por ID
+    static buscarId(req: Request, res: Response) {
+        const idParam = req.params.id;
+        const id = Number(idParam);
 
-        const resultados = AlimentoController.alimentos.filter(alimento =>
-            alimento.nome.toLowerCase().includes(termo)
-        );
+        if (isNaN(id)) {
+            return res.status(400).json({ erro: "ID inválido" });
+        }
 
-        res.json(resultados);
+        const alimento = AlimentoController.alimentos.find(a => a.id === id);
+
+        if (!alimento) {
+            return res.status(404).json({ erro: "Alimento não encontrado" });
+        }
+
+        res.json(alimento);
     }
 
     // Busca "fuzzy" aproximada (usando includes simples)
-    static buscarFuzzy(req: Request, res: Response) {
+    static buscarNome(req: Request, res: Response) {
         const termo = ((req.query.nome as string) || "").toLowerCase();
 
         // Função de normalização
