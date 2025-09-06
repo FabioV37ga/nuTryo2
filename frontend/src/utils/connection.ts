@@ -1,9 +1,9 @@
 // Ambiente (0 = dev local, 1 = produção) 
 var ambiente;
-if (document.location.href.includes("onrender")){
-    ambiente = 1;
-}else{
+if (document.location.toString().includes("onrender")){
     ambiente = 0;
+}else{
+    ambiente = 1;
 }
 var frontend:string;
 var backend:string;
