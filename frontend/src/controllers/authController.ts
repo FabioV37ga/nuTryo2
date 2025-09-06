@@ -136,7 +136,7 @@ class AuthController {
                 self.authView.toggleLoading()
 
                 // Inicia requisição
-                const resposta = await fetch("http://localhost:3001/auth/login", {
+                const resposta = await fetch("https://nutryo2.onrender.com/", {
                     method: "POST",
                     headers: {
                         "Content-Type": "Application/json",
