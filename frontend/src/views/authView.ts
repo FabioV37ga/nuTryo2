@@ -20,7 +20,6 @@ class AuthView {
     }
 
     toggleLoading(){
-        console.log("here")
         const spinner = document.querySelector(".auth-loading") as HTMLElement
 
         const janelaAuth = document.querySelector(".auth-janela") as HTMLElement

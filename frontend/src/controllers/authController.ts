@@ -6,6 +6,40 @@ class AuthController {
     private authView = new AuthView()
     constructor() {
         this.adicionaEventosDeClick()
+        this.verificaSessao()
+    }
+
+    async verificaSessao() {
+        var sessao: AnyObject = JSON.parse(localStorage.getItem("sessaoNutryo") as string) as AnyObject
+
+        if (sessao) {
+            if (sessao.email && sessao.senha) {
+                const email = sessao.email
+                const senha = sessao.senha
+
+                // Inicia requisição
+                const resposta = await fetch("http://localhost:3001/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/json",
+                    },
+                    body: JSON.stringify({ email, senha })
+                })
+                if (resposta.ok) {
+                    // Realiza fetch dos dados referente ao usuário conectado
+                    const nutryo = new NutryoFetch(sessao.email)
+
+                    // Inicia aplicação fechando janela de autenticação
+                    var intervalo = setInterval(() => {
+                        if (NutryoFetch.objects) {
+                            var tela = document.querySelector(".overlay-auth") as HTMLElement
+                            tela.style = "display: none"
+                            clearInterval(intervalo)
+                        }
+                    }, 1);
+                }
+            }
+        }
     }
 
     adicionaEventosDeClick() {
@@ -115,18 +149,19 @@ class AuthController {
 
                 // Se os dados forem validos, realiza login
                 if (resposta.ok) {
+                    localStorage.setItem("sessaoNutryo", JSON.stringify({ email, senha }))
                     // Realiza fetch dos dados referente ao usuário conectado
                     const nutryo = new NutryoFetch(dados.email)
-                    
+
                     // Inicia aplicação fechando janela de autenticação
                     var intervalo = setInterval(() => {
                         if (NutryoFetch.objects) {
                             var tela = document.querySelector(".overlay-auth") as HTMLElement
-                            tela.style = "display: none" 
+                            tela.style = "display: none"
                             clearInterval(intervalo)
                         }
                     }, 1);
-                } 
+                }
                 // Se os dados forem invalidos, exibe mensagem de erro
                 else {
                     console.log("falha no login")
@@ -144,7 +179,7 @@ class AuthController {
     private register() {
         // Referencia this em self, para usar dentro da função
         const self = this;
-        
+
         // Campo html do email
         const campoEmail = document.querySelector(".register-email") as HTMLFormElement
         // Campo html do nome

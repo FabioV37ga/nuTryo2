@@ -1,6 +1,8 @@
 import AlimentoView from "../views/alimentoView.js"
 
 class AlimentoController {
+    static AlimentoControllerSearchDelay = 800;
+    static AlimentoControllerSearchInterval:any
     alimentoView = new AlimentoView()
     botaoAdicionarAlimento: Element
     botaoEditarAlimento: NodeListOf<Element>
@@ -68,9 +70,45 @@ class AlimentoController {
                     this.alimentoView.apagarAlimento(elementoClicado.parentElement as Element)
                 })
             }
+
+            var campoPesquisa = document.querySelector("#selecao-valor-texto") as HTMLElement
+
+            if (!campoPesquisa.classList.contains("hasSearchEvent")){
+                campoPesquisa.classList.add("hasSearchEvent")
+
+                campoPesquisa.addEventListener("input", ()=>{
+                    this.pesquisaComDelay()
+                })
+            }
         }
+    }
 
+    private pesquisaComDelay(){
+        AlimentoController.AlimentoControllerSearchDelay = 800
+        clearInterval(AlimentoController.AlimentoControllerSearchInterval)
+        AlimentoController.AlimentoControllerSearchInterval = setInterval(() => {
+            console.log("Toc")
+            this.pesquisa()
+            clearInterval(AlimentoController.AlimentoControllerSearchInterval)
+        }, AlimentoController.AlimentoControllerSearchDelay);
 
+    }
+
+    private async pesquisa(){
+        const campoPesquisa:HTMLFormElement = document.querySelector("#selecao-valor-texto") as HTMLFormElement
+        const alimentoPesquisado = campoPesquisa.value
+        alimentoPesquisado.trim().replaceAll(" ", "+")
+
+        const resposta = await fetch(`http://localhost:3001/api/foods?q=${alimentoPesquisado}`, {
+            method: "GET",
+            headers:{
+                "Content-Type": "Application/json"
+            }
+        })
+        const dados = await resposta.json()
+        if (dados){
+            console.log(dados)
+        }
     }
 }
 
