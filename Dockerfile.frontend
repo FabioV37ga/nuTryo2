@@ -17,4 +17,4 @@ RUN npm run copyToDist:frontend:unix && npm run dev:front
 EXPOSE 3000
 
 # Rodar frontend no container
-CMD ["npx", "lite-server", "--baseDir=frontend/dist"]
+CMD ["http-server", "frontend/dist", "-p", "3000"]
