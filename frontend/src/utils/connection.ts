@@ -1,8 +1,13 @@
 // Ambiente (0 = dev local, 1 = produção) 
-var ambiente = 1
+var ambiente;
+if (document.location.href.includes("onrender")){
+    ambiente = 1;
+}else{
+    ambiente = 0;
+}
 var frontend:string;
 var backend:string;
-if (ambiente == 1){
+if (ambiente == 0){
     frontend = 'https://nutryo2-w5pq.onrender.com'
     backend = 'https://nutryo2.onrender.com'
 }else{
