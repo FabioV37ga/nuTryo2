@@ -18,7 +18,7 @@ connection.once("open", ()=>{
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: 'https://nutryo2-w5pq.onrender.com/'
 }))
 routes(app)
 
