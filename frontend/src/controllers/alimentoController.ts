@@ -1,9 +1,9 @@
 import AlimentoView from "../views/alimentoView.js"
-import {frontend} from "../utils/connection.js";
+import { backend } from "../utils/connection.js";
 
 class AlimentoController {
     static AlimentoControllerSearchDelay = 800;
-    static AlimentoControllerSearchInterval:any
+    static AlimentoControllerSearchInterval: any
     alimentoView = new AlimentoView()
     botaoAdicionarAlimento: Element
     botaoEditarAlimento: NodeListOf<Element>
@@ -22,11 +22,11 @@ class AlimentoController {
         // Previne adição multipla de eventos de click
         if (!this.botaoAdicionarAlimento.classList.contains("hasEvent")) {
             this.botaoAdicionarAlimento.classList.add("hasEvent")
-            
+
             // Adiciona evento de click
             this.botaoAdicionarAlimento.addEventListener("click", (e) => {
                 e.stopPropagation
-            
+
                 // Adiciona alimento
                 this.alimentoView.adicionarAlimento()
 
@@ -74,17 +74,17 @@ class AlimentoController {
 
             var campoPesquisa = document.querySelector("#selecao-valor-texto") as HTMLElement
 
-            if (!campoPesquisa.classList.contains("hasSearchEvent")){
+            if (!campoPesquisa.classList.contains("hasSearchEvent")) {
                 campoPesquisa.classList.add("hasSearchEvent")
 
-                campoPesquisa.addEventListener("input", ()=>{
+                campoPesquisa.addEventListener("input", () => {
                     this.pesquisaComDelay()
                 })
             }
         }
     }
 
-    private pesquisaComDelay(){
+    private pesquisaComDelay() {
         AlimentoController.AlimentoControllerSearchDelay = 800
         clearInterval(AlimentoController.AlimentoControllerSearchInterval)
         AlimentoController.AlimentoControllerSearchInterval = setInterval(() => {
@@ -95,19 +95,19 @@ class AlimentoController {
 
     }
 
-    private async pesquisa(){
-        const campoPesquisa:HTMLFormElement = document.querySelector("#selecao-valor-texto") as HTMLFormElement
+    private async pesquisa() {
+        const campoPesquisa: HTMLFormElement = document.querySelector("#selecao-valor-texto") as HTMLFormElement
         const alimentoPesquisado = campoPesquisa.value
         alimentoPesquisado.trim().replaceAll(" ", "%20")
 
-        const resposta = await fetch(`${frontend}/alimentos/buscar?nome=${alimentoPesquisado}`, {
+        const resposta = await fetch(`${backend}/alimentos/buscar?nome=${alimentoPesquisado}`, {
             method: "GET",
-            headers:{
+            headers: {
                 "Content-Type": "Application/json"
             }
         })
         const dados = await resposta.json()
-        if (dados){
+        if (dados) {
             console.log(dados)
         }
     }
