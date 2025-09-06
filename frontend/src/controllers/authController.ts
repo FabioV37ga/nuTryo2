@@ -1,6 +1,7 @@
 import { AnyObject } from "mongoose";
 import NutryoFetch from "../utils/nutryoFetch.js";
 import AuthView from "../views/authView.js";
+import { backend } from "../utils/connection.js"
 
 class AuthController {
     private authView = new AuthView()
@@ -18,7 +19,7 @@ class AuthController {
                 const senha = sessao.senha
 
                 // Inicia requisição
-                const resposta = await fetch("http://localhost:3001/auth/login", {
+                const resposta = await fetch(`${backend}/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "Application/json",
@@ -223,7 +224,7 @@ class AuthController {
 
             try {
                 // Faz requisição
-                const resposta = await fetch("http://localhost:3001/auth/registro", {
+                const resposta = await fetch(`${backend}/auth/registro`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "Application/json",

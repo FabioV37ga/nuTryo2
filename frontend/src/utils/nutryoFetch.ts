@@ -1,16 +1,17 @@
+import { backend } from "../utils/connection.js"
 class NutryoFetch {
     static objects: JSON
-    private user:string;
+    private user: string;
 
-    constructor(user:string){
+    constructor(user: string) {
         this.user = user
         this.fetchObjects(this.user)
     }
-    
-    private async fetchObjects(user:string) {
 
-        console.log(`http://localhost:3001/refeicoes/${user}`)
-        const resposta = await fetch(`http://localhost:3001/refeicoes/${user}`, {
+    private async fetchObjects(user: string) {
+
+        // console.log(`${backend}/refeicoes/${user}`)
+        const resposta = await fetch(`${backend}/refeicoes/${user}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

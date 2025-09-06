@@ -1,4 +1,5 @@
 import AlimentoView from "../views/alimentoView.js"
+import {frontend} from "../utils/connection.js";
 
 class AlimentoController {
     static AlimentoControllerSearchDelay = 800;
@@ -99,7 +100,7 @@ class AlimentoController {
         const alimentoPesquisado = campoPesquisa.value
         alimentoPesquisado.trim().replaceAll(" ", "%20")
 
-        const resposta = await fetch(`http://localhost:3001/alimentos/buscar?nome=${alimentoPesquisado}`, {
+        const resposta = await fetch(`${frontend}/alimentos/buscar?nome=${alimentoPesquisado}`, {
             method: "GET",
             headers:{
                 "Content-Type": "Application/json"
