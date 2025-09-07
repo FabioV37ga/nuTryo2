@@ -2,7 +2,6 @@ import AlimentoView from "../views/alimentoView.js"
 import { backend } from "../utils/connection.js";
 
 class AlimentoController {
-    static AlimentoControllerSearchDelay = 800;
     static AlimentoControllerSearchInterval: any
     alimentoView = new AlimentoView()
     botaoAdicionarAlimento: Element
@@ -72,35 +71,87 @@ class AlimentoController {
                 })
             }
 
-            var campoPesquisa = document.querySelector("#selecao-valor-texto") as HTMLElement
+            var campoPesquisa = document.querySelectorAll(".selecao-valor-texto") as NodeListOf<HTMLElement>
 
-            if (!campoPesquisa.classList.contains("hasSearchEvent")) {
-                campoPesquisa.classList.add("hasSearchEvent")
-
-                campoPesquisa.addEventListener("input", () => {
-                    this.pesquisaComDelay()
-                })
+            for (let i = 0; i<=campoPesquisa.length-1;i++){
+                if (!campoPesquisa[i].classList.contains("hasSearchEvent")) {
+                    campoPesquisa[i].classList.add("hasSearchEvent")
+    
+                    campoPesquisa[i].addEventListener("input", (e) => {
+                        e.stopPropagation
+                        var elemento = e.currentTarget as Element
+                        this.pesquisaComDelay(elemento)
+                    })
+                }
             }
+
+            // # Selecionar alimento pesquisado
+            var resultadosPesquisa = document.querySelectorAll(".alimento-selecao-lista-item")
+            for (let i = 0; i <= resultadosPesquisa.length - 1; i++) {
+                if (!resultadosPesquisa[i].classList.contains("hasEvent")) {
+                    resultadosPesquisa[i].classList.add("hasEvent")
+
+                    resultadosPesquisa[i].addEventListener("click", (e) => {
+                        var itemClicado = e.currentTarget as Element
+
+                        this.selecionaItemPesquisado(itemClicado as Element)
+                        this.alimentoView.selecionaItemAlimento(itemClicado as HTMLFormElement)
+                        this.alimentoView.escondeResultadosNaLista(itemClicado.parentElement?.parentElement?.children[2] as HTMLElement)
+                    })
+                }
+            }
+
+            // # Fazer regra de 3 com o valor de consumo inserido
+
+            var pesoConsumidoInput = document.querySelectorAll(".peso-valor-texto")
+
+            for (let i = 0; i <= pesoConsumidoInput.length - 1; i++) {
+                if (!pesoConsumidoInput[i].classList.contains("hasEvent")) {
+                    pesoConsumidoInput[i].classList.add("hasEvent")
+
+                    pesoConsumidoInput[i].addEventListener("input", (e) => {
+                        var elementoManipulado = e.currentTarget as HTMLFormElement
+                        var elementoPai = elementoManipulado.parentElement?.parentElement?.parentElement?.children[0] as Element
+
+                        var calorias = elementoPai?.getAttribute("calorias")
+                        var proteinas = elementoPai?.getAttribute("proteinas")
+                        var gorduras = elementoPai?.getAttribute("gorduras")
+                        var carbo = elementoPai?.getAttribute("carbo")
+
+                        var pesoConsumido = elementoManipulado.value
+
+                        var macrosCalulados = this.calcularMacros(pesoConsumido, calorias, proteinas, gorduras, carbo)
+
+                        this.alimentoView.preencheMacros(
+                            elementoPai.parentElement?.parentElement?.children[1] as Element,
+                            macrosCalulados.calorias,
+                            macrosCalulados.proteinas,
+                            macrosCalulados.gorduras,
+                            macrosCalulados.carbo
+                        )
+                    })
+                }
+            }
+
         }
     }
 
-    private pesquisaComDelay() {
-        AlimentoController.AlimentoControllerSearchDelay = 800
+    private pesquisaComDelay(elemento:Element) {
         clearInterval(AlimentoController.AlimentoControllerSearchInterval)
         AlimentoController.AlimentoControllerSearchInterval = setInterval(() => {
             console.log("Toc")
-            this.pesquisa()
+            this.pesquisa(elemento)
             clearInterval(AlimentoController.AlimentoControllerSearchInterval)
-        }, AlimentoController.AlimentoControllerSearchDelay);
+        }, 800);
 
     }
 
-    private async pesquisa() {
-        const campoPesquisa: HTMLFormElement = document.querySelector("#selecao-valor-texto") as HTMLFormElement
+    private async pesquisa(elemento:Element) {
+        const campoPesquisa: HTMLFormElement = elemento.parentElement?.parentElement?.children[1].children[0] as HTMLFormElement
         const alimentoPesquisado = campoPesquisa.value
-        if (alimentoPesquisado.replaceAll(" ", "") != ""){
+        if (alimentoPesquisado.replaceAll(" ", "") != "") {
             alimentoPesquisado.trim().replaceAll(" ", "%20")
-    
+
             const resposta = await fetch(`${backend}/alimentos/buscar?nome=${alimentoPesquisado}`, {
                 method: "GET",
                 headers: {
@@ -110,37 +161,76 @@ class AlimentoController {
             const dados = await resposta.json()
             if (dados) {
                 console.log(dados)
-                this.mostraResultadosNaLista(dados)
+                this.alimentoView.mostraResultadosNaLista(dados, elemento)
             }
+        } else {
+            this.alimentoView.escondeResultadosNaLista(elemento.parentElement?.parentElement?.children[2] as HTMLElement)
         }
     }
 
-    private mostraResultadosNaLista(dados: object[] | any) {
+    private async selecionaItemPesquisado(elemento: Element) {
+        console.log(backend + "/alimentos/" + elemento.getAttribute("value"))
 
-        const resultadoItens = document.querySelectorAll(".alimento-selecao-lista-item") as NodeListOf<HTMLElement>
+        var calorias;
+        var proteinas;
+        var gorduras;
+        var carbo;
 
-        for (let i = 0; i<=9;i++){
-            resultadoItens[i].style.display = 'none'
+        try {
+            const alimentoSelecionadoFetch = await fetch(`${backend}/alimentos/${elemento.getAttribute("value")}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "Application/json"
+                }
+            })
+
+            const alimentoSelecionado = await alimentoSelecionadoFetch.json()
+
+            calorias = await alimentoSelecionado.calorias.toFixed(2)
+            proteinas = await alimentoSelecionado.proteinas.toFixed(2)
+            gorduras = await alimentoSelecionado.lipidios + await alimentoSelecionado.colesterol
+            gorduras = await gorduras.toFixed(2)
+            carbo = await alimentoSelecionado.carboidrato.toFixed(2)
+
+            var labels = elemento.parentElement?.parentElement as HTMLElement
+            labels?.setAttribute("calorias", await calorias)
+            labels?.setAttribute("proteinas", await proteinas)
+            labels?.setAttribute("gorduras", await gorduras)
+            labels?.setAttribute("carbo", await carbo)
+
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+
+            const campoPesoConsumido = elemento.parentElement?.parentElement?.parentElement?.children[1].children[1].children[0] as HTMLFormElement
+            var pesoConsumido = campoPesoConsumido.value
+            pesoConsumido = pesoConsumido == "" ? 0 : parseInt(pesoConsumido);
+
+            var macrosCalulados = this.calcularMacros(pesoConsumido, calorias, proteinas, gorduras, carbo)
+
+            this.alimentoView.preencheMacros(
+                elemento.parentElement?.parentElement?.parentElement?.parentElement?.children[1] as Element,
+                macrosCalulados.calorias,
+                macrosCalulados.proteinas,
+                macrosCalulados.gorduras,
+                macrosCalulados.carbo
+            )
         }
 
-        for (let i = 0; i <= 9; i++) {
-            var dado = dados[i]
-            var calorias = dado.calorias
-            console.log(typeof(calorias))
-            var proteinas = dado.proteinas
-            // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
-            var textoFormatado = `${dados[i].nome}`
 
+    }
+    private calcularMacros(pesoConsumido: any, calorias: any, proteinas: any, gorduras: any, carbo: any) {
+        var caloriasConsumidas: string = ((pesoConsumido * calorias) / 100).toFixed(2)
+        var proteinasConsumidas: string = ((pesoConsumido * proteinas) / 100).toFixed(2)
+        var gordurasConsumidas: string = ((pesoConsumido * gorduras) / 100).toFixed(2)
+        var carboConsumidos: string = ((pesoConsumido * carbo) / 100).toFixed(2)
 
-            resultadoItens[i].style.display = 'initial'
-            resultadoItens[i].textContent = textoFormatado
-            if (dados.length - 1 == i){
-                return
-            }
-        }
-
-        function formataDado(dado:number){
-            return parseInt(dado.toFixed(0))
+        return {
+            calorias: caloriasConsumidas,
+            proteinas: proteinasConsumidas,
+            gorduras: gordurasConsumidas,
+            carbo: carboConsumidos
         }
     }
 }

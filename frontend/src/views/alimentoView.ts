@@ -20,9 +20,14 @@ class AlimentoView {
                                 Alimento:
                             </span>
                             <span class="selecao-valor">
-                                <input type="text" id="selecao-valor-texto" class="selecao-valor-texto" placeholder="Selecione alimento">
+                                <input type="text" id="selecao-valor-texto" class="selecao-valor-texto" placeholder="Selecione alimento" autocomplete="off">
                             </span>
                             <ul class="alimento-selecao-lista">
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
+                                <li class="alimento-selecao-lista-item" style="display:none"></li>
                                 <li class="alimento-selecao-lista-item" style="display:none"></li>
                                 <li class="alimento-selecao-lista-item" style="display:none"></li>
                                 <li class="alimento-selecao-lista-item" style="display:none"></li>
@@ -40,7 +45,7 @@ class AlimentoView {
                                 Peso:
                             </div>
                             <div class="peso-valor">
-                                <input type="text" id="peso-valor-texto" class="peso-valor-texto" placeholder="Peso consumido">
+                                <input type="number" id="peso-valor-texto" class="peso-valor-texto" placeholder="Peso consumido">
                             </div>
                         </div>
                     </div>
@@ -117,20 +122,100 @@ class AlimentoView {
 
             // Abre janela de edição
             botao.classList.add("janelaEdicao-aberta")
-        } 
+        }
 
         // Se a janela de edição estiver aberta, fecha
         else {
             // Troca o icone de salvar para editar
             iconeClicavel.classList.remove("fa-bookmark")
             iconeClicavel.classList.add("fa-pencil")
-            
+
             // Fecha espaço para arquivos abaixo
             alimento.classList.remove("editando")
 
             // Fecha janela de edição
             botao.classList.remove("janelaEdicao-aberta")
         }
+    }
+
+    mostraResultadosNaLista(dados: object[] | any, elemento: Element) {
+
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!")
+        console.log(elemento.parentElement?.parentElement?.children[2])
+        const lista = elemento.parentElement?.parentElement?.children[2] as HTMLElement;
+        var resultadoItens: Array<HTMLElement> = [];
+
+        for (let i = 0; i <= 14; i++) {
+            console.log(lista.children[i])
+            resultadoItens.push(lista.children[i] as HTMLElement)
+        }
+
+
+        this.escondeResultadosNaLista(lista)
+
+        lista.style.display = 'flex'
+
+        for (let i = 0; i <= 14; i++) {
+            // Separa dados a serem impressos na lista
+            var dado = dados[i]
+            var id = dado.id
+            var calorias = dado.calorias
+            var proteinas = dado.proteinas
+
+            // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
+            var textoFormatado = `${dados[i].nome}`
+
+            resultadoItens[i].style.display = 'initial'
+            resultadoItens[i].textContent = textoFormatado
+            resultadoItens[i].setAttribute("value", id)
+
+            if (dados.length - 1 == i) {
+                return
+            }
+        }
+
+        function formataDado(dado: number) {
+            return parseInt(dado.toFixed(0))
+        }
+    }
+
+    selecionaItemAlimento(elemento: HTMLFormElement) {
+        console.log(elemento.textContent)
+        console.log(elemento.parentElement?.parentElement?.children[1].children[0])
+        var texto = elemento.parentElement?.parentElement?.children[1].children[0] as HTMLFormElement
+        texto.value = elemento.textContent
+    }
+
+    escondeResultadosNaLista(elemento:HTMLElement) {
+        const lista = elemento
+        var resultadoItens: Array<HTMLElement> = [];
+
+        for (let i = 0; i <= 14; i++) {
+            console.log(lista.children[i])
+            resultadoItens.push(lista.children[i] as HTMLElement)
+        }
+
+        // Reinicia estilização da lista
+        lista.style.display = 'none'
+
+        for (let i = 0; i <= 14; i++) {
+            resultadoItens[i].style.display = 'none'
+        }
+
+    }
+
+    preencheMacros(elemento: Element, calorias: string, proteinas: string, gorduras: string, carboidratos: string) {
+        console.log(elemento)
+        console.log(`Calorias: ${calorias}kcal, Proteinas: ${proteinas}g, Gorduras: ${gorduras}g, Carbos: ${carboidratos}g`)
+        var campoCalorias = elemento.children[0].children[1]
+        var campoProteinas = elemento.children[1].children[1]
+        var campoCarbo = elemento.children[2].children[1]
+        var campoGorduras = elemento.children[3].children[1]
+
+        campoCalorias.textContent = calorias
+        campoProteinas.textContent = proteinas
+        campoGorduras.textContent = gorduras
+        campoCarbo.textContent = carboidratos
     }
 }
 
