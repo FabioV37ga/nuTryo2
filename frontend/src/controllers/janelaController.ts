@@ -1,12 +1,16 @@
+import NutryoFetch from "../utils/nutryoFetch.js";
 import JanelaView from "../views/janelaView.js";
+
 class JanelaController {
     private janelaView = new JanelaView();
     protected abasSelecionaveis: NodeListOf<Element>
     protected itemRefeicao: NodeListOf<Element>
     protected closeRefeicao: NodeListOf<Element>
+    static controller: JanelaController;
 
     constructor() {
         this.adicionaEventosDeClick()
+        JanelaController.controller = this;
     }
 
     protected adicionaEventosDeClick() {
@@ -38,7 +42,7 @@ class JanelaController {
 
         // Armazena em this.closeRefeicao os elementos de fechamento (No caso os "X" das abas) do DOM
         this.closeRefeicao = document.querySelectorAll(".refeicao-fechar")
-        
+
         // Loop para evitar adição múltipla de listeners (Elementos que já tem um listener são desconsiderados)
         for (let i = 0; i <= this.closeRefeicao.length - 1; i++) {
             if (!this.closeRefeicao[i].classList.contains("hasEvent")) {
@@ -53,7 +57,7 @@ class JanelaController {
 
                     // Agora seleciona a aba relacionada ao "X" clicado, no caso, o elemento pai do "X" clicado
                     abaClicada = abaClicada.parentElement as HTMLElement
-                    
+
                     // Condicional: Se a aba a ser fechada for a aba selecionada, volta para a aba 0 (Aba refeições)
                     if (abaClicada.classList.contains("abaSelecionada")) {
                         this.janelaView.selecionaAba(this.abasSelecionaveis[0])
@@ -64,6 +68,12 @@ class JanelaController {
                 })
             }
         }
+    }
+
+   
+
+    static criarElementosDeAlimento() {
+
     }
 }
 

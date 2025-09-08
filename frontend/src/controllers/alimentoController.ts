@@ -9,6 +9,7 @@ class AlimentoController {
     botaoEditarAlimento: NodeListOf<Element>
     botaoApagarAlimento: NodeListOf<Element>
 
+
     constructor() {
         this.botaoAdicionarAlimento = document.querySelector(".botao-adicionar-alimento") as Element;
         this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento") as NodeListOf<Element>
@@ -16,7 +17,27 @@ class AlimentoController {
         this.adicionarEventosDeClick();
     }
 
-    private adicionarEventosDeClick() {
+    criarElementosDeAlimento(alimento: any) {
+        AlimentoView.adicionarAlimento(
+            CalendarioController.dataSelecionada, 
+            alimento._id, 
+            alimento.alimento,
+            alimento.peso,
+            alimento.calorias,
+            alimento.proteinas,
+            alimento.gorduras,
+            alimento.carboidratos
+        )
+
+        this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento") as NodeListOf<Element>
+        this.botaoApagarAlimento = document.querySelectorAll(".botao-apagar-alimento") as NodeListOf<Element>
+        setTimeout(() => {
+            this.adicionarEventosDeClick()
+        }, 100);
+    }
+
+    adicionarEventosDeClick() {
+
 
         // # Adiciona função para adicionar novos alimentos
         // Previne adição multipla de eventos de click
@@ -28,7 +49,7 @@ class AlimentoController {
                 e.stopPropagation
 
                 // Adiciona alimento
-                this.alimentoView.adicionarAlimento(CalendarioController.dataSelecionada, "1")
+                AlimentoView.adicionarAlimento(CalendarioController.dataSelecionada, "1")
 
                 // Adiciona elementos criados nos atributos
                 this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento")
@@ -41,7 +62,6 @@ class AlimentoController {
 
         // # Adiciona função para editar e apagar alimentos
         for (let i = 0; i <= this.botaoEditarAlimento.length - 1; i++) {
-
             // Edição de alimentos
             // Previne adição multipla de eventos de click
             if (!this.botaoEditarAlimento[i].classList.contains("hasEvent")) {
@@ -74,10 +94,10 @@ class AlimentoController {
 
             var campoPesquisa = document.querySelectorAll(".selecao-valor-texto") as NodeListOf<HTMLElement>
 
-            for (let i = 0; i<=campoPesquisa.length-1;i++){
+            for (let i = 0; i <= campoPesquisa.length - 1; i++) {
                 if (!campoPesquisa[i].classList.contains("hasSearchEvent")) {
                     campoPesquisa[i].classList.add("hasSearchEvent")
-    
+
                     campoPesquisa[i].addEventListener("input", (e) => {
                         e.stopPropagation
                         var elemento = e.currentTarget as Element
@@ -137,7 +157,7 @@ class AlimentoController {
         }
     }
 
-    private pesquisaComDelay(elemento:Element) {
+    private pesquisaComDelay(elemento: Element) {
         clearInterval(AlimentoController.AlimentoControllerSearchInterval)
         AlimentoController.AlimentoControllerSearchInterval = setInterval(() => {
             console.log("Toc")
@@ -147,7 +167,7 @@ class AlimentoController {
 
     }
 
-    private async pesquisa(elemento:Element) {
+    private async pesquisa(elemento: Element) {
         const campoPesquisa: HTMLFormElement = elemento.parentElement?.parentElement?.children[1].children[0] as HTMLFormElement
         const alimentoPesquisado = campoPesquisa.value
         if (alimentoPesquisado.replaceAll(" ", "") != "") {

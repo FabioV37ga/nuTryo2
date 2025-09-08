@@ -1,6 +1,7 @@
 import { backend } from "../utils/connection.js"
+
 class NutryoFetch {
-    static objects: JSON
+    static objects: any[]
     private user: string;
 
     constructor(user: string) {
@@ -17,9 +18,11 @@ class NutryoFetch {
                 "Content-Type": "application/json"
             }
         })
-
+        
+        
         let refeicoes = await resposta.json();
         NutryoFetch.objects = await refeicoes
+        console.log(await refeicoes)
     }
 }
 

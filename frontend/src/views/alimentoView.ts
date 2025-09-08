@@ -2,9 +2,17 @@ declare var $: any
 
 class AlimentoView {
 
-    adicionarAlimento(data?: string, id?: string, nome?: string, peso?: string, calorias?: string, proteinas?: string, gorduras?: string, carbos?: string) {
+    static adicionarAlimento(
+        data?: string,
+        id?: string,
+        nome?: string,
+        peso?: string,
+        calorias?: string,
+        proteinas?: string,
+        gorduras?: string,
+        carbos?: string) {
         const elemento: string =
-            `<div class="alimento-item ${data ? "alimento_"+data.replace("/", "-").replace("/","-")+"_"+id : "" }">
+            `<div class="alimento-item ${data ? "alimento_" + data.replace("/", "-").replace("/", "-") + "_" + id : ""}">
                 <a class="botao-editar-alimento">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
@@ -15,12 +23,17 @@ class AlimentoView {
                 </div>
                  <div class="alimento-item-janelaEdicao">
                     <div class="alimento-consumo">
-                        <div class="alimento-selecao">
+                        <div class="alimento-selecao" 
+                        calorias="${calorias}"
+                        proteinas="${proteinas}"
+                        gorduras="${gorduras}"
+                        carbo="${carbos}"
+                        >
                             <span class="selecao-label">
                                 Alimento:
                             </span>
                             <span class="selecao-valor">
-                                <input type="text" id="selecao-valor-texto" class="selecao-valor-texto" placeholder="Selecione alimento" autocomplete="off">
+                                <input type="text" id="selecao-valor-texto" value="${nome}" class="selecao-valor-texto" placeholder="Selecione alimento" autocomplete="off">
                             </span>
                             <ul class="alimento-selecao-lista">
                                 <li class="alimento-selecao-lista-item" style="display:none"></li>
@@ -45,7 +58,7 @@ class AlimentoView {
                                 Peso:
                             </div>
                             <div class="peso-valor">
-                                <input type="number" id="peso-valor-texto" class="peso-valor-texto" placeholder="Peso consumido">
+                                <input type="number" id="peso-valor-texto" class="peso-valor-texto" placeholder="Peso consumido" value="${peso}">
                             </div>
                         </div>
                     </div>
@@ -94,7 +107,6 @@ class AlimentoView {
                 </div>
             </div>
             `
-
 
         $(".alimentos-adicionados").append(elemento)
     }

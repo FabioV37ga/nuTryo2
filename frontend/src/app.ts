@@ -10,7 +10,7 @@ import AuthController from "./controllers/authController.js";
 
 const calendarioController = new CalendarioController();
 const janelaController = new JanelaController();
+const alimentoController = new AlimentoController();
 const refeicoesController = new RefeicoesController();
 const refeicaoController = new RefeicaoController();
-const alimentoController = new AlimentoController();
 const authController = new AuthController();

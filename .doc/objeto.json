@@ -1,5 +1,5 @@
 {
-    "_id": "03-09-25",
+    "_id": "3-9-2025",
     "_usuario": "veigabfabio@hotmail.com",
     "refeicoes": [
         {
@@ -8,15 +8,18 @@
             "alimentos": [
                 {
                     "_id": 1,
-                    "alimento": "arroz",
-                    "calorias": 130,
-                    "proteinas": 3,
-                    "carboidratos": 30,
-                    "gorduras": 10
+                    "referencia": 48,
+                    "alimento": "Arroz, integral, cozido",
+                    "peso": 100,
+                    "calorias": 123.53,
+                    "proteinas": 2.58,
+                    "carboidratos": 25.8,
+                    "gorduras": 1
                 },
                 {
                     "_id": 2,
                     "alimento": "feijao",
+                    "peso": 100,
                     "calorias": 155,
                     "proteinas": 6,
                     "carboidratos": 40,
@@ -31,6 +34,7 @@
                 {
                     "_id": 1,
                     "alimento": "pao",
+                    "peso": 100,
                     "calorias": 130,
                     "proteinas": 3,
                     "carboidratos": 30,
@@ -39,6 +43,7 @@
                 {
                     "_id": 2,
                     "alimento": "quejo",
+                    "peso": 100,
                     "calorias": 155,
                     "proteinas": 6,
                     "carboidratos": 40,

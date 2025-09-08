@@ -1,13 +1,17 @@
+import NutryoFetch from "../utils/nutryoFetch.js";
+import AlimentoView from "../views/alimentoView.js";
 import RefeicoesView from "../views/refeicoesView.js"
+import AlimentoController from "./alimentoController.js";
+import CalendarioController from "./calendarioController.js";
 import JanelaController from "./janelaController.js";
 
 class RefeicoesController extends JanelaController {
-    refeicoesView;
+    refeicoesView: RefeicoesView = new RefeicoesView();
+    refeicoesNaJanela: any[] = [];
     private botaoAdicionarRefeicao: Element;
 
     constructor() {
         super()
-        this.refeicoesView = new RefeicoesView();
         this.adicionaEventosDeClick()
     }
 
@@ -21,6 +25,8 @@ class RefeicoesController extends JanelaController {
 
                 // adicionar ou editar
                 this.itemRefeicao[i].children[0].addEventListener("click", (e) => {
+                    e.stopPropagation
+                    var elementoClicado = e.currentTarget as HTMLElement
 
                     var titulo = this.itemRefeicao[i].textContent.toString().trim().split(" ")[0]
                     var id: number = Number(this.itemRefeicao[i].getAttribute("value"));
@@ -29,8 +35,21 @@ class RefeicoesController extends JanelaController {
 
                     this.refeicoesView.selecionaAba(abaCriada);
 
-                    // console.log(this.refeicoesView)
-
+                    console.log(this.refeicoesNaJanela)
+                    for (let ref = 0; ref <= this.refeicoesNaJanela.length - 1; ref++) {
+                        // console.log(this.refeicoesNaJanela[ref]._id)
+                        if (this.refeicoesNaJanela[ref]._id == elementoClicado.parentElement?.getAttribute("value")) {
+                            // console.log(this.refeicoesNaJanela[ref].alimentos[0])
+                            for (let ali = 0; ali <= this.refeicoesNaJanela[ref].alimentos.length - 1; ali++) {
+                                var alimentoController: AlimentoController = new AlimentoController()
+                                alimentoController.criarElementosDeAlimento(this.refeicoesNaJanela[ref].alimentos[ali])
+                                // alimentoController.adicionarEventosDeClick()
+                            }
+                            // for (let ali = 0; ali <= this.refeicoesNaJanela[ref].alimentos.length - 1; ali++) {
+                            //     this.criarElementosDeAlimento(this.refeicoesNaJanela[ref].alimento[ali])
+                            // }
+                        }
+                    }
                     this.adicionaEventosDeClick()
                     super.adicionaEventosDeClick()
                 })
@@ -42,6 +61,20 @@ class RefeicoesController extends JanelaController {
             }
         }
 
+        // # Cria elementos de refeição ao clicar no dia do calendário
+        var dias = document.querySelectorAll(".dia")
+        for (let i = 0; i <= dias.length - 1; i++) {
+            if (!dias[i].classList.contains("hasWindowEvent")) {
+                dias[i].classList.add("hasWindowEvent")
+
+                dias[i].addEventListener("click", () => {
+                    this.criarElementosDoDia(CalendarioController.dataSelecionada)
+                })
+            }
+        }
+
+
+
         this.botaoAdicionarRefeicao = document.querySelector(".botao-adicionar-refeicao") as Element
         if (!this.botaoAdicionarRefeicao.classList.contains("hasEvent")) {
             this.botaoAdicionarRefeicao.classList.add("hasEvent")
@@ -50,6 +83,49 @@ class RefeicoesController extends JanelaController {
                 this.adicionaEventosDeClick()
             })
         }
+    }
+
+    criarElementosDoDia(data: string) {
+
+        var refeicoesNoDOM = document.querySelectorAll(".refeicao")
+
+        for (let refeicaoDOM = 1; refeicaoDOM <= refeicoesNoDOM.length - 1; refeicaoDOM++) {
+            refeicoesNoDOM[refeicaoDOM].remove()
+        }
+
+        var refeicoesDoUsuario = NutryoFetch.objects
+
+        for (let i = 0; i <= refeicoesDoUsuario.length - 1; i++) {
+
+            if (data == refeicoesDoUsuario[i]._id) {
+
+                // Refeições → alimentos
+                for (var refeicao = 0; refeicao <= refeicoesDoUsuario[i].refeicoes.length - 1; refeicao++) {
+
+                    // Cria elementos de refeições
+                    // console.log(`A refeição ${refeicao} tem os seguintes alimentos:`)
+                    this.refeicoesNaJanela.push(refeicoesDoUsuario[i].refeicoes[refeicao])
+                    this.criarElementosDeRefeicao(refeicoesDoUsuario[i].refeicoes[refeicao])
+
+                    for (var alimento = 0; alimento <= refeicoesDoUsuario[i].refeicoes[refeicao].alimentos.length - 1; alimento++) {
+
+                        // var alimentoAtual = refeicoesDoUsuario[i].refeicoes[refeicao].alimentos[alimento]
+                        // Cria elementos de alimentos
+                        // this.criarElementosDeAlimento(refeicao)
+                        // console.log(`Alimento ${alimento}:`)
+                        // console.log(alimentoAtual[alimento])
+                        // console.log(refeicoesDoUsuario[i].refeicoes[refeicao])
+                    }
+                }
+                // console.log(i)
+                return
+            }
+        }
+    }
+
+    criarElementosDeRefeicao(refeicao: any) {
+        this.refeicoesView.adicionarRefeicao(refeicao)
+        this.adicionaEventosDeClick()
     }
 }
 
