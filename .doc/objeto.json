@@ -18,12 +18,13 @@
                 },
                 {
                     "_id": 2,
-                    "alimento": "feijao",
+                    "referencia":"277",
+                    "alimento": "Feijão, carioca, cozido",
                     "peso": 100,
-                    "calorias": 155,
-                    "proteinas": 6,
-                    "carboidratos": 40,
-                    "gorduras": 10
+                    "calorias": 76.42,
+                    "proteinas": 4.77,
+                    "carboidratos": 13.60,
+                    "gorduras": 0.54
                 }
             ]
         },
@@ -33,21 +34,23 @@
             "alimentos": [
                 {
                     "_id": 1,
-                    "alimento": "pao",
+                    "alimento": "Pão, trigo, forma, integral",
+                    "referencia":"277",
                     "peso": 100,
-                    "calorias": 130,
-                    "proteinas": 3,
-                    "carboidratos": 30,
-                    "gorduras": 10
+                    "calorias": 253,
+                    "proteinas": 9.42,
+                    "carboidratos": 49.94,
+                    "gorduras": 3.6
                 },
                 {
                     "_id": 2,
-                    "alimento": "quejo",
+                    "alimento": "Queijo, mozarela",
+                    "referencia":536,
                     "peso": 100,
-                    "calorias": 155,
-                    "proteinas": 6,
-                    "carboidratos": 40,
-                    "gorduras": 10
+                    "calorias": 329.87,
+                    "proteinas": 22.64,
+                    "carboidratos": 3.04,
+                    "gorduras": 25.18
                 }
             ]
         }

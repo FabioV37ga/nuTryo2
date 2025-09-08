@@ -209,7 +209,7 @@ class AlimentoController {
 
             calorias = await alimentoSelecionado.calorias.toFixed(2)
             proteinas = await alimentoSelecionado.proteinas.toFixed(2)
-            gorduras = await alimentoSelecionado.lipidios + await alimentoSelecionado.colesterol
+            gorduras = await alimentoSelecionado.lipidios.toFixed(2)
             gorduras = await gorduras.toFixed(2)
             carbo = await alimentoSelecionado.carboidrato.toFixed(2)
 

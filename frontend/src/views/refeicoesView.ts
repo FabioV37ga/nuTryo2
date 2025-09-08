@@ -40,7 +40,7 @@ class RefeicoesView extends JanelaView {
                 <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
             <span class="refeicao-list-label">
-            ${tipo} | ${stringAlimentos}
+            ${tipo ? tipo + " | " + stringAlimentos : ""}
             </span>
             <div class="botao-apagar-refeicao">
                 <i class="fa fa-trash" aria-hidden="true"></i>
