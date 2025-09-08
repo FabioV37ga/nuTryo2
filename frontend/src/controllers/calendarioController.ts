@@ -2,12 +2,14 @@ import CalendarioView from "../views/calendarioView.js";
 class CalendarioController {
     private data: Date = new Date();
     private calendarioView = new CalendarioView(this.data);
+    static dataSelecionada: string;
     constructor() {
         console.log("CalendarioController Criado")
         this.calendarioView.criarElementos()
         this.adicionaEventosDeClick()
 
         var dataSelecionada = this.calendarioView.retornaDataSelecionada()
+        CalendarioController.dataSelecionada = `${dataSelecionada.dia}-${dataSelecionada.mes}-${dataSelecionada.ano}`
         var display: Element = document.querySelector("#data-display") as Element
         display.textContent =
             `${String(dataSelecionada.dia).padStart(2, "0")}/${String(dataSelecionada.mes).padStart(2, "0")}/${dataSelecionada.ano}`
@@ -29,6 +31,7 @@ class CalendarioController {
                 dias[i].classList.add("diaSelecionado")
 
                 var dataSelecionada = this.calendarioView.retornaDataSelecionada()
+                CalendarioController.dataSelecionada = `${dataSelecionada.dia}-${dataSelecionada.mes}-${dataSelecionada.ano}`
                 var display: Element = document.querySelector("#data-display") as Element
                 display.textContent =
                     `${String(dataSelecionada.dia).padStart(2, "0")}/${String(dataSelecionada.mes).padStart(2, "0")}/${dataSelecionada.ano}`

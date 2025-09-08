@@ -2,13 +2,13 @@ declare var $: any
 
 class AlimentoView {
 
-    adicionarAlimento() {
+    adicionarAlimento(data?: string, id?: string, nome?: string, peso?: string, calorias?: string, proteinas?: string, gorduras?: string, carbos?: string) {
         const elemento: string =
-            `<div class="alimento-item">
+            `<div class="alimento-item ${data ? "alimento_"+data.replace("/", "-").replace("/","-")+"_"+id : "" }">
                 <a class="botao-editar-alimento">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
-                <span class="alimento-label">...
+                <span class="alimento-label">${nome ? nome : "..."}
                 </span>
                 <div class="botao-apagar-alimento">
                     <i class="fa fa-trash" aria-hidden="true"></i>
@@ -57,7 +57,7 @@ class AlimentoView {
                                 </span>
                             </div>
                             <span class="macros-valor">
-                                ...
+                                ${calorias ? calorias : "0.0"}
                             </span>
                         </div>
                         <div class="proteinas">
@@ -67,7 +67,7 @@ class AlimentoView {
                                 </span>
                             </div>
                             <span class="macros-valor">
-                                ...
+                                ${proteinas ? proteinas : "0.0"}
                             </span>
                         </div>
                         <div class="carboidratos">
@@ -77,7 +77,7 @@ class AlimentoView {
                                 </span>
                             </div>
                             <span class="macros-valor">
-                                ...
+                                ${carbos ? carbos : "0.0"}
                             </span>
                         </div>
                         <div class="gorduras">
@@ -87,7 +87,7 @@ class AlimentoView {
                                 </span>
                             </div>
                             <span class="macros-valor">
-                                ...
+                                ${gorduras ? gorduras : "0.0"}
                             </span>
                         </div>
                     </div>
@@ -186,7 +186,7 @@ class AlimentoView {
         texto.value = elemento.textContent
     }
 
-    escondeResultadosNaLista(elemento:HTMLElement) {
+    escondeResultadosNaLista(elemento: HTMLElement) {
         const lista = elemento
         var resultadoItens: Array<HTMLElement> = [];
 

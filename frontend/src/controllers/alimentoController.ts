@@ -1,5 +1,6 @@
 import AlimentoView from "../views/alimentoView.js"
 import { backend } from "../utils/connection.js";
+import CalendarioController from "./calendarioController.js";
 
 class AlimentoController {
     static AlimentoControllerSearchInterval: any
@@ -27,7 +28,7 @@ class AlimentoController {
                 e.stopPropagation
 
                 // Adiciona alimento
-                this.alimentoView.adicionarAlimento()
+                this.alimentoView.adicionarAlimento(CalendarioController.dataSelecionada, "1")
 
                 // Adiciona elementos criados nos atributos
                 this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento")
@@ -142,7 +143,7 @@ class AlimentoController {
             console.log("Toc")
             this.pesquisa(elemento)
             clearInterval(AlimentoController.AlimentoControllerSearchInterval)
-        }, 800);
+        }, 300);
 
     }
 
