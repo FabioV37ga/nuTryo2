@@ -1,5 +1,6 @@
 import NutryoFetch from "../utils/nutryoFetch.js";
 import JanelaView from "../views/janelaView.js";
+import AlimentoController from "./alimentoController.js";
 
 class JanelaController {
     private janelaView = new JanelaView();
@@ -34,6 +35,8 @@ class JanelaController {
                     // Chama função de view para selecionar a aba
                     this.janelaView.selecionaAba(abaClicada);
 
+                    var alimentoController = new AlimentoController();
+                    alimentoController.adicionaEventosDeClick()
                 })
             }
         }

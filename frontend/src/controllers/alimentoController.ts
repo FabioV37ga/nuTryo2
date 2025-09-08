@@ -1,8 +1,10 @@
 import AlimentoView from "../views/alimentoView.js"
 import { backend } from "../utils/connection.js";
 import CalendarioController from "./calendarioController.js";
+import JanelaController from "./janelaController.js";
+import NutryoFetch from "../utils/nutryoFetch.js";
 
-class AlimentoController {
+class AlimentoController extends JanelaController {
     static AlimentoControllerSearchInterval: any
     alimentoView = new AlimentoView()
     botaoAdicionarAlimento: Element
@@ -11,29 +13,11 @@ class AlimentoController {
 
 
     constructor() {
+        super()
         this.botaoAdicionarAlimento = document.querySelector(".botao-adicionar-alimento") as Element;
         this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento") as NodeListOf<Element>
         this.botaoApagarAlimento = document.querySelectorAll(".botao-apagar-alimento") as NodeListOf<Element>
         this.adicionarEventosDeClick();
-    }
-
-    criarElementosDeAlimento(alimento: any) {
-        AlimentoView.adicionarAlimento(
-            CalendarioController.dataSelecionada, 
-            alimento._id, 
-            alimento.alimento,
-            alimento.peso,
-            alimento.calorias,
-            alimento.proteinas,
-            alimento.gorduras,
-            alimento.carboidratos
-        )
-
-        this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento") as NodeListOf<Element>
-        this.botaoApagarAlimento = document.querySelectorAll(".botao-apagar-alimento") as NodeListOf<Element>
-        setTimeout(() => {
-            this.adicionarEventosDeClick()
-        }, 100);
     }
 
     adicionarEventosDeClick() {
@@ -88,74 +72,136 @@ class AlimentoController {
 
                     // Apaga alimento
                     var elementoClicado = e.currentTarget as Element
-                    this.alimentoView.apagarAlimento(elementoClicado.parentElement as Element)
+                    elementoClicado = elementoClicado.parentElement as Element
+                    this.alimentoView.apagarAlimento(elementoClicado as Element)
                 })
             }
 
-            var campoPesquisa = document.querySelectorAll(".selecao-valor-texto") as NodeListOf<HTMLElement>
-
-            for (let i = 0; i <= campoPesquisa.length - 1; i++) {
-                if (!campoPesquisa[i].classList.contains("hasSearchEvent")) {
-                    campoPesquisa[i].classList.add("hasSearchEvent")
-
-                    campoPesquisa[i].addEventListener("input", (e) => {
-                        e.stopPropagation
-                        var elemento = e.currentTarget as Element
-                        this.pesquisaComDelay(elemento)
-                    })
-                }
-            }
-
-            // # Selecionar alimento pesquisado
-            var resultadosPesquisa = document.querySelectorAll(".alimento-selecao-lista-item")
-            for (let i = 0; i <= resultadosPesquisa.length - 1; i++) {
-                if (!resultadosPesquisa[i].classList.contains("hasEvent")) {
-                    resultadosPesquisa[i].classList.add("hasEvent")
-
-                    resultadosPesquisa[i].addEventListener("click", (e) => {
-                        var itemClicado = e.currentTarget as Element
-
-                        this.selecionaItemPesquisado(itemClicado as Element)
-                        this.alimentoView.selecionaItemAlimento(itemClicado as HTMLFormElement)
-                        this.alimentoView.escondeResultadosNaLista(itemClicado.parentElement?.parentElement?.children[2] as HTMLElement)
-                    })
-                }
-            }
-
-            // # Fazer regra de 3 com o valor de consumo inserido
-
-            var pesoConsumidoInput = document.querySelectorAll(".peso-valor-texto")
-
-            for (let i = 0; i <= pesoConsumidoInput.length - 1; i++) {
-                if (!pesoConsumidoInput[i].classList.contains("hasEvent")) {
-                    pesoConsumidoInput[i].classList.add("hasEvent")
-
-                    pesoConsumidoInput[i].addEventListener("input", (e) => {
-                        var elementoManipulado = e.currentTarget as HTMLFormElement
-                        var elementoPai = elementoManipulado.parentElement?.parentElement?.parentElement?.children[0] as Element
-
-                        var calorias = elementoPai?.getAttribute("calorias")
-                        var proteinas = elementoPai?.getAttribute("proteinas")
-                        var gorduras = elementoPai?.getAttribute("gorduras")
-                        var carbo = elementoPai?.getAttribute("carbo")
-
-                        var pesoConsumido = elementoManipulado.value
-
-                        var macrosCalulados = this.calcularMacros(pesoConsumido, calorias, proteinas, gorduras, carbo)
-
-                        this.alimentoView.preencheMacros(
-                            elementoPai.parentElement?.parentElement?.children[1] as Element,
-                            macrosCalulados.calorias,
-                            macrosCalulados.proteinas,
-                            macrosCalulados.gorduras,
-                            macrosCalulados.carbo
-                        )
-                    })
-                }
-            }
-
         }
+        // # Digitar o nome do alimento faz uma pesquisa no banco e mostra os resultados
+        var campoPesquisa = document.querySelectorAll(".selecao-valor-texto") as NodeListOf<HTMLElement>
+
+        for (let i = 0; i <= campoPesquisa.length - 1; i++) {
+            if (!campoPesquisa[i].classList.contains("hasSearchEvent")) {
+                campoPesquisa[i].classList.add("hasSearchEvent")
+
+                campoPesquisa[i].addEventListener("input", (e) => {
+                    e.stopPropagation
+                    var elemento = e.currentTarget as Element
+                    this.pesquisaComDelay(elemento)
+                })
+            }
+        }
+
+        // # Selecionar alimento pesquisado
+        var resultadosPesquisa = document.querySelectorAll(".alimento-selecao-lista-item")
+        for (let i = 0; i <= resultadosPesquisa.length - 1; i++) {
+            if (!resultadosPesquisa[i].classList.contains("hasEvent")) {
+                resultadosPesquisa[i].classList.add("hasEvent")
+
+                resultadosPesquisa[i].addEventListener("click", (e) => {
+                    var itemClicado = e.currentTarget as Element
+
+                    this.selecionaItemPesquisado(itemClicado as Element)
+                    this.alimentoView.selecionaItemAlimento(itemClicado as HTMLFormElement)
+                    this.alimentoView.escondeResultadosNaLista(itemClicado.parentElement?.parentElement?.children[2] as HTMLElement)
+                })
+            }
+        }
+
+        // # Preencher o campo "Peso" faz regra de 3 com o valor de consumo inserido
+
+        var pesoConsumidoInput = document.querySelectorAll(".peso-valor-texto")
+
+        for (let i = 0; i <= pesoConsumidoInput.length - 1; i++) {
+            if (!pesoConsumidoInput[i].classList.contains("hasEvent")) {
+                pesoConsumidoInput[i].classList.add("hasEvent")
+
+                pesoConsumidoInput[i].addEventListener("input", (e) => {
+                    var elementoManipulado = e.currentTarget as HTMLFormElement
+                    var elementoPai = elementoManipulado.parentElement?.parentElement?.parentElement?.children[0] as Element
+
+                    var calorias = elementoPai?.getAttribute("calorias")
+                    var proteinas = elementoPai?.getAttribute("proteinas")
+                    var gorduras = elementoPai?.getAttribute("gorduras")
+                    var carbo = elementoPai?.getAttribute("carbo")
+
+                    var pesoConsumido = elementoManipulado.value
+
+                    var macrosCalulados = this.calcularMacros(pesoConsumido, calorias, proteinas, gorduras, carbo)
+
+                    this.alimentoView.preencheMacros(
+                        elementoPai.parentElement?.parentElement?.children[1] as Element,
+                        macrosCalulados.calorias,
+                        macrosCalulados.proteinas,
+                        macrosCalulados.gorduras,
+                        macrosCalulados.carbo
+                    )
+                })
+            }
+        }
+
+        // # Clicar na aba "REFEIÇÕES" apaga os alimentos das outras abas
+        var abaRefeicoes = document.querySelectorAll(".aba")[1]
+
+        if (!abaRefeicoes.classList.contains("hasDeleteEvent")) {
+            abaRefeicoes.classList.add("hasDeleteEvent")
+
+            abaRefeicoes.addEventListener("click", () => {
+                var itensDeAlimento = document.querySelectorAll(".alimento-item")
+
+                for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
+                    this.alimentoView.apagarAlimento(itensDeAlimento[i])
+                }
+            })
+        }
+
+        // # Clicar na aba de algum elemento cria elementos de alimento referente a aba
+        var abasDeAlimento = document.querySelectorAll(".refeicao-aba")
+
+        for (let i = 0; i <= abasDeAlimento.length - 1; i++) {
+            if (!abasDeAlimento[i].classList.contains("hasCreateEvent")) {
+                abasDeAlimento[i].classList.add("hasCreateEvent")
+                abasDeAlimento[i].addEventListener("click", () => {
+                    console.log(NutryoFetch.objects)
+                    for (let dia = 0; dia <= NutryoFetch.objects.length - 1; dia++) {
+                        if (CalendarioController.dataSelecionada == NutryoFetch.objects[dia]._id) {
+                            for (let refeicao = 0; refeicao <= NutryoFetch.objects[dia].refeicoes.length - 1; refeicao++) {
+                                if (abasDeAlimento[i].getAttribute("value") == NutryoFetch.objects[dia].refeicoes[refeicao]._id) {
+                                    for(let alimento = 0; alimento <= NutryoFetch.objects[dia].refeicoes[refeicao].alimentos.length-1; alimento++){
+                                        this.criarElementosDeAlimento(NutryoFetch.objects[dia].refeicoes[refeicao].alimentos[alimento])
+                                        console.log(NutryoFetch.objects[dia].refeicoes[refeicao].alimentos[alimento])
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+
+            }
+        }
+
     }
+
+    criarElementosDeAlimento(alimento: any) {
+        AlimentoView.adicionarAlimento(
+            CalendarioController.dataSelecionada,
+            alimento._id,
+            alimento.alimento,
+            alimento.peso,
+            alimento.calorias,
+            alimento.proteinas,
+            alimento.gorduras,
+            alimento.carboidratos
+        )
+
+        this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento") as NodeListOf<Element>
+        this.botaoApagarAlimento = document.querySelectorAll(".botao-apagar-alimento") as NodeListOf<Element>
+        setTimeout(() => {
+            this.adicionarEventosDeClick()
+        }, 100);
+    }
+
 
     private pesquisaComDelay(elemento: Element) {
         clearInterval(AlimentoController.AlimentoControllerSearchInterval)
@@ -207,17 +253,20 @@ class AlimentoController {
 
             const alimentoSelecionado = await alimentoSelecionadoFetch.json()
 
-            calorias = await alimentoSelecionado.calorias.toFixed(2)
-            proteinas = await alimentoSelecionado.proteinas.toFixed(2)
-            gorduras = await alimentoSelecionado.lipidios.toFixed(2)
-            gorduras = await gorduras.toFixed(2)
-            carbo = await alimentoSelecionado.carboidrato.toFixed(2)
+            console.log(typeof (alimentoSelecionado.calorias))
+
+            calorias = await parseFloat(alimentoSelecionado.calorias).toFixed(2)
+            proteinas = await parseFloat(alimentoSelecionado.proteinas).toFixed(2)
+            gorduras = await parseFloat(alimentoSelecionado.lipidios).toFixed(2)
+            carbo = await parseFloat(alimentoSelecionado.carboidrato).toFixed(2)
+
+
 
             var labels = elemento.parentElement?.parentElement as HTMLElement
-            labels?.setAttribute("calorias", await calorias)
-            labels?.setAttribute("proteinas", await proteinas)
-            labels?.setAttribute("gorduras", await gorduras)
-            labels?.setAttribute("carbo", await carbo)
+            labels?.setAttribute("calorias", await String(calorias))
+            labels?.setAttribute("proteinas", await String(proteinas))
+            labels?.setAttribute("gorduras", await String(gorduras))
+            labels?.setAttribute("carbo", await String(carbo))
 
 
         } catch (error) {

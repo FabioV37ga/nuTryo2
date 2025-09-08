@@ -33,7 +33,7 @@ class AlimentoView {
                                 Alimento:
                             </span>
                             <span class="selecao-valor">
-                                <input type="text" id="selecao-valor-texto" value="${nome}" class="selecao-valor-texto" placeholder="Selecione alimento" autocomplete="off">
+                                <input type="text" id="selecao-valor-texto" value="${nome ? nome : ""}" class="selecao-valor-texto" placeholder="Selecione alimento" autocomplete="off">
                             </span>
                             <ul class="alimento-selecao-lista">
                                 <li class="alimento-selecao-lista-item" style="display:none"></li>
@@ -58,7 +58,7 @@ class AlimentoView {
                                 Peso:
                             </div>
                             <div class="peso-valor">
-                                <input type="number" id="peso-valor-texto" class="peso-valor-texto" placeholder="Peso consumido" value="${peso}">
+                                <input type="number" id="peso-valor-texto" class="peso-valor-texto" placeholder="Peso consumido" value="${peso ? peso : ""}">
                             </div>
                         </div>
                     </div>
@@ -112,8 +112,10 @@ class AlimentoView {
     }
 
     apagarAlimento(elemento: Element) {
-        if (elemento.parentElement?.classList.contains("editando")) {
-            elemento.parentElement?.classList.remove("editando")
+        console.log("apagando elemento:")
+        console.log(elemento)
+        if (elemento.classList.contains("editando")) {
+            elemento.classList.remove("editando")
         }
         elemento.remove()
     }

@@ -54,6 +54,8 @@ class RefeicoesController extends JanelaController {
                     super.adicionaEventosDeClick()
                 })
 
+                
+
                 this.itemRefeicao[i].children[2].addEventListener("click", (e) => {
                     var item = e.currentTarget as Element
                     this.refeicoesView.removerRefeicao(item.parentElement as Element)

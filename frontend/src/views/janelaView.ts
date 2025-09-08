@@ -62,6 +62,8 @@ class JanelaView {
             this.mostrarConteudoAba("refeicoes")
         else
             this.mostrarConteudoAba("refeicao")
+
+        return aba
     }
 
     // Apenas apaga/fecha a aba chamada como argumento
