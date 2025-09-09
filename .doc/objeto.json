@@ -8,7 +8,6 @@
             "alimentos": [
                 {
                     "_id": 1,
-                    "referencia": 48,
                     "alimento": "Arroz, integral, cozido",
                     "peso": 100,
                     "calorias": 123.53,
@@ -18,7 +17,6 @@
                 },
                 {
                     "_id": 2,
-                    "referencia":"277",
                     "alimento": "Feijão, carioca, cozido",
                     "peso": 100,
                     "calorias": 76.42,
@@ -35,7 +33,6 @@
                 {
                     "_id": 1,
                     "alimento": "Pão, trigo, forma, integral",
-                    "referencia":"277",
                     "peso": 100,
                     "calorias": 253,
                     "proteinas": 9.42,
@@ -45,7 +42,6 @@
                 {
                     "_id": 2,
                     "alimento": "Queijo, mozarela",
-                    "referencia":536,
                     "peso": 100,
                     "calorias": 329.87,
                     "proteinas": 22.64,

@@ -5,7 +5,7 @@ class RefeicaoView{
         const listaTipoLabel:Element = document.querySelector(".refeicao-tipo-tipoSelecionado") as Element;
         const listaTipos:Element = document.querySelector(".refeicao-tipo-list") as Element;
         
-        console.log(listaTipos)
+        // console.log(listaTipos)
         if (listaTipos.classList.contains("listaTipoFechada")){
             listaTipos.classList.remove("listaTipoFechada")
             listaTipos.classList.add("listaTipoAberta")
@@ -20,6 +20,12 @@ class RefeicaoView{
         var label:Element = document.querySelector(".refeicao-tipo-tipoSelecionado-label") as Element;
         
         label.textContent = item.textContent
+        this.mostraAlimentos()
+    }
+
+    mostraAlimentos(){
+        var alimentos = document.querySelector(".alimentos") as HTMLElement
+        alimentos.style.display = "flex"
     }
 }
 export default RefeicaoView;

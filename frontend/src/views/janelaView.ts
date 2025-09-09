@@ -1,3 +1,10 @@
+import AlimentoController from "../controllers/alimentoController.js";
+import CalendarioController from "../controllers/calendarioController.js";
+import diaObjeto from "../utils/diaObjeto.js";
+import NutryoFetch from "../utils/nutryoFetch.js";
+import AlimentoView from "./alimentoView.js";
+import RefeicoesView from "./refeicoesView.js";
+
 declare var $: any;
 class JanelaView {
 
@@ -36,7 +43,7 @@ class JanelaView {
 
         // Armazena elementos criados em elementoDOMCriado
         var elementoDOMCriado = document.querySelectorAll(".abaSelecionavel")
-        
+
         this.estilizaAbasAdicionais()
 
         // Por fim, retorno lógico da referência do elemento que foi criado
@@ -57,11 +64,53 @@ class JanelaView {
         aba.classList.add("abaSelecionada")
 
 
+        var itensDeAlimento = document.querySelectorAll(".alimento-item")
+        for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
+            AlimentoView.apagarAlimento(itensDeAlimento[i])
+        }
         // Mostra conteudo da aba (Entre aba refeições e abas refeição)
-        if (aba.classList.contains("abaRefeicoes"))
+        if (aba.classList.contains("abaRefeicoes")) {
+            RefeicoesView._id = 1;
             this.mostrarConteudoAba("refeicoes")
-        else
+            // criar elementos
+            if (itensDeAlimento)
+                for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
+                    AlimentoView.apagarAlimento(itensDeAlimento[i])
+                }
+
+        }
+        else {
             this.mostrarConteudoAba("refeicao")
+
+            var nutryoFetch = new NutryoFetch(diaObjeto.usuario)
+
+            var intervalo = setInterval(() => {
+                if (NutryoFetch.status == 1) {
+                    if (itensDeAlimento)
+                        for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
+                            AlimentoView.apagarAlimento(itensDeAlimento[i])
+                        }
+
+                    var alimentoController = new AlimentoController()
+                    var alimentos = NutryoFetch.retornaAlimentosDaRefeicao(CalendarioController.dataSelecionada, aba.getAttribute("value") as string) as any[]
+                    var refeicao = NutryoFetch.retornaRefeicao(CalendarioController.dataSelecionada, aba.getAttribute("value") as string)
+
+                    if (alimentos) {
+                        for (let i = 0; i <= alimentos.length - 1; i++) {
+                            alimentoController.criarElementosDeAlimento(alimentos[i])
+                        }
+                        if (refeicao) {
+                            var listlabel = document.querySelector(".refeicao-tipo-tipoSelecionado-label") as HTMLElement
+                            listlabel.textContent = refeicao.tipo
+                            var alimentosAdicionados = document.querySelector(".alimentos") as HTMLElement
+                            alimentosAdicionados.style.display = "flex"
+                        }
+                    }
+                    clearInterval(intervalo)
+                }
+
+            }, 1);
+        }
 
         return aba
     }
@@ -70,6 +119,14 @@ class JanelaView {
     apagaAba(aba: Element) {
         aba.remove()
         this.estilizaAbasAdicionais()
+    }
+
+    apagaTodasAbas() {
+        var abas = document.querySelectorAll(".abaSelecionavel")
+
+        for (let i = 1; i <= abas.length - 1; i++) {
+            abas[i].remove()
+        }
     }
 
     mostrarConteudoAba(tipo: string) {
@@ -86,16 +143,16 @@ class JanelaView {
                 break;
         }
     }
-    
-    estilizaAbasAdicionais(){
+
+    estilizaAbasAdicionais() {
         // Armazena elementos criados em elementoDOMCriado
         var elementoDOMCriado = document.querySelectorAll(".abaSelecionavel")
-        
+
         // Sessão para tratar abas que ultrapassam o tamanho da janela
-        for(let i = 0; i<= elementoDOMCriado.length-1;i++){
+        for (let i = 0; i <= elementoDOMCriado.length - 1; i++) {
             elementoDOMCriado[i].classList.remove("abaExtraFinal")
         }
-        
+
         if (elementoDOMCriado.length >= 5) {
             elementoDOMCriado[elementoDOMCriado.length - 1].classList.add("abaExtraFinal")
         }

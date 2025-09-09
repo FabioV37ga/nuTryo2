@@ -31,7 +31,7 @@ class CalendarioView {
 
     adicionaDatas(tipo?: string) {
         // Mostra data atual sendo processada
-        console.log(`${this.diaAtual}/${this.mesAtual}`)
+        // console.log(`${this.diaAtual}/${this.mesAtual}`)
 
         // Armazena dados de mes e ano nas variaveis:
         let mes = this.mesAtual

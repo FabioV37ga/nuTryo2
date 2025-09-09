@@ -1,4 +1,7 @@
+import diaObjeto from "../utils/diaObjeto.js";
+import NutryoFetch from "../utils/nutryoFetch.js";
 import RefeicaoView from "../views/refeicaoView.js";
+import CalendarioController from "./calendarioController.js";
 
 class RefeicaoController {
     private refeicaoView = new RefeicaoView()
@@ -35,8 +38,33 @@ class RefeicaoController {
 
                 this.listaTiposItem[i].addEventListener("click", (e) => {
                     e.stopPropagation
-                    this.refeicaoView.selecionaItem(e.currentTarget as HTMLElement)
+                    var elementoClicado = e.currentTarget as HTMLElement
+                    this.refeicaoView.selecionaItem(elementoClicado)
                     this.refeicaoView.toggleListaDeTipos()
+
+                    // Ao clicar no tipo da refeição, retorna refeição do banco de dados
+                    var refeicao = NutryoFetch.retornaRefeicao(
+                        CalendarioController.dataSelecionada,
+                        elementoClicado.parentElement?.parentElement?.getAttribute("value") as string
+                    )
+
+                    // Se houver retorno do banco, apenas troca o tipo da refeição.
+                    if (refeicao){
+                        refeicao.tipo = elementoClicado.textContent
+                        // Aqui vai precisar salvar
+                    }
+                    // Se não houver retorno do banco, significa que refeição não existe, e precisa ser criada.
+                    else{
+                        
+                        diaObjeto.gerarRefeicao(
+                           Number(elementoClicado.parentElement?.parentElement?.getAttribute("value") as string), 
+                            elementoClicado.textContent,
+                            []
+                        )
+                    }
+                    // console.log("#RefeicaoController - Nova refeição criada")
+                    // console.log(diaObjeto.diasSalvos)
+                    // console.log(elementoClicado.textContent)
                 })
 
             }

@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const alimentoSchema = new mongoose.Schema({
     _id: { type: String, required: true },        // id do alimento dentro da refeição
     alimento: { type: String, required: true },
+    peso: { type: String, required: true },
     calorias: { type: Number, required: true },
     proteinas: { type: Number, required: true },
     carboidratos: { type: Number, required: true },

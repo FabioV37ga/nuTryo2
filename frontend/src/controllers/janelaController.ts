@@ -3,7 +3,7 @@ import JanelaView from "../views/janelaView.js";
 import AlimentoController from "./alimentoController.js";
 
 class JanelaController {
-    private janelaView = new JanelaView();
+    janelaView = new JanelaView();
     protected abasSelecionaveis: NodeListOf<Element>
     protected itemRefeicao: NodeListOf<Element>
     protected closeRefeicao: NodeListOf<Element>

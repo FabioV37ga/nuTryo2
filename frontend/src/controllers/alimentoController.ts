@@ -3,6 +3,7 @@ import { backend } from "../utils/connection.js";
 import CalendarioController from "./calendarioController.js";
 import JanelaController from "./janelaController.js";
 import NutryoFetch from "../utils/nutryoFetch.js";
+import diaObjeto from "../utils/diaObjeto.js";
 
 class AlimentoController extends JanelaController {
     static AlimentoControllerSearchInterval: any
@@ -32,8 +33,16 @@ class AlimentoController extends JanelaController {
             this.botaoAdicionarAlimento.addEventListener("click", (e) => {
                 e.stopPropagation
 
+                // Id
+                var alimentos = document.querySelectorAll(".alimento-item")
+                var proximoID = 1;
+                if (alimentos.length > 1) {
+                    proximoID = parseInt(alimentos[alimentos.length - 1].getAttribute("value") as string) + 1
+                    // console.log(proximoID)
+                }
+
                 // Adiciona alimento
-                AlimentoView.adicionarAlimento(CalendarioController.dataSelecionada, "1")
+                AlimentoView.adicionarAlimento(CalendarioController.dataSelecionada, String(proximoID))
 
                 // Adiciona elementos criados nos atributos
                 this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento")
@@ -54,9 +63,37 @@ class AlimentoController extends JanelaController {
                 // Adiciona evento de click
                 this.botaoEditarAlimento[i].addEventListener("click", (e) => {
                     e.stopPropagation
-
                     // Abre a janela de edição referente ao alimento clicado
                     var elementoClicado = e.currentTarget as Element
+
+                    // Salva edições no alimento, se campos preenchidos.
+                    if (elementoClicado.children[0].classList.contains("fa-bookmark")) {
+                        // console.log("clicar agora deveria salvar")
+                        // console.log(elementoClicado.parentElement?.getAttribute("value"))
+                        var valores = this.retornaValoresInseridos(elementoClicado as HTMLFormElement) as any
+                        if (valores != false) {
+                            var busca = new NutryoFetch(diaObjeto.usuario)
+
+
+                            var intervalo = setInterval(() => {
+                                if (NutryoFetch.status == 1) {
+                                    var refeicaoAtual: any = document.querySelector(".refeicao-tipo")?.getAttribute("value") as string
+
+                                    diaObjeto.gerarAlimento(
+                                        refeicaoAtual,
+                                        elementoClicado.parentElement?.getAttribute("value") as string,
+                                        valores.nome,
+                                        valores.peso,
+                                        valores.calorias,
+                                        valores.proteinas,
+                                        valores.carboidratos,
+                                        valores.gorduras
+                                    )
+                                    clearInterval(intervalo)
+                                }
+                            }, 1);
+                        }
+                    }
                     this.alimentoView.toggleJanelaDeEdicao(elementoClicado.parentElement?.children[3] as Element)
                 })
             }
@@ -73,7 +110,13 @@ class AlimentoController extends JanelaController {
                     // Apaga alimento
                     var elementoClicado = e.currentTarget as Element
                     elementoClicado = elementoClicado.parentElement as Element
-                    this.alimentoView.apagarAlimento(elementoClicado as Element)
+
+                    var refeicao = document.querySelector(".refeicao-tipo") as HTMLElement
+                    diaObjeto.apagarAlimento(
+                        refeicao.getAttribute("value") as string,
+                        elementoClicado.getAttribute("value") as string)
+
+                    AlimentoView.apagarAlimento(elementoClicado as Element)
                 })
             }
 
@@ -142,40 +185,32 @@ class AlimentoController extends JanelaController {
         }
 
         // # Clicar na aba "REFEIÇÕES" apaga os alimentos das outras abas
-        var abaRefeicoes = document.querySelectorAll(".aba")[1]
+        // var abaRefeicoes = document.querySelectorAll(".aba")[1]
 
-        if (!abaRefeicoes.classList.contains("hasDeleteEvent")) {
-            abaRefeicoes.classList.add("hasDeleteEvent")
+        // if (!abaRefeicoes.classList.contains("hasDeleteEvent")) {
+        //     abaRefeicoes.classList.add("hasDeleteEvent")
 
-            abaRefeicoes.addEventListener("click", () => {
-                var itensDeAlimento = document.querySelectorAll(".alimento-item")
+        //     abaRefeicoes.addEventListener("click", () => {
+        //         var itensDeAlimento = document.querySelectorAll(".alimento-item")
 
-                for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
-                    this.alimentoView.apagarAlimento(itensDeAlimento[i])
-                }
-            })
-        }
+        //         for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
+        //             this.alimentoView.apagarAlimento(itensDeAlimento[i])
+        //         }
+        //     })
+        // }
 
         // # Clicar na aba de algum elemento cria elementos de alimento referente a aba
-        var abasDeAlimento = document.querySelectorAll(".refeicao-aba")
+        var abasDeAlimento = document.querySelectorAll(".refeicao-aba") as NodeListOf<HTMLElement>
 
         for (let i = 0; i <= abasDeAlimento.length - 1; i++) {
             if (!abasDeAlimento[i].classList.contains("hasCreateEvent")) {
                 abasDeAlimento[i].classList.add("hasCreateEvent")
                 abasDeAlimento[i].addEventListener("click", () => {
-                    console.log(NutryoFetch.objects)
-                    for (let dia = 0; dia <= NutryoFetch.objects.length - 1; dia++) {
-                        if (CalendarioController.dataSelecionada == NutryoFetch.objects[dia]._id) {
-                            for (let refeicao = 0; refeicao <= NutryoFetch.objects[dia].refeicoes.length - 1; refeicao++) {
-                                if (abasDeAlimento[i].getAttribute("value") == NutryoFetch.objects[dia].refeicoes[refeicao]._id) {
-                                    for(let alimento = 0; alimento <= NutryoFetch.objects[dia].refeicoes[refeicao].alimentos.length-1; alimento++){
-                                        this.criarElementosDeAlimento(NutryoFetch.objects[dia].refeicoes[refeicao].alimentos[alimento])
-                                        console.log(NutryoFetch.objects[dia].refeicoes[refeicao].alimentos[alimento])
-                                    }
-                                }
-                            }
-                        }
-                    }
+
+                    var alimentos = NutryoFetch.retornaAlimentosDaRefeicao(CalendarioController.dataSelecionada, abasDeAlimento[i].getAttribute("value") as string)
+                    // for (let alimento = 0; alimento <= alimentos.length - 1; alimento++) {
+                    //     this.criarElementosDeAlimento(alimentos[alimento])
+                    // }
                 })
 
             }
@@ -206,7 +241,7 @@ class AlimentoController extends JanelaController {
     private pesquisaComDelay(elemento: Element) {
         clearInterval(AlimentoController.AlimentoControllerSearchInterval)
         AlimentoController.AlimentoControllerSearchInterval = setInterval(() => {
-            console.log("Toc")
+            // console.log("Toc")
             this.pesquisa(elemento)
             clearInterval(AlimentoController.AlimentoControllerSearchInterval)
         }, 300);
@@ -227,7 +262,7 @@ class AlimentoController extends JanelaController {
             })
             const dados = await resposta.json()
             if (dados) {
-                console.log(dados)
+                // console.log(dados)
                 this.alimentoView.mostraResultadosNaLista(dados, elemento)
             }
         } else {
@@ -236,7 +271,7 @@ class AlimentoController extends JanelaController {
     }
 
     private async selecionaItemPesquisado(elemento: Element) {
-        console.log(backend + "/alimentos/" + elemento.getAttribute("value"))
+        // console.log(backend + "/alimentos/" + elemento.getAttribute("value"))
 
         var calorias;
         var proteinas;
@@ -253,7 +288,7 @@ class AlimentoController extends JanelaController {
 
             const alimentoSelecionado = await alimentoSelecionadoFetch.json()
 
-            console.log(typeof (alimentoSelecionado.calorias))
+            // console.log(typeof (alimentoSelecionado.calorias))
 
             calorias = await parseFloat(alimentoSelecionado.calorias).toFixed(2)
             proteinas = await parseFloat(alimentoSelecionado.proteinas).toFixed(2)
@@ -302,6 +337,36 @@ class AlimentoController extends JanelaController {
             gorduras: gordurasConsumidas,
             carbo: carboConsumidos
         }
+    }
+
+    private retornaValoresInseridos(alimento: any) {
+        // console.log(alimento)
+
+        var janela = alimento.parentElement?.children[3]
+        var consumo = janela.children[0]
+        var macros = janela.children[1]
+
+        var nome = consumo.children[0].children[1].children[0].value
+        var peso = consumo.children[1].children[1].children[0].value
+
+        var calorias = macros.children[0].children[1].textContent
+        var proteinas = macros.children[1].children[1].textContent
+        var carboidratos = macros.children[2].children[1].textContent
+        var gorduras = macros.children[3].children[1].textContent
+
+        if (nome && peso && calorias && proteinas && carboidratos && gorduras) {
+            return {
+                nome: nome,
+                peso: peso,
+                calorias: calorias,
+                proteinas: proteinas,
+                carboidratos: carboidratos,
+                gorduras: gorduras
+            }
+        } else {
+            return false
+        }
+
     }
 }
 

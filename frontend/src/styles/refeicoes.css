@@ -39,29 +39,48 @@
 .botao-apagar-refeicao {
     display: flex;
     align-items: center;
-    justify-content: center;;
+    justify-content: center;
+    ;
     height: 100%;
     width: 70px;
     cursor: pointer;
 }
 
-.botao-editar-refeicao{
+.botao-editar-refeicao {
     border-right: 3px solid var(--pinkWhite);
     font-size: 25px;
 }
 
-.botao-adicionar-refeicao{
+.botao-adicionar-refeicao {
     border-right: 3px solid var(--pinkWhite);
     font-size: 40px;
 }
 
-.botao-apagar-refeicao{
+.botao-apagar-refeicao {
     font-size: 30px;
     border-left: 3px solid var(--pinkWhite)
 }
 
-.refeicao-list-label{
+.refeicao-list-label {
     margin-left: 12px;
     font-size: 18px;
     width: 517px;
+}
+
+.salvar-refeicao {
+    width: 137px;
+    height: 65px;
+    background: var(--lightBlue);
+    margin-left: 49px;
+    border-radius: 6px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+
+}
+
+span.refeicao-list-label-add {
+    margin-left: 14px;
 }

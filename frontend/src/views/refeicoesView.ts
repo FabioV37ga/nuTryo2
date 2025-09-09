@@ -3,21 +3,21 @@ declare var $: any;
 import JanelaView from "./janelaView.js";
 
 class RefeicoesView extends JanelaView {
-    private static _id: number = 1
+    static _id: number = 1
     id: number
     constructor() {
         super()
     }
 
     adicionarRefeicao(refeicao?: any) {
-
         this.id = RefeicoesView._id
         RefeicoesView._id += 1
+
         var tipo: string = "";
         var stringAlimentos: string = "";
 
         if (refeicao) {
-            console.log(refeicao)
+            // console.log(refeicao)
 
             tipo = refeicao.tipo ? refeicao.tipo : ""
             var alimentos = refeicao.alimentos
@@ -51,6 +51,13 @@ class RefeicoesView extends JanelaView {
     }
 
     removerRefeicao(refeicao: Element) {
+        var idApagado: number = parseInt(refeicao.getAttribute("value") as string)
+        var elementosRestantes = document.querySelectorAll(".refeicao.hasEvent")
+        if (elementosRestantes) {
+            for (let i = idApagado; i <= elementosRestantes.length - 1; i++) {
+                elementosRestantes[i].setAttribute("value", String(parseInt(elementosRestantes[i].getAttribute("value") as string) - 1))
+            }
+        }
         refeicao.remove()
     }
     log() {

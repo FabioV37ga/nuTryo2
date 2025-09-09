@@ -1,3 +1,5 @@
+import AlimentoController from "../controllers/alimentoController.js"
+
 declare var $: any
 
 class AlimentoView {
@@ -12,7 +14,7 @@ class AlimentoView {
         gorduras?: string,
         carbos?: string) {
         const elemento: string =
-            `<div class="alimento-item ${data ? "alimento_" + data.replace("/", "-").replace("/", "-") + "_" + id : ""}">
+            `<div class="alimento-item" value="${id ? id : ""}">
                 <a class="botao-editar-alimento">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
@@ -109,15 +111,25 @@ class AlimentoView {
             `
 
         $(".alimentos-adicionados").append(elemento)
+        // var alimentoController = new AlimentoController()
+        // alimentoController.adicionarEventosDeClick()
     }
 
-    apagarAlimento(elemento: Element) {
-        console.log("apagando elemento:")
-        console.log(elemento)
+    static apagarAlimento(elemento: Element) {
+        var idApagado: number = parseInt(elemento.getAttribute("value") as string)
+        var elementosRestantes = document.querySelectorAll(".alimento-item")
+        // console.log("apagando elemento:")
+        // console.log(elemento)
         if (elemento.classList.contains("editando")) {
             elemento.classList.remove("editando")
         }
+        if (elementosRestantes) {
+            for (let i = idApagado; i <= elementosRestantes.length - 1; i++) {
+                elementosRestantes[i].setAttribute("value", String(parseInt(elementosRestantes[i].getAttribute("value") as string) - 1))
+            }
+        }
         elemento.remove()
+
     }
 
     toggleJanelaDeEdicao(botao: Element) {
@@ -154,13 +166,13 @@ class AlimentoView {
 
     mostraResultadosNaLista(dados: object[] | any, elemento: Element) {
 
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!")
-        console.log(elemento.parentElement?.parentElement?.children[2])
+        // console.log("!!!!!!!!!!!!!!!!!!!!!!!")
+        // console.log(elemento.parentElement?.parentElement?.children[2])
         const lista = elemento.parentElement?.parentElement?.children[2] as HTMLElement;
         var resultadoItens: Array<HTMLElement> = [];
 
         for (let i = 0; i <= 14; i++) {
-            console.log(lista.children[i])
+            // console.log(lista.children[i])
             resultadoItens.push(lista.children[i] as HTMLElement)
         }
 
@@ -168,25 +180,26 @@ class AlimentoView {
         this.escondeResultadosNaLista(lista)
 
         lista.style.display = 'flex'
-
         for (let i = 0; i <= 14; i++) {
-            // Separa dados a serem impressos na lista
-            var dado = dados[i]
-            var id = dado.id
-            var calorias = dado.calorias
-            var proteinas = dado.proteinas
+                // Separa dados a serem impressos na lista
+                var dado = dados[i]
+                if (dado){
+                    var id = dado.id
+                    var calorias = dado.calorias
+                    var proteinas = dado.proteinas
+    
+                    // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
+                    var textoFormatado = `${dados[i].nome}`
+    
+                    resultadoItens[i].style.display = 'initial'
+                    resultadoItens[i].textContent = textoFormatado
+                    resultadoItens[i].setAttribute("value", id)
+                }
 
-            // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
-            var textoFormatado = `${dados[i].nome}`
-
-            resultadoItens[i].style.display = 'initial'
-            resultadoItens[i].textContent = textoFormatado
-            resultadoItens[i].setAttribute("value", id)
-
-            if (dados.length - 1 == i) {
-                return
+                if (dados.length - 1 == i) {
+                    return
+                }
             }
-        }
 
         function formataDado(dado: number) {
             return parseInt(dado.toFixed(0))
@@ -194,8 +207,8 @@ class AlimentoView {
     }
 
     selecionaItemAlimento(elemento: HTMLFormElement) {
-        console.log(elemento.textContent)
-        console.log(elemento.parentElement?.parentElement?.children[1].children[0])
+        // console.log(elemento.textContent)
+        // console.log(elemento.parentElement?.parentElement?.children[1].children[0])
         var texto = elemento.parentElement?.parentElement?.children[1].children[0] as HTMLFormElement
         texto.value = elemento.textContent
     }
@@ -205,7 +218,7 @@ class AlimentoView {
         var resultadoItens: Array<HTMLElement> = [];
 
         for (let i = 0; i <= 14; i++) {
-            console.log(lista.children[i])
+            // console.log(lista.children[i])
             resultadoItens.push(lista.children[i] as HTMLElement)
         }
 
@@ -219,8 +232,8 @@ class AlimentoView {
     }
 
     preencheMacros(elemento: Element, calorias: string, proteinas: string, gorduras: string, carboidratos: string) {
-        console.log(elemento)
-        console.log(`Calorias: ${calorias}kcal, Proteinas: ${proteinas}g, Gorduras: ${gorduras}g, Carbos: ${carboidratos}g`)
+        // console.log(elemento)
+        // console.log(`Calorias: ${calorias}kcal, Proteinas: ${proteinas}g, Gorduras: ${gorduras}g, Carbos: ${carboidratos}g`)
         var campoCalorias = elemento.children[0].children[1]
         var campoProteinas = elemento.children[1].children[1]
         var campoCarbo = elemento.children[2].children[1]

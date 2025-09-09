@@ -1,3 +1,4 @@
+import diaObjeto from "../utils/diaObjeto.js";
 import NutryoFetch from "../utils/nutryoFetch.js";
 import AlimentoView from "../views/alimentoView.js";
 import RefeicoesView from "../views/refeicoesView.js"
@@ -35,26 +36,14 @@ class RefeicoesController extends JanelaController {
 
                     this.refeicoesView.selecionaAba(abaCriada);
 
-                    console.log(this.refeicoesNaJanela)
-                    for (let ref = 0; ref <= this.refeicoesNaJanela.length - 1; ref++) {
-                        // console.log(this.refeicoesNaJanela[ref]._id)
-                        if (this.refeicoesNaJanela[ref]._id == elementoClicado.parentElement?.getAttribute("value")) {
-                            // console.log(this.refeicoesNaJanela[ref].alimentos[0])
-                            for (let ali = 0; ali <= this.refeicoesNaJanela[ref].alimentos.length - 1; ali++) {
-                                var alimentoController: AlimentoController = new AlimentoController()
-                                alimentoController.criarElementosDeAlimento(this.refeicoesNaJanela[ref].alimentos[ali])
-                                // alimentoController.adicionarEventosDeClick()
-                            }
-                            // for (let ali = 0; ali <= this.refeicoesNaJanela[ref].alimentos.length - 1; ali++) {
-                            //     this.criarElementosDeAlimento(this.refeicoesNaJanela[ref].alimento[ali])
-                            // }
-                        }
-                    }
+                    var tipo = document.querySelector(".refeicao-tipo") as HTMLElement
+                    tipo.setAttribute("value", String(id))
+
                     this.adicionaEventosDeClick()
                     super.adicionaEventosDeClick()
                 })
 
-                
+
 
                 this.itemRefeicao[i].children[2].addEventListener("click", (e) => {
                     var item = e.currentTarget as Element
@@ -75,12 +64,19 @@ class RefeicoesController extends JanelaController {
             }
         }
 
-
-
         this.botaoAdicionarRefeicao = document.querySelector(".botao-adicionar-refeicao") as Element
         if (!this.botaoAdicionarRefeicao.classList.contains("hasEvent")) {
             this.botaoAdicionarRefeicao.classList.add("hasEvent")
             this.botaoAdicionarRefeicao.addEventListener("click", () => {
+
+                var alimentos = document.querySelector(".alimentos") as HTMLElement
+                alimentos.style.display = "none"
+                var tipo = document.querySelector(".refeicao-tipo") as HTMLElement
+                tipo.children[1].children[0].textContent = "Selecione o tipo"
+                
+                var itens = document.querySelectorAll(".refeicao") as NodeListOf<HTMLElement>
+                RefeicoesView._id = parseInt(itens[itens.length - 1].getAttribute("value") as string) + 1
+                tipo.setAttribute("value", String(RefeicoesView._id))
                 this.refeicoesView.adicionarRefeicao()
                 this.adicionaEventosDeClick()
             })
@@ -95,37 +91,30 @@ class RefeicoesController extends JanelaController {
             refeicoesNoDOM[refeicaoDOM].remove()
         }
 
-        var refeicoesDoUsuario = NutryoFetch.objects
+        // var nutryoFetch = new NutryoFetch(diaObjeto.usuario)
 
-        for (let i = 0; i <= refeicoesDoUsuario.length - 1; i++) {
-
-            if (data == refeicoesDoUsuario[i]._id) {
-
-                // Refeições → alimentos
-                for (var refeicao = 0; refeicao <= refeicoesDoUsuario[i].refeicoes.length - 1; refeicao++) {
-
-                    // Cria elementos de refeições
-                    // console.log(`A refeição ${refeicao} tem os seguintes alimentos:`)
-                    this.refeicoesNaJanela.push(refeicoesDoUsuario[i].refeicoes[refeicao])
-                    this.criarElementosDeRefeicao(refeicoesDoUsuario[i].refeicoes[refeicao])
-
-                    for (var alimento = 0; alimento <= refeicoesDoUsuario[i].refeicoes[refeicao].alimentos.length - 1; alimento++) {
-
-                        // var alimentoAtual = refeicoesDoUsuario[i].refeicoes[refeicao].alimentos[alimento]
-                        // Cria elementos de alimentos
-                        // this.criarElementosDeAlimento(refeicao)
-                        // console.log(`Alimento ${alimento}:`)
-                        // console.log(alimentoAtual[alimento])
-                        // console.log(refeicoesDoUsuario[i].refeicoes[refeicao])
+        var intervalo = setInterval(() => {
+     
+            if (NutryoFetch.status == 1){
+                var refeicoesDoDia = NutryoFetch.retornaRefeicoesDoDia(data) as any[]
+                // console.log("aqui")
+                // console.log(refeicoesDoDia)
+                if (refeicoesDoDia){
+                    for (let refeicao = 0; refeicao <= refeicoesDoDia.length - 1; refeicao++) {
+                        this.criarElementosDeRefeicao(refeicoesDoDia[refeicao])
                     }
                 }
-                // console.log(i)
-                return
+                clearInterval(intervalo)
             }
-        }
+        }, 1);
+
+
     }
 
     criarElementosDeRefeicao(refeicao: any) {
+        // RefeicoesView._id = 1;
+        // console.log("Caiu aqui. Adicionar refeicao:")
+        // console.log(refeicao)
         this.refeicoesView.adicionarRefeicao(refeicao)
         this.adicionaEventosDeClick()
     }

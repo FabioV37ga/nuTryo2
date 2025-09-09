@@ -39,7 +39,8 @@
                     <form>
                         <input type="email" class="register-email" placeholder="Email" autocomplete="email">
                         <input type="text" class="register-usuario" placeholder="Novo usuário" autocomplete="name">
-                        <input type="password" class="register-senha" placeholder="Nova senha" autocomplete="new-password">
+                        <input type="password" class="register-senha" placeholder="Nova senha"
+                            autocomplete="new-password">
                     </form>
                 </div>
                 <span class="registro-erro auth-erro" style="display: none"></span>
@@ -148,7 +149,7 @@
                 <div class="lista-de-refeicoes">
                     <div class="refeicao model-refeicao" value="0">
                         <a class="botao-adicionar-refeicao">+</a>
-                        <span class="refeicao-list-label">Adicionar refeição</span>
+                        <span class="refeicao-list-label-add">Adicionar refeição</span>
                     </div>
                     <!-- Elementos criados dinamicamente -->
                     <!-- <div class="refeicao" value="1">
@@ -172,7 +173,7 @@
                         tipo
                     </div>
                     <div class="refeicao-tipo-tipoSelecionado">
-                        <span class="refeicao-tipo-tipoSelecionado-label">Lanche da Tarde</span>
+                        <span class="refeicao-tipo-tipoSelecionado-label">Selecione o tipo</span>
                         <span class="refeicao-tipo-list-expandIcon">
                             <i class="fa fa-caret-down" aria-hidden="true"></i>
                         </span>
@@ -187,8 +188,12 @@
                     </ul>
                 </div>
 
+                <!-- <div class="salvar-refeicao">
+                    salvar
+                </div> -->
+
                 <!-- Sessão de alimentos -->
-                <section class="alimentos">
+                <section class="alimentos" style="display: none">
                     <div class="alimentos-titulo">Alimentos</div>
                     <div class="alimentos-divisor"></div>
 
