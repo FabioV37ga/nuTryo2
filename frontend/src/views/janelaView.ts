@@ -1,5 +1,6 @@
 import AlimentoController from "../controllers/alimentoController.js";
 import CalendarioController from "../controllers/calendarioController.js";
+import RefeicoesController from "../controllers/refeicoesController.js";
 import diaObjeto from "../utils/diaObjeto.js";
 import NutryoFetch from "../utils/nutryoFetch.js";
 import AlimentoView from "./alimentoView.js";
@@ -63,15 +64,24 @@ class JanelaView {
         // Seleciona a aba chamada como argumento
         aba.classList.add("abaSelecionada")
 
+        var nutryoFetch = new NutryoFetch(diaObjeto.usuario)
 
         var itensDeAlimento = document.querySelectorAll(".alimento-item")
         for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
             AlimentoView.apagarAlimento(itensDeAlimento[i])
         }
-        // Mostra conteudo da aba (Entre aba refeições e abas refeição)
+
+        // #Mostra conteudo da aba (Entre aba refeições e abas refeição)
+
+        // Aba refeições (referente a janela com as refeições de um dia)
         if (aba.classList.contains("abaRefeicoes")) {
             RefeicoesView._id = 1;
+
             this.mostrarConteudoAba("refeicoes")
+
+            var refeicoesController = new RefeicoesController()
+            refeicoesController.criarElementosDoDia(CalendarioController.dataSelecionada)
+
             // criar elementos
             if (itensDeAlimento)
                 for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
@@ -79,13 +89,15 @@ class JanelaView {
                 }
 
         }
+
+        // Aba alimentos (referente a janela de alimentos dentro de uma refeição)
         else {
             this.mostrarConteudoAba("refeicao")
 
-            var nutryoFetch = new NutryoFetch(diaObjeto.usuario)
-
             var intervalo = setInterval(() => {
+
                 if (NutryoFetch.status == 1) {
+
                     if (itensDeAlimento)
                         for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
                             AlimentoView.apagarAlimento(itensDeAlimento[i])
@@ -96,15 +108,18 @@ class JanelaView {
                     var refeicao = NutryoFetch.retornaRefeicao(CalendarioController.dataSelecionada, aba.getAttribute("value") as string)
 
                     if (alimentos) {
+
                         for (let i = 0; i <= alimentos.length - 1; i++) {
                             alimentoController.criarElementosDeAlimento(alimentos[i])
                         }
+
                         if (refeicao) {
                             var listlabel = document.querySelector(".refeicao-tipo-tipoSelecionado-label") as HTMLElement
                             listlabel.textContent = refeicao.tipo
                             var alimentosAdicionados = document.querySelector(".alimentos") as HTMLElement
                             alimentosAdicionados.style.display = "flex"
                         }
+
                     }
                     clearInterval(intervalo)
                 }
@@ -123,7 +138,6 @@ class JanelaView {
 
     apagaTodasAbas() {
         var abas = document.querySelectorAll(".abaSelecionavel")
-
         for (let i = 1; i <= abas.length - 1; i++) {
             abas[i].remove()
         }
@@ -134,12 +148,16 @@ class JanelaView {
         const conteudoRefeicao = document.querySelector(".refeicao-conteudo") as HTMLElement
         switch (tipo) {
             case "refeicoes":
+
                 conteudoRefeicao.style.display = "none"
                 conteudoRefeicoes.style.display = "flex"
+
                 break;
             case "refeicao":
+
                 conteudoRefeicoes.style.display = "none"
                 conteudoRefeicao.style.display = "flex"
+
                 break;
         }
     }

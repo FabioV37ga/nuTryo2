@@ -60,18 +60,6 @@ class RefeicoesController extends JanelaController {
             }
         }
 
-        // # Cria elementos de refeição ao clicar no dia do calendário
-        var dias = document.querySelectorAll(".dia")
-        for (let i = 0; i <= dias.length - 1; i++) {
-            if (!dias[i].classList.contains("hasWindowEvent")) {
-                dias[i].classList.add("hasWindowEvent")
-
-                dias[i].addEventListener("click", () => {
-                    this.criarElementosDoDia(CalendarioController.dataSelecionada)
-                })
-            }
-        }
-
         this.botaoAdicionarRefeicao = document.querySelector(".botao-adicionar-refeicao") as Element
         if (!this.botaoAdicionarRefeicao.classList.contains("hasEvent")) {
             this.botaoAdicionarRefeicao.classList.add("hasEvent")
