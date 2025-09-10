@@ -19,7 +19,7 @@ class RefeicoesController extends JanelaController {
     protected adicionaEventosDeClick() {
         this.itemRefeicao = document.querySelectorAll(".refeicao")
 
-        // Abre uma janela ao clicar em adicionar, ou editar uma refeição
+        // Abre uma janela ao clicar em adicionar, editar ou remover uma refeição
         for (let i = 1; i <= this.itemRefeicao.length - 1; i++) {
             if (!this.itemRefeicao[i].classList.contains("hasEvent")) {
                 this.itemRefeicao[i].classList.add("hasEvent")
@@ -44,10 +44,19 @@ class RefeicoesController extends JanelaController {
                 })
 
 
-
+                // remover
                 this.itemRefeicao[i].children[2].addEventListener("click", (e) => {
+
                     var item = e.currentTarget as Element
+                    
+                    var refeicao:string = item.parentElement?.getAttribute("value") as string
+                    console.log()
+                    diaObjeto.apagarRefeicao(
+                        item.parentElement?.getAttribute("value") as string
+                    )
+                    
                     this.refeicoesView.removerRefeicao(item.parentElement as Element)
+                    
                 })
             }
         }

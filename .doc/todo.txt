@@ -1,9 +1,8 @@
-1. Selecionar o tipo dinamicamente para anotações que ja existem
+criar uma refeição e adicionar um alimento nela não cria um elemento refeição 
+- adicionar eventos ao selecionar janela refeições
 
-2. Salvar em objeto alterações em um dia
-	- tipo
-	- Refeições
-	- Alimentos das refeições
+criar um alimento não adiciona o nome do alimento ao alimento criado
+- front
 
-
+selecionar o tipo de uma refeição não troca o titulo da aba para o tipo da refeição
 

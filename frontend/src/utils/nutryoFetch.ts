@@ -25,6 +25,7 @@ class NutryoFetch {
             
             })
             const data = await resposta.json()
+            console.log(data)
             NutryoFetch.objects = data
             diaObjeto.diasSalvos = data
 

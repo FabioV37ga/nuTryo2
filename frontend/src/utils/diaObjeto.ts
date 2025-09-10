@@ -90,7 +90,7 @@ class diaObjeto {
         diaObjeto.refeicoes = []
         diaObjeto.alimentos = []
         var objeto = {
-            _id: id,
+            _id: id + 1,
             tipo: tipo,
             alimentos: alimentos
         }
@@ -154,6 +154,35 @@ class diaObjeto {
         diaObjeto.postarOuEditar()
     }
 
+    static apagarRefeicao(refeicao: string) {
+        var refeicoes = diaObjeto.dia.refeicoes
+        // console.log(refeicoes)
+        var refeicoesFinais: any[] = []
+
+        for (let i = 0; i <= refeicoes.length - 1; i++) {
+            if (
+                Number(refeicoes[i]._id) != Number(refeicao)
+            ) {
+                refeicoesFinais.push(refeicoes[i])
+            }
+        }
+
+        for (let i = 0; i <= refeicoesFinais.length - 1; i++) {
+            if (Number(refeicoesFinais[i]._id) > Number(refeicao)) {
+                refeicoesFinais[i]._id = String(Number(refeicoesFinais[i]._id) - 1)
+            }
+        }
+
+        console.log(refeicoesFinais)
+
+        diaObjeto.dia.refeicoes = refeicoesFinais
+
+        console.log("#diaObjeto - refeição removida")
+        console.log(diaObjeto.dia)
+
+        diaObjeto.postarOuEditar()
+    }
+
     static reiniciar() {
         diaObjeto.dia = {}
         diaObjeto.refeicoes = []
@@ -172,10 +201,11 @@ class diaObjeto {
     static postarOuEditar() {
         for (let i = 0; i <= diaObjeto.diasSalvos.length - 1; i++) {
             if (diaObjeto.dia._id == diaObjeto.diasSalvos[i]._id) {
-                return diaObjeto.editarDiaBanco()
+                diaObjeto.editarDiaBanco()
+                return
             }
         }
-        return diaObjeto.postarDiaBanco()
+        diaObjeto.postarDiaBanco()
     }
     static editarDiaBanco() {
         console.log("Já existe, não postar, editar.")
