@@ -1,3 +1,7 @@
+# Pré requisitos
+- 1. Node Package Manager
+- 2. Database no `cloud.mongodb.com` com collections `refeicoes` e `usuarios`
+
 # Instalando:
 - 1. Clone o repositorio com `git clone https://github.com/FabioV37ga/nuTryo2`
 - 2. Instale dependências com `npm install`
