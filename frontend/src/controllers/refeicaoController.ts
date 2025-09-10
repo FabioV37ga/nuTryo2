@@ -64,7 +64,8 @@ class RefeicaoController {
                         )
                     }
 
-                    this.refeicaoView.trocaTipo(refeicao._id, elementoClicado.textContent)
+                    var refeicaoAtual = document.querySelector(".abaSelecionada")?.getAttribute("value") as string
+                    this.refeicaoView.trocaTipo(refeicaoAtual, elementoClicado.textContent)
                     // console.log("#RefeicaoController - Nova refeição criada")
                     // console.log(diaObjeto.diasSalvos)
                     // console.log(elementoClicado.textContent)

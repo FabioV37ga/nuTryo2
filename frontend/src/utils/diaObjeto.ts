@@ -90,7 +90,7 @@ class diaObjeto {
         diaObjeto.refeicoes = []
         diaObjeto.alimentos = []
         var objeto = {
-            _id: id + 1,
+            _id: id,
             tipo: tipo,
             alimentos: alimentos
         }
