@@ -1,8 +1,3 @@
-criar uma refeição e adicionar um alimento nela não cria um elemento refeição 
-- adicionar eventos ao selecionar janela refeições
+-----------------
 
-criar um alimento não adiciona o nome do alimento ao alimento criado
-- front
-
-selecionar o tipo de uma refeição não troca o titulo da aba para o tipo da refeição
-
+desenvolver interface mobile

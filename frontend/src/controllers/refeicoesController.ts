@@ -49,8 +49,7 @@ class RefeicoesController extends JanelaController {
 
                     var item = e.currentTarget as Element
                     
-                    var refeicao:string = item.parentElement?.getAttribute("value") as string
-                    console.log()
+                    // var refeicao:string = item.parentElement?.getAttribute("v alue") as string
                     diaObjeto.apagarRefeicao(
                         item.parentElement?.getAttribute("value") as string
                     )

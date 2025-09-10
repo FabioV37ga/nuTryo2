@@ -74,7 +74,6 @@ class AlimentoController extends JanelaController {
                         if (valores != false) {
                             var busca = new NutryoFetch(diaObjeto.usuario)
 
-
                             var intervalo = setInterval(() => {
                                 if (NutryoFetch.status == 1) {
                                     var refeicaoAtual: any = document.querySelector(".refeicao-tipo")?.getAttribute("value") as string
@@ -89,6 +88,9 @@ class AlimentoController extends JanelaController {
                                         valores.carboidratos,
                                         valores.gorduras
                                     )
+
+                                    this.alimentoView.atualizarAlimento(elementoClicado.parentElement as Element, valores)
+
                                     clearInterval(intervalo)
                                 }
                             }, 1);

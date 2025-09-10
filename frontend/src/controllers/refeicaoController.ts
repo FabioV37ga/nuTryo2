@@ -50,7 +50,8 @@ class RefeicaoController {
 
                     // Se houver retorno do banco, apenas troca o tipo da refeição.
                     if (refeicao){
-                        refeicao.tipo = elementoClicado.textContent
+                        diaObjeto.editarTipoRefeicao(refeicao._id as string, elementoClicado.textContent)
+                        // refeicao.tipo = elementoClicado.textContent
                         // Aqui vai precisar salvar
                     }
                     // Se não houver retorno do banco, significa que refeição não existe, e precisa ser criada.
@@ -62,6 +63,8 @@ class RefeicaoController {
                             []
                         )
                     }
+
+                    this.refeicaoView.trocaTipo(refeicao._id, elementoClicado.textContent)
                     // console.log("#RefeicaoController - Nova refeição criada")
                     // console.log(diaObjeto.diasSalvos)
                     // console.log(elementoClicado.textContent)

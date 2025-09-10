@@ -18,7 +18,10 @@ class AlimentoView {
                 <a class="botao-editar-alimento">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
-                <span class="alimento-label">${nome ? nome : "..."}
+                <span class="alimento-label">
+                ${nome ? nome : "Novo alimento"}
+                ${peso ? " • " + peso + "g • " : ""}  
+                ${calorias ? calorias + "kcal" : ""}
                 </span>
                 <div class="botao-apagar-alimento">
                     <i class="fa fa-trash" aria-hidden="true"></i>
@@ -181,25 +184,25 @@ class AlimentoView {
 
         lista.style.display = 'flex'
         for (let i = 0; i <= 14; i++) {
-                // Separa dados a serem impressos na lista
-                var dado = dados[i]
-                if (dado){
-                    var id = dado.id
-                    var calorias = dado.calorias
-                    var proteinas = dado.proteinas
-    
-                    // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
-                    var textoFormatado = `${dados[i].nome}`
-    
-                    resultadoItens[i].style.display = 'initial'
-                    resultadoItens[i].textContent = textoFormatado
-                    resultadoItens[i].setAttribute("value", id)
-                }
+            // Separa dados a serem impressos na lista
+            var dado = dados[i]
+            if (dado) {
+                var id = dado.id
+                var calorias = dado.calorias
+                var proteinas = dado.proteinas
 
-                if (dados.length - 1 == i) {
-                    return
-                }
+                // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
+                var textoFormatado = `${dados[i].nome}`
+
+                resultadoItens[i].style.display = 'initial'
+                resultadoItens[i].textContent = textoFormatado
+                resultadoItens[i].setAttribute("value", id)
             }
+
+            if (dados.length - 1 == i) {
+                return
+            }
+        }
 
         function formataDado(dado: number) {
             return parseInt(dado.toFixed(0))
@@ -243,6 +246,14 @@ class AlimentoView {
         campoProteinas.textContent = proteinas
         campoGorduras.textContent = gorduras
         campoCarbo.textContent = carboidratos
+    }
+
+    atualizarAlimento(elemento: Element, dados: any) {
+        var titulo = elemento.children[1] as HTMLElement
+
+        var stringTitulo = `${dados.nome} • ${dados.peso}g • ${dados.calorias}kcal`
+
+        titulo.textContent = stringTitulo;
     }
 }
 

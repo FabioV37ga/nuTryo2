@@ -207,6 +207,7 @@ class diaObjeto {
         }
         diaObjeto.postarDiaBanco()
     }
+
     static async editarDiaBanco() {
         console.log("Já existe, não postar, editar.")
         try {
@@ -223,19 +224,25 @@ class diaObjeto {
         new NutryoFetch(diaObjeto.usuario)
     }
 
-    // static editarRefeicao(data: string, objeto: any) {
-    //     for (let i = 0; i <= diaObjeto.diasSalvos.length - 1.; i++)
-    //         if (diaObjeto.diasSalvos[i]._id = data) {
-    //             for (let refeicao = 0; i<= diaObjeto.diasSalvos[i]; refeicao++){
-    //                 if (diaObjeto.diasSalvos[i].refeicao[refeicao]._Id == objeto._id){
-    //                     diaObjeto.diasSalvos[i] = objeto
-    //                     console.log("33!")
-    //                     console.log(diaObjeto.diasSalvos[i])
-    //                     return
-    //                 }
-    //             }
-    //     }
-    // }
+    static editarTipoRefeicao(idRefeicao: string, novoTipo: string) {
+        // Seleciona refeicao a ser editada no banco
+        // Loop Dia
+
+        for (let refeicao = 0; refeicao <= diaObjeto.dia.refeicoes.length - 1; refeicao++) {
+            if (Number(diaObjeto.dia.refeicoes[refeicao]._id) == Number(idRefeicao)) {
+                console.log("editar refeicao")
+                console.log(diaObjeto.dia.refeicoes[refeicao])
+                diaObjeto.dia.refeicoes[refeicao].tipo = novoTipo
+                console.log("refeicao editada:")
+                console.log(diaObjeto.dia.refeicoes[refeicao])
+
+                diaObjeto.postarOuEditar()
+                return
+            }
+        }
+
+
+    }
 }
 
 export default diaObjeto

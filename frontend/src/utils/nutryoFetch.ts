@@ -61,7 +61,7 @@ class NutryoFetch {
         var refeicoes = NutryoFetch.retornaRefeicoesDoDia(data)
         if (refeicoes)
             for (let ref = 0; ref <= refeicoes.length - 1; ref++) {
-                if (refeicoes[ref]._id == refeicao) {
+                if (Number(refeicoes[ref]._id) == Number(refeicao)) {
                     return refeicoes[ref]
                 }
             }
