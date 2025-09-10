@@ -207,17 +207,20 @@ class diaObjeto {
         }
         diaObjeto.postarDiaBanco()
     }
-    static editarDiaBanco() {
+    static async editarDiaBanco() {
         console.log("Já existe, não postar, editar.")
-        const requisicao = fetch(`${backend}/refeicoes/${diaObjeto.usuario}/${diaObjeto.dia._id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(diaObjeto.dia)
+        try {
+            const requisicao = await fetch(`${backend}/refeicoes/${diaObjeto.usuario}/${diaObjeto.dia._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(diaObjeto.dia)
+            })
+        } catch (error) {
 
-
-        })
+        }
+        new NutryoFetch(diaObjeto.usuario)
     }
 
     // static editarRefeicao(data: string, objeto: any) {
