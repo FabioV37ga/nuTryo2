@@ -12,6 +12,9 @@
 - Sistema de registro
 - Tabela nutricional de +600 alimentos
 - Sistema de pesquisa de alimentos na tabela
+- Calculo automático de macronutrientes e valor nutricional
+- Envio de refeições e alimentos
+- Recebimento de refeições e alimentos
 
 # Tecnologias usadas:
 - TypeScript
@@ -30,6 +33,7 @@
 - 3. ~~Sistema de login e registro~~ ✅
 - 4. ~~Adicionar tabela de alimentos~~ ✅
 - 5. ~~Lógica para pesquisa de itens na tabela de alimentos~~ ✅
-- 6. Criar elementos referentes a itens existêntes no banco 
-- 7. Desenvolver sistema de objetos a serem enviados para o banco (referentes ao dia editado) 
-- 8. Trabalhar na responsividade para mobile 
+- 6. ~~Criar elementos referentes a itens existêntes no banco~~ ✅
+- 7. ~~Desenvolver sistema de objetos a serem enviados para o banco (referentes ao dia editado)~~ ✅
+- 8. ~~Completar fluxo de envio/recebimento de refeições e alimentos~~ ✅
+- 9. Trabalhar na responsividade para mobile 
