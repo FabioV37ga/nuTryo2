@@ -1,6 +1,7 @@
 # Instalando:
 - 1. Clone o repositorio com `git clone https://github.com/FabioV37ga/nuTryo2`
 - 2. Instale dependências com `npm install`
+- 3. Defina string de conexão `DB_CONNECTION_STRING` em `./.env` para o endereço do mongoDB
 - 3. Rode o front-end com `npm run start:front`
 - 4. Rode o back-end com `npm run start:back`
 
