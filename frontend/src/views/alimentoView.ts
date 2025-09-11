@@ -19,9 +19,12 @@ class AlimentoView {
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
                 <span class="alimento-label">
-                ${nome ? nome : "Novo alimento"}
-                ${peso ? " • " + peso + "g • " : ""}  
-                ${calorias ? calorias + "kcal" : ""}
+                <h1>${nome ? nome : "Novo alimento"}</h1>
+                ${peso ? peso + " g • " : ""}  
+                ${calorias ? calorias + " kcal • " : ""}
+                ${proteinas ? proteinas + " g proteínas •" : ""}
+                ${carbos ? carbos + " g carbos •" : ""}
+                ${gorduras ? gorduras + " g gorduras" : ""}
                 </span>
                 <div class="botao-apagar-alimento">
                     <i class="fa fa-trash" aria-hidden="true"></i>
@@ -251,9 +254,14 @@ class AlimentoView {
     atualizarAlimento(elemento: Element, dados: any) {
         var titulo = elemento.children[1] as HTMLElement
 
-        var stringTitulo = `${dados.nome} • ${dados.peso}g • ${dados.calorias}kcal`
+        var stringTitulo = `<h1>${dados.nome ? dados.nome : "Novo alimento"}</h1>
+                ${dados.peso ? dados.peso + " g • " : ""}  
+                ${dados.calorias ? dados.calorias + "kcal • " : ""}
+                ${dados.proteinas ? dados.proteinas + "g proteínas •" : ""}
+                ${dados.carbos ? dados.carbos + "g carbos •" : ""}
+                ${dados.gorduras ? dados.gorduras + "g gorduras" : ""}`
 
-        titulo.textContent = stringTitulo;
+        titulo.innerHTML = stringTitulo;
     }
 }
 

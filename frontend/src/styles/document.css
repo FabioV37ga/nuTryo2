@@ -5,7 +5,8 @@
     --highlightPinkWhite: #ebd8bb;
     --darkPinkWhite: #d3a57c14;
     --borderPinkWhite: rgb(247 226 194);
-    --backgroundBlue: #112f38
+    --backgroundBlue: #112f38;
+    --highlightTextBlue: rgb(23 94 126)
 }
 
 body {

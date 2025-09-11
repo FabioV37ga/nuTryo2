@@ -43,16 +43,24 @@
 
 .alimento-item {
     width: 90%;
-    height: 60px;
-    background: var(--lightBlue);
+    height: 80px;
+    /* background: var(--lightBlue); */
+    background: white;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
     border-radius: 10px;
     color: white;
     position: relative;
+    align-items: center;
     transition:
         border-radius .1s
+}
+
+.alimento-item:nth-child(1) {
+    background: var(--lightBlue);
+    height: 60px;
+    color: white;
 }
 
 .editando {
@@ -66,7 +74,7 @@
     }
 
     to {
-        margin-bottom: 170px;
+        margin-bottom: 250px;
     }
 }
 
@@ -81,22 +89,18 @@
     cursor: pointer;
 }
 
-.botao-editar-alimento,
-.botao-adicionar-alimento {
-    border-right: 2px solid var(--pinkWhite)
+.botao-editar-alimento {
+    color: var(--lightBlue);
+    font-size: 26px;
 }
 
 .botao-adicionar-alimento {
     font-size: 30px;
 }
 
-.botao-editar-alimento {
-    font-size: 26px;
-}
-
 .botao-apagar-alimento {
+    color: var(--lightBlue);
     font-size: 28px;
-    border-left: 2px solid var(--pinkWhite);
     position: absolute;
     right: 0;
     cursor: pointer;
@@ -104,27 +108,40 @@
 
 .alimento-label {
     margin-left: 10px;
+    color: black;
+    margin-bottom: 4px;
+}
+
+.alimento-label h1 {
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.model-alimento .alimento-label {
+    color: white !important;
 }
 
 /* Janela de edição do alimento */
 
 .alimento-item-janelaEdicao {
-    width: calc(100% - 9px);
+    width: 100%;
     border-radius: 0 0 10px 10px;
     /* height: 200px; */
     max-height: 0;
     overflow: hidden;
     /* background: red; */
-    border: 5px solid transparent;
+    /* border: 5px solid transparent; */
     top: 60px;
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: white;
     flex-wrap: wrap;
     opacity: 0%;
     transition:
-        max-height 0.4s,
+        max-height 0.8s,
         border-color 0s,
         opacity 0.4s;
 }
@@ -139,16 +156,18 @@
 }
 
 .alimento-consumo {
-    width: 291px;
     height: 150px;
+    width: 260px;
+    padding: 45px 35px 45px 0;
     /* background-color: red; */
 }
 
 .alimento-consumo>* {
-    width: 264px;
-    height: 50px;
-    background: var(--lightBlue);
+    width: 320px;
+    height: 63px;
+    background: var(--pinkWhite);
     display: flex;
+    border: 1px solid var(--highlightPinkWhite);
     align-items: center;
     border-radius: 6px;
     position: relative;
@@ -158,6 +177,7 @@
     /* background: blue; */
     height: 150px;
     width: 260px;
+    padding: 45px 0px;
     margin-left: 17px;
     /* padding-left: 20px; */
     /* border-left: 2px solid var(--lightBlue) */
@@ -179,29 +199,32 @@
     margin-right: 10px
 }
 
-.calorias{
-    background: rgb(219,126,41)
+.calorias {
+    background: rgb(219, 126, 41)
 }
 
-.proteinas{
+.proteinas {
     background: rgb(57 169 163)
 }
 
-.carboidratos{
+.carboidratos {
     background: rgb(48 122 146);
 }
 
-.gorduras{
+.gorduras {
     background: rgb(237 90 98)
 }
 
 .selecao-label,
 .peso-label {
+    font-weight: 500;
+    color: black;
     height: 100%;
-    width: 100px;
+    width: 70px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 14px;
 }
 
 .selecao-valor,
@@ -221,7 +244,7 @@
     background: transparent;
     border: none;
     height: 90%;
-    width: 145px;
+    width: 160px
 }
 
 .selecao-valor-texto:focus,
@@ -255,7 +278,7 @@
 }
 
 .janelaEdicao-aberta {
-    max-height: 200px;
+    max-height: 300px;
     border-color: var(--lightBlue);
     opacity: 100%;
     overflow: visible;
