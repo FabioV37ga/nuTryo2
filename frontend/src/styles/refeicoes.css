@@ -26,12 +26,23 @@
     display: flex;
     align-items: center;
     width: 95%;
+    height: 100px;
+    /* background: var(--lightBlue); */
+    background: white;
+    /* color: white; */
+    margin-bottom: 10px;
+    margin-left: 15px;
+    border-radius: 6px;
+    color:black;
+    border: 1px solid var(--borderPinkWhite)
+}
+
+.refeicao:nth-child(1){
+    cursor: pointer;
     height: 70px;
     background: var(--lightBlue);
     color: white;
-    margin-bottom: 10px;
-    margin-left: 15px;
-    border-radius: 5px;
+    border: 0
 }
 
 .botao-editar-refeicao,
@@ -40,31 +51,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    ;
     height: 100%;
     width: 70px;
     cursor: pointer;
 }
 
 .botao-editar-refeicao {
-    border-right: 3px solid var(--pinkWhite);
+    /* border-right: 3px solid var(--pinkWhite); */
+    color: var(--lightBlue);
     font-size: 25px;
 }
 
 .botao-adicionar-refeicao {
-    border-right: 3px solid var(--pinkWhite);
+    /* border-right: 3px solid var(--pinkWhite); */
     font-size: 40px;
 }
 
 .botao-apagar-refeicao {
+    color: var(--lightBlue);
     font-size: 30px;
-    border-left: 3px solid var(--pinkWhite)
+    /* border-left: 3px solid var(--pinkWhite) */
 }
 
 .refeicao-list-label {
     margin-left: 12px;
     font-size: 18px;
     width: 517px;
+}
+
+.refeicao-list-label h1 {
+    font-weight: 900;
+    margin-bottom: 10px
 }
 
 .salvar-refeicao {

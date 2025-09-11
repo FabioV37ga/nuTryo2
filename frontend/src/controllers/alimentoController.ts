@@ -67,7 +67,7 @@ class AlimentoController extends JanelaController {
                     var elementoClicado = e.currentTarget as Element
 
                     // Salva edições no alimento, se campos preenchidos.
-                    if (elementoClicado.children[0].classList.contains("fa-bookmark")) {
+                    if (elementoClicado.children[0].classList.contains("fa-floppy-o")) {
                         // console.log("clicar agora deveria salvar")
                         // console.log(elementoClicado.parentElement?.getAttribute("value"))
                         var valores = this.retornaValoresInseridos(elementoClicado as HTMLFormElement) as any

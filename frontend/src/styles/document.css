@@ -4,6 +4,8 @@
     --pinkWhite: #fff1dc;
     --highlightPinkWhite: #ebd8bb;
     --darkPinkWhite: #d3a57c14;
+    --borderPinkWhite: rgb(247 226 194);
+    --backgroundBlue: #112f38
 }
 
 body {
@@ -11,6 +13,7 @@ body {
 }
 
 main {
+    background: var(--backgroundBlue);
     position: absolute;
     top: 0;
     display: flex;

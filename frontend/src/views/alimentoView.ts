@@ -71,7 +71,7 @@ class AlimentoView {
                         <div class="calorias">
                             <div class="macros-label">
                                 <span class="macros-label-valor">
-                                    Calorias:
+                                    Calorias
                                 </span>
                             </div>
                             <span class="macros-valor">
@@ -81,7 +81,7 @@ class AlimentoView {
                         <div class="proteinas">
                             <div class="macros-label">
                                 <span class="macros-label-valor">
-                                    Proteínas:
+                                    Proteínas
                                 </span>
                             </div>
                             <span class="macros-valor">
@@ -91,7 +91,7 @@ class AlimentoView {
                         <div class="carboidratos">
                             <div class="macros-label">
                                 <span class="macros-label-valor">
-                                    Carbos:
+                                    Carbos
                                 </span>
                             </div>
                             <span class="macros-valor">
@@ -101,7 +101,7 @@ class AlimentoView {
                         <div class="gorduras">
                             <div class="macros-label">
                                 <span class="macros-label-valor">
-                                    Gorduras:
+                                    Gorduras
                                 </span>
                             </div>
                             <span class="macros-valor">
@@ -144,7 +144,7 @@ class AlimentoView {
         if (!botao.classList.contains("janelaEdicao-aberta")) {
             // Troca o icone de editar para salvar
             iconeClicavel.classList.remove("fa-pencil")
-            iconeClicavel.classList.add("fa-bookmark")
+            iconeClicavel.classList.add("fa-floppy-o")
 
             // Abre espaço para arquivos abaixo
             alimento.classList.add("editando")
@@ -156,7 +156,7 @@ class AlimentoView {
         // Se a janela de edição estiver aberta, fecha
         else {
             // Troca o icone de salvar para editar
-            iconeClicavel.classList.remove("fa-bookmark")
+            iconeClicavel.classList.remove("fa-floppy-o")
             iconeClicavel.classList.add("fa-pencil")
 
             // Fecha espaço para arquivos abaixo

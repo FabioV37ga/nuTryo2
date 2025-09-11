@@ -60,7 +60,7 @@ class RefeicoesController extends JanelaController {
             }
         }
 
-        this.botaoAdicionarRefeicao = document.querySelector(".botao-adicionar-refeicao") as Element
+        this.botaoAdicionarRefeicao = document.querySelector(".model-refeicao") as Element
         if (!this.botaoAdicionarRefeicao.classList.contains("hasEvent")) {
             this.botaoAdicionarRefeicao.classList.add("hasEvent")
             this.botaoAdicionarRefeicao.addEventListener("click", () => {
