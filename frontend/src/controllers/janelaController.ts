@@ -16,6 +16,18 @@ class JanelaController {
 
     protected adicionaEventosDeClick() {
 
+        // # (Exclusivo mobile) Volta para o calendário ao clicar na data.
+
+        var abaData = document.querySelector("#data-display") as HTMLElement
+
+        if (!abaData?.classList.contains("hasEvent")){
+            abaData.classList.add("hasEvent")
+
+            abaData.addEventListener("click", ()=>{
+                this.janelaView.esconderJanela()
+            })
+        }
+
         // # Evento responsável por alternar entre janelas ao clicar nelas
 
         // Armazena em this.abasSelecionaveis os elementos de aba que são clicaveis no DOM

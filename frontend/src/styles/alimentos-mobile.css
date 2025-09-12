@@ -1,0 +1,69 @@
+@media (max-width: 985px) {
+    .alimento-label {
+        width: 218px;
+        font-size: 13px;
+    }
+
+    .alimentos-adicionados {
+        text-align: -webkit-center;
+        /* align-items: center; */
+    }
+
+    .alimentos-adicionados::-webkit-scrollbar {
+        width: 5px
+    }
+
+    .alimentos-adicionados>* {
+        text-align: left;
+    }
+
+    @keyframes abreEspacoAbaixo {
+        0% {
+            border-radius: 10px 10px 10px 10px;
+            margin-bottom: 10px;
+        }
+
+        20% {
+            border-radius: 10px 10px 0px 0px;
+        }
+
+        100% {
+            border-radius: 10px 10px 0px 0px;
+            margin-bottom: 310px;
+        }
+
+    }
+
+    @keyframes fechaEspacoAbaixo {
+        0% {
+            margin-bottom: 310px;
+            border-radius: 10px 10px 0px 0px;
+        }
+
+        20% {
+            border-radius: 10px 10px 0px 0px;
+        }
+
+        100% {
+            border-radius: 10px 10px 10px 10px 10px;
+            margin-bottom: 10px;
+            /* background-color: blue; */
+        }
+    }
+
+    .alimento-consumo {
+        padding: 0 0px 19px 0;
+    }
+
+    .alimento-consumo>* {
+        height: 52px
+    }
+
+    .alimento-macros {
+        width: 297px
+    }
+
+    .alimento-macros>* {
+        width: 143px
+    }
+}

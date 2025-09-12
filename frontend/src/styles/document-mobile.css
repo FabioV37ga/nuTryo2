@@ -1,0 +1,33 @@
+@media (max-width: 1650px) {
+    html {
+        zoom: 90%
+    }
+}
+
+@media (max-width: 1470px) {
+    html {
+        zoom: 75%
+    }
+}
+
+@media (max-width: 1230px) {
+    html {
+        zoom: 60%
+    }
+}
+
+@media (max-width: 985px) {
+    html {
+        zoom: 100%
+    }
+
+    main {
+        display: flex;
+        justify-content: center;
+    }
+
+    .sideBar {
+        position: absolute;
+        left: 0
+    }
+}

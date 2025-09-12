@@ -1,0 +1,16 @@
+@media (max-width: 985px) {
+    .refeicao-list-label {
+        font-size: 13px;
+        width: 250px
+    }
+
+    .lista-de-refeicoes {
+        width: 365px;
+        padding: 0 10px;
+    }
+
+    .lista-de-refeicoes::-webkit-scrollbar {
+        width: 5px
+    }
+
+}

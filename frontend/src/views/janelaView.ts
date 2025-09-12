@@ -171,9 +171,21 @@ class JanelaView {
             elementoDOMCriado[i].classList.remove("abaExtraFinal")
         }
 
-        if (elementoDOMCriado.length >= 5) {
-            elementoDOMCriado[elementoDOMCriado.length - 1].classList.add("abaExtraFinal")
+        if (window.innerWidth > 985) {
+            if (elementoDOMCriado.length >= 5) {
+                elementoDOMCriado[elementoDOMCriado.length - 1].classList.add("abaExtraFinal")
+            }
+        } else {
+            if (elementoDOMCriado.length >= 3)
+                elementoDOMCriado[elementoDOMCriado.length - 1].classList.add("abaExtraFinal")
         }
+    }
+
+    // Exclusivo mobile
+    esconderJanela(){
+        var janela = document.querySelector(".janela") as HTMLElement
+
+        janela.style.display = 'none'
     }
 }
 

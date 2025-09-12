@@ -2,7 +2,6 @@ import diaObjeto from "../utils/diaObjeto.js";
 import NutryoFetch from "../utils/nutryoFetch.js";
 import AlimentoView from "../views/alimentoView.js";
 import CalendarioView from "../views/calendarioView.js";
-import JanelaView from "../views/janelaView.js";
 import RefeicoesView from "../views/refeicoesView.js";
 import JanelaController from "./janelaController.js";
 
@@ -53,6 +52,11 @@ class CalendarioController {
 
         for (let i = 0; i <= dias.length - 1; i++) {
             dias[i].addEventListener("click", () => {
+                // Tratamento mobile
+                var janela = document.querySelector(".janela") as HTMLElement
+                janela.style.display = 'initial'
+
+
                 RefeicoesView._id = 1;
 
                 var itensDeAlimento = document.querySelectorAll(".alimento-item")
