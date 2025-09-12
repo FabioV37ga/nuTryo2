@@ -7,6 +7,7 @@ import diaObjeto from "../utils/diaObjeto.js";
 
 class AlimentoController extends JanelaController {
     static AlimentoControllerSearchInterval: any
+    static AlimentoControllerTypeWeightInterval: any;
     alimentoView = new AlimentoView()
     botaoAdicionarAlimento: Element
     botaoEditarAlimento: NodeListOf<Element>
@@ -116,8 +117,9 @@ class AlimentoController extends JanelaController {
 
                 resultadosPesquisa[i].addEventListener("click", (e) => {
                     var itemClicado = e.currentTarget as Element
-                    // console.log(itemClicado.parentElement?.parentElement?.parentElement)
+
                     this.selecionaItemPesquisado(itemClicado as HTMLElement)
+
                     this.alimentoView.selecionaItemAlimento(itemClicado as HTMLFormElement)
 
                     var valores = this.retornaValoresInseridos(itemClicado.parentElement?.parentElement?.parentElement?.parentElement) as any
@@ -148,6 +150,7 @@ class AlimentoController extends JanelaController {
                     var elementoManipulado = e.currentTarget as HTMLFormElement
                     var elementoPai = elementoManipulado.parentElement?.parentElement?.parentElement?.children[0] as Element
 
+                    var peso = elementoPai?.getAttribute("peso")
                     var calorias = elementoPai?.getAttribute("calorias")
                     var proteinas = elementoPai?.getAttribute("proteinas")
                     var gorduras = elementoPai?.getAttribute("gorduras")
@@ -155,7 +158,7 @@ class AlimentoController extends JanelaController {
 
                     var pesoConsumido = elementoManipulado.value
 
-                    var macrosCalulados = this.calcularMacros(pesoConsumido, calorias, proteinas, gorduras, carbo)
+                    var macrosCalulados = this.calcularMacros(pesoConsumido, Number(peso), calorias, proteinas, gorduras, carbo)
 
                     this.alimentoView.preencheMacros(
                         elementoPai.parentElement?.parentElement?.children[1] as Element,
@@ -164,6 +167,22 @@ class AlimentoController extends JanelaController {
                         macrosCalulados.gorduras,
                         macrosCalulados.carbo
                     )
+
+                    var alimento: HTMLElement = e.currentTarget as HTMLElement
+
+                    alimento = alimento.parentElement?.parentElement?.parentElement?.parentElement?.parentElement as HTMLElement
+
+                    var valores = this.retornaValoresInseridos(alimento.children[3]) as any
+
+
+                    clearInterval(AlimentoController.AlimentoControllerTypeWeightInterval)
+
+                    AlimentoController.AlimentoControllerTypeWeightInterval = setInterval(() => {
+                        this.enviaAlimento(alimento, valores)
+                        clearInterval(AlimentoController.AlimentoControllerTypeWeightInterval)
+                    }, 300);
+
+                    this.alimentoView.atualizarAlimento(alimento.children[1], valores)
                 })
             }
         }
@@ -257,6 +276,7 @@ class AlimentoController extends JanelaController {
     private async selecionaItemPesquisado(elemento: HTMLElement) {
         // console.log(backend + "/alimentos/" + elemento.getAttribute("value"))
 
+        var peso;
         var calorias;
         var proteinas;
         var gorduras;
@@ -274,6 +294,7 @@ class AlimentoController extends JanelaController {
 
             // console.log(typeof (alimentoSelecionado.calorias))
 
+            peso = await parseFloat(alimentoSelecionado.peso).toFixed(2)
             calorias = await parseFloat(alimentoSelecionado.calorias).toFixed(2)
             proteinas = await parseFloat(alimentoSelecionado.proteinas).toFixed(2)
             gorduras = await parseFloat(alimentoSelecionado.lipidios).toFixed(2)
@@ -282,11 +303,14 @@ class AlimentoController extends JanelaController {
 
 
             var labels = elemento.parentElement?.parentElement as HTMLElement
+            labels?.setAttribute("peso", await String(peso))
             labels?.setAttribute("calorias", await String(calorias))
             labels?.setAttribute("proteinas", await String(proteinas))
             labels?.setAttribute("gorduras", await String(gorduras))
             labels?.setAttribute("carbo", await String(carbo))
 
+            console.log("asfhiaushfaiushfiauhsfiauhfuiahsifuahsiufhaifhaisu")
+            console.log(labels)
 
         } catch (error) {
             console.log(error)
@@ -296,7 +320,7 @@ class AlimentoController extends JanelaController {
             var pesoConsumido = campoPesoConsumido.value
             pesoConsumido = pesoConsumido == "" ? 0 : parseInt(pesoConsumido);
 
-            var macrosCalulados = this.calcularMacros(pesoConsumido, calorias, proteinas, gorduras, carbo)
+            var macrosCalulados = this.calcularMacros(pesoConsumido, 100, calorias, proteinas, gorduras, carbo)
 
             this.alimentoView.preencheMacros(
                 elemento.parentElement?.parentElement?.parentElement?.parentElement?.children[1] as Element,
@@ -312,11 +336,13 @@ class AlimentoController extends JanelaController {
 
         console.log(diaObjeto.dia)
     }
-    private calcularMacros(pesoConsumido: any, calorias: any, proteinas: any, gorduras: any, carbo: any) {
-        var caloriasConsumidas: string = ((pesoConsumido * calorias) / 100).toFixed(2)
-        var proteinasConsumidas: string = ((pesoConsumido * proteinas) / 100).toFixed(2)
-        var gordurasConsumidas: string = ((pesoConsumido * gorduras) / 100).toFixed(2)
-        var carboConsumidos: string = ((pesoConsumido * carbo) / 100).toFixed(2)
+
+    private calcularMacros(pesoConsumido: any, pesoReferencia: number, calorias: any, proteinas: any, gorduras: any, carbo: any) {
+        var referencia = pesoReferencia ? pesoReferencia : 100
+        var caloriasConsumidas: string = ((pesoConsumido * calorias) / referencia).toFixed(2)
+        var proteinasConsumidas: string = ((pesoConsumido * proteinas) / referencia).toFixed(2)
+        var gordurasConsumidas: string = ((pesoConsumido * gorduras) / referencia).toFixed(2)
+        var carboConsumidos: string = ((pesoConsumido * carbo) / referencia).toFixed(2)
 
         return {
             calorias: caloriasConsumidas,
@@ -359,8 +385,9 @@ class AlimentoController extends JanelaController {
     }
 
     private enviaAlimento(elemento: HTMLElement, valores: any) {
+        console.log("#AlimentoController - Mudanças no alimento detectadas, fazendo envio das atualizações")
         if (valores) {
-            console.log(elemento.getAttribute("value"))
+
             var busca = new NutryoFetch(diaObjeto.usuario)
             NutryoFetch.status = 0
 

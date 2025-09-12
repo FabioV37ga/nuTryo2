@@ -53,11 +53,13 @@
     color: white;
     position: relative;
     align-items: center;
+    border: 1px solid var(--borderPinkWhite);
     transition:
         border-radius .1s
 }
 
 .alimento-item:nth-child(1) {
+    border: 0;
     background: var(--lightBlue);
     height: 60px;
     color: white;

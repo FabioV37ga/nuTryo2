@@ -31,7 +31,8 @@ class AlimentoView {
                 </div>
                  <div class="alimento-item-janelaEdicao">
                     <div class="alimento-consumo">
-                        <div class="alimento-selecao" 
+                        <div class="alimento-selecao"
+                        peso="${peso}"
                         calorias="${calorias}"
                         proteinas="${proteinas}"
                         gorduras="${gorduras}"
