@@ -27,6 +27,10 @@ class AuthController {
                     body: JSON.stringify({ email, senha })
                 })
                 if (resposta.ok) {
+                    var main = document.querySelector("main") as HTMLElement
+
+                    main.style.display = 'flex'
+
                     // Realiza fetch dos dados referente ao usuário conectado
                     const nutryo = new NutryoFetch(sessao.email)
 

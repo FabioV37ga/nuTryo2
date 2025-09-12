@@ -1,0 +1,15 @@
+@media (max-width: 600px) {
+    .overlay-auth {
+        zoom: 80%
+    }
+}
+
+@media (max-width: 500px) {
+    .overlay-auth {
+        zoom: 70%
+    }
+
+    main{
+        display: none !important
+    }
+}
