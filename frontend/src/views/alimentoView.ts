@@ -252,7 +252,7 @@ class AlimentoView {
     }
 
     atualizarAlimento(elemento: Element, dados: any) {
-        var titulo = elemento.children[1] as HTMLElement
+        var titulo = elemento as HTMLElement
 
         var stringTitulo = `<h1>${dados.nome ? dados.nome : "Novo alimento"}</h1>
                 ${dados.peso ? dados.peso + " g • " : ""}  

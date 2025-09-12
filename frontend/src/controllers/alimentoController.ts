@@ -66,36 +66,6 @@ class AlimentoController extends JanelaController {
                     // Abre a janela de edição referente ao alimento clicado
                     var elementoClicado = e.currentTarget as Element
 
-                    // Salva edições no alimento, se campos preenchidos.
-                    if (elementoClicado.children[0].classList.contains("fa-floppy-o")) {
-                        // console.log("clicar agora deveria salvar")
-                        // console.log(elementoClicado.parentElement?.getAttribute("value"))
-                        var valores = this.retornaValoresInseridos(elementoClicado as HTMLFormElement) as any
-                        if (valores != false) {
-                            var busca = new NutryoFetch(diaObjeto.usuario)
-
-                            var intervalo = setInterval(() => {
-                                if (NutryoFetch.status == 1) {
-                                    var refeicaoAtual: any = document.querySelector(".refeicao-tipo")?.getAttribute("value") as string
-
-                                    diaObjeto.gerarAlimento(
-                                        refeicaoAtual,
-                                        elementoClicado.parentElement?.getAttribute("value") as string,
-                                        valores.nome,
-                                        valores.peso,
-                                        valores.calorias,
-                                        valores.proteinas,
-                                        valores.carboidratos,
-                                        valores.gorduras
-                                    )
-
-                                    this.alimentoView.atualizarAlimento(elementoClicado.parentElement as Element, valores)
-
-                                    clearInterval(intervalo)
-                                }
-                            }, 1);
-                        }
-                    }
                     this.alimentoView.toggleJanelaDeEdicao(elementoClicado.parentElement?.children[3] as Element)
                 })
             }
@@ -146,10 +116,22 @@ class AlimentoController extends JanelaController {
 
                 resultadosPesquisa[i].addEventListener("click", (e) => {
                     var itemClicado = e.currentTarget as Element
-
-                    this.selecionaItemPesquisado(itemClicado as Element)
+                    // console.log(itemClicado.parentElement?.parentElement?.parentElement)
+                    this.selecionaItemPesquisado(itemClicado as HTMLElement)
                     this.alimentoView.selecionaItemAlimento(itemClicado as HTMLFormElement)
+
+                    var valores = this.retornaValoresInseridos(itemClicado.parentElement?.parentElement?.parentElement?.parentElement) as any
+
                     this.alimentoView.escondeResultadosNaLista(itemClicado.parentElement?.parentElement?.children[2] as HTMLElement)
+
+                    this.alimentoView.atualizarAlimento(
+                        itemClicado.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.children[1] as HTMLElement,
+                        valores)
+
+                    this.enviaAlimento(
+                        itemClicado.parentElement?.parentElement?.parentElement?.parentElement?.parentElement as HTMLElement,
+                        valores
+                    )
                 })
             }
         }
@@ -272,7 +254,7 @@ class AlimentoController extends JanelaController {
         }
     }
 
-    private async selecionaItemPesquisado(elemento: Element) {
+    private async selecionaItemPesquisado(elemento: HTMLElement) {
         // console.log(backend + "/alimentos/" + elemento.getAttribute("value"))
 
         var calorias;
@@ -325,7 +307,10 @@ class AlimentoController extends JanelaController {
             )
         }
 
+        pesoConsumido = pesoConsumido == "" ? 0 : parseInt(pesoConsumido)
+        console.log("Alimento selecionado e peso atribuido, enviar para banco.")
 
+        console.log(diaObjeto.dia)
     }
     private calcularMacros(pesoConsumido: any, calorias: any, proteinas: any, gorduras: any, carbo: any) {
         var caloriasConsumidas: string = ((pesoConsumido * calorias) / 100).toFixed(2)
@@ -344,7 +329,7 @@ class AlimentoController extends JanelaController {
     private retornaValoresInseridos(alimento: any) {
         // console.log(alimento)
 
-        var janela = alimento.parentElement?.children[3]
+        var janela = alimento
         var consumo = janela.children[0]
         var macros = janela.children[1]
 
@@ -355,6 +340,8 @@ class AlimentoController extends JanelaController {
         var proteinas = macros.children[1].children[1].textContent
         var carboidratos = macros.children[2].children[1].textContent
         var gorduras = macros.children[3].children[1].textContent
+
+        console.log(gorduras)
 
         if (nome && peso && calorias && proteinas && carboidratos && gorduras) {
             return {
@@ -369,6 +356,35 @@ class AlimentoController extends JanelaController {
             return false
         }
 
+    }
+
+    private enviaAlimento(elemento: HTMLElement, valores: any) {
+        if (valores) {
+            console.log(elemento.getAttribute("value"))
+            var busca = new NutryoFetch(diaObjeto.usuario)
+            NutryoFetch.status = 0
+
+            var intervaloBusca = setInterval(() => {
+                if (NutryoFetch.status == 1) {
+
+                    var refeicaoAtual: any = document.querySelector(".refeicao-tipo")?.getAttribute("value") as string
+
+                    diaObjeto.gerarAlimento(
+                        refeicaoAtual,
+                        String(Number(elemento.getAttribute("value"))) as string,
+                        valores.nome,
+                        valores.peso,
+                        valores.calorias,
+                        valores.proteinas,
+                        valores.carboidratos,
+                        valores.gorduras
+                    )
+
+                    clearInterval(intervaloBusca)
+                }
+            }, 1);
+
+        }
     }
 }
 
