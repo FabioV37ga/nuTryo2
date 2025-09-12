@@ -10,6 +10,40 @@
     }
 
     main{
-        display: none !important
+        display: none;
+        zoom: 80%
+    }
+}
+
+@media (max-width: 395px) {
+    .overlay-auth {
+        zoom: 70%
+    }
+
+    main{
+        /* display: none; */
+        zoom: 70%
+    }
+}
+
+@media (max-width: 395px) {
+    .overlay-auth {
+        zoom: 55%
+    }
+
+    main{
+        /* display: none; */
+        zoom: 60%
+    }
+}
+
+@media (max-width: 300px) {
+    .overlay-auth {
+        zoom: 45%
+    }
+
+    main{
+        /* display: none; */
+        zoom: 45%
     }
 }
