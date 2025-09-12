@@ -1,5 +1,5 @@
 # Pré requisitos
-- 1. Node Package Manager
+- 1. Node.js
 - 2. Database no `cloud.mongodb.com` com collections `refeicoes` e `usuarios`
 
 # Instalando:
