@@ -18,7 +18,12 @@
 
 @media (max-width: 985px) {
     html {
-        zoom: 100%
+        zoom: 100%;
+        overflow: hidden;
+    }
+    
+    body{
+        overflow: hidden;
     }
 
     main {
