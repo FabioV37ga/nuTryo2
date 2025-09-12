@@ -151,6 +151,7 @@ class AlimentoView {
             iconeClicavel.classList.add("fa-floppy-o")
 
             // Abre espaço para arquivos abaixo
+            alimento.classList.remove("editado")
             alimento.classList.add("editando")
 
             // Abre janela de edição
@@ -165,6 +166,7 @@ class AlimentoView {
 
             // Fecha espaço para arquivos abaixo
             alimento.classList.remove("editando")
+            alimento.classList.add("editado")
 
             // Fecha janela de edição
             botao.classList.remove("janelaEdicao-aberta")

@@ -54,8 +54,6 @@
     position: relative;
     align-items: center;
     border: 1px solid var(--borderPinkWhite);
-    transition:
-        border-radius .1s
 }
 
 .alimento-item:nth-child(1) {
@@ -66,17 +64,44 @@
 }
 
 .editando {
-    border-radius: 10px 10px 0 0;
-    animation: abreEspacoAbaixo .35s forwards
+    /* border-radius: 10px 10px 0 0; */
+    animation: abreEspacoAbaixo .25s forwards
 }
 
 @keyframes abreEspacoAbaixo {
-    from {
+    0% {
+        border-radius: 10px 10px 10px 10px;
         margin-bottom: 10px;
     }
 
-    to {
-        margin-bottom: 250px;
+    20% {
+        border-radius: 10px 10px 0px 0px;
+    }
+
+    100% {
+        border-radius: 10px 10px 0px 0px;
+        margin-bottom: 165px;
+    }
+}
+
+.editado {
+    animation: fechaEspacoAbaixo .55s forwards
+}
+
+@keyframes fechaEspacoAbaixo {
+    0% {
+        margin-bottom: 165px;
+        border-radius: 10px 10px 0px 0px;
+    }
+
+    20% {
+        border-radius: 10px 10px 0px 0px;
+    }
+
+    100% {
+        border-radius: 10px 10px 10px 10px 10px;
+        margin-bottom: 10px;
+        /* background-color: blue; */
     }
 }
 
@@ -134,18 +159,24 @@
     overflow: hidden;
     /* background: red; */
     /* border: 5px solid transparent; */
-    top: 60px;
+    top: 80px;
     position: absolute;
+    left: -1px;
     display: flex;
     justify-content: center;
     align-items: center;
     background: white;
     flex-wrap: wrap;
+    opacity: 100%;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    /* border-color: var(--borderPinkWhite); */
     opacity: 0%;
-    transition:
-        max-height 0.8s,
+    transition: max-height 0.35s,
         border-color 0s,
         opacity 0.4s;
+    
 }
 
 .alimento-consumo,
@@ -158,9 +189,9 @@
 }
 
 .alimento-consumo {
-    height: 150px;
-    width: 260px;
-    padding: 45px 35px 45px 0;
+    height: 110px;
+    width: 297px;
+    padding: 0 10px 45px 0;
     /* background-color: red; */
 }
 
@@ -173,14 +204,15 @@
     align-items: center;
     border-radius: 6px;
     position: relative;
+    margin-bottom: 10px;
 }
 
 .alimento-macros {
     /* background: blue; */
-    height: 150px;
+    height: 110px;
     width: 260px;
-    padding: 45px 0px;
-    margin-left: 17px;
+    padding: 0 0px 45px 0;
+    /* margin-left: 17px; */
     /* padding-left: 20px; */
     /* border-left: 2px solid var(--lightBlue) */
 }
@@ -189,6 +221,7 @@
     border-radius: 6px;
     width: 124px;
     height: 65px;
+    margin-bottom: 10px;
     /* background: var(--lightBlue); */
     display: flex;
     flex-direction: column;
@@ -232,7 +265,7 @@
 .selecao-valor,
 .peso-valor {
     height: 40px;
-    width: 158px;
+    width: 200px;
     background: var(--pinkWhite);
     display: flex;
     align-items: center;
@@ -246,7 +279,7 @@
     background: transparent;
     border: none;
     height: 90%;
-    width: 160px
+    width: 100%
 }
 
 .selecao-valor-texto:focus,
@@ -281,9 +314,9 @@
 
 .janelaEdicao-aberta {
     max-height: 300px;
-    border-color: var(--lightBlue);
     opacity: 100%;
-    overflow: visible;
+    overflow: hidden;
+    border-color: var(--borderPinkWhite)
 }
 
 .alimento-selecao-lista {
