@@ -21,7 +21,7 @@
     }
 
     main{
-        /* display: none; */
+        display: none;
         zoom: 70%
     }
 }
@@ -32,7 +32,7 @@
     }
 
     main{
-        /* display: none; */
+        display: none;
         zoom: 60%
     }
 }
@@ -43,7 +43,7 @@
     }
 
     main{
-        /* display: none; */
+        display: none;
         zoom: 45%
     }
 }
