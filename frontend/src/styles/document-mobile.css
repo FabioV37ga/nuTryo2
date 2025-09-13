@@ -1,28 +1,24 @@
 @media (max-width: 1650px) {
-    html {
+    body {
         zoom: 90%
     }
 }
 
 @media (max-width: 1470px) {
-    html {
+    body {
         zoom: 75%
     }
 }
 
 @media (max-width: 1230px) {
-    html {
+    body {
         zoom: 60%
     }
 }
 
 @media (max-width: 985px) {
-    html {
+    body {
         zoom: 100%;
-        overflow: hidden;
-    }
-    
-    body{
         overflow: hidden;
     }
 
