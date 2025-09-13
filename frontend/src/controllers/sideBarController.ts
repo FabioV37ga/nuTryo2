@@ -1,35 +1,60 @@
-class SideBarController{
-    constructor(){
+class SideBarController {
+    constructor() {
+        // Chama método para adicionar eventos de click
         this.adicionaEventosDeClick()
     }
 
-    adicionaEventosDeClick(){
+    adicionaEventosDeClick() {
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        // # Adiciona eventos para mostrar/ esconder janela de usuário
+
+        // Armazena elemento de usuário na variavel "usuario"
         var usuario = document.querySelector(".user") as HTMLElement
 
-        if (!usuario.classList.contains("hasEvent")){
+        // Prefine adição multipla de eventos de click
+        if (!usuario.classList.contains("hasEvent")) {
             usuario.classList.add("hasEvent")
 
-            usuario.addEventListener("click", (e)=>{
+            // Adiciona evento de click
+            usuario.addEventListener("click", (e) => {
                 e.stopPropagation
+                // Chama função para mostrar/ esconder janela de usuario
                 this.toggleUsuario()
             })
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        //  # Adiciona eventos para fazer logout da conta conectada
+
+        // armazena botão de logout em "logout"
         var logout = document.querySelector(".user-janela-logout") as HTMLElement
-        if (!logout.classList.contains("hasEvent")){
+
+        // Previne adição multipla de eventos de click
+        if (!logout.classList.contains("hasEvent")) {
             logout.classList.add("hasEvent")
 
-            logout.addEventListener("click", ()=>{
+            // Adiciona eventos de click
+            logout.addEventListener("click", () => {
+                // Remove sessão do cache
                 localStorage.removeItem("sessaoNutryo")
+                // atualiza página
                 location.reload()
             })
         }
+        
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        // # Adiciona eventos para fechar a janela de usuário
 
+        // Armazena "X" da janela de usuário em "closeUser"
         var closeUser = document.querySelector(".user-janela-close") as HTMLElement
-        if (!closeUser.classList.contains("hasEvent")){
+
+        // Previne adição multipla de eventos de click
+        if (!closeUser.classList.contains("hasEvent")) {
             closeUser.classList.add("hasEvent")
 
-            closeUser.addEventListener("click", ()=>{
+            // Adiciona eventos de click
+            closeUser.addEventListener("click", () => {
+                // Chama função para fechar a janela de usuário
                 this.toggleUsuario()
             })
         }
@@ -37,12 +62,19 @@ class SideBarController{
 
     }
 
-    toggleUsuario(){
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por mostrar e esconder a janela de usuário
+    toggleUsuario() {
+
+        // Armazena janela do usuário em "janelaUsuario"
         var janelaUsuario = document.querySelector(".user-janela")
 
-        if (janelaUsuario?.classList.contains("user-janela-aberta")){
+        // Se a janela estiver aberta, fecha ela
+        if (janelaUsuario?.classList.contains("user-janela-aberta")) {
             janelaUsuario.classList.remove("user-janela-aberta")
-        }else{
+        } 
+        // Se a janela estiver fechada, abre ela
+        else {
             janelaUsuario?.classList.add("user-janela-aberta")
         }
     }
