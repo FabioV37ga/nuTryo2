@@ -76,6 +76,7 @@
     flex-wrap: wrap;
     top: 123px;
     left: 99px;
+    z-index: 1;
 }
 
 .user-janela-aberta {
