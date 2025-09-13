@@ -13,6 +13,10 @@ body {
     height: 100vh;
 }
 
+html, body{
+    background: var(--backgroundBlue)
+}
+
 main {
     background: var(--backgroundBlue);
     position: absolute;
