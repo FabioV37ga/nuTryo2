@@ -30,7 +30,7 @@
 
     <!-- Estilização mobile -->
     <link rel="stylesheet" type="text/css" href="styles/auth-mobile.css">
-    <!-- <link rel="stylesheet" type="text/css" href="styles/calendario-mobile.css"> -->
+    <link rel="stylesheet" type="text/css" href="styles/sideBar-mobile.css">
     <link rel="stylesheet" type="text/css" href="styles/alimentos-mobile.css">
     <link rel="stylesheet" type="text/css" href="styles/refeicoes-mobile.css">
     <link rel="stylesheet" type="text/css" href="styles/janela-mobile.css">
@@ -107,18 +107,32 @@
             </div>
 
             <section class="user">
-                <a href="" class="user-click">
+                <a class="user-click">
                     <i class="fa fa-user-circle" aria-hidden="true"></i>
                 </a>
-                <div class="user-label">PERFIL</div>
-
-                <div class="user-janela">
-                    <div class="user-janela-email"></div>
-                    <div class="user-janela-nome"></div>
-                </div>
-
-
+                <div class="user-label">PERFIL</div>    
             </section>
+
+            <div class="user-janela">
+                <a class="user-janela-close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+                <div class="user-janela-email">
+                    <div class="user-janela-email-label">Email:</div>
+                    <span>
+                        veigabfabio@hotmail.com
+                    </span>
+                </div>
+                <div class="user-janela-nome">
+                    <div class="user-janela-nome-label">Usuário:</div>
+                    <span>
+                        Fábio Balestrin Veiga
+                    </span>
+                </div>
+                <a class="user-janela-logout">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                </a>
+            </div>
 
             <section class="git">
                 <a href="https://github.com/FabioV37ga/NuTryo2" class="git-click" target="__blank">
