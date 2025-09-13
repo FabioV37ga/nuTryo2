@@ -54,21 +54,22 @@
         margin-top: 0
     }
 
-    .sideBar .user{
+    .sideBar .user {
         margin: 0;
-        right: 60px;
+        right: 20px;
         position: absolute;
         width: fit-content;
         height: fit-content;
     }
-    
-    .user .user-label{
+
+    .user .user-label {
         display: none;
     }
-    
-    .sideBar .git{
-        top: 5px;
-        right: 10px;
+
+    .sideBar .git {
+        top: 705px;
+        /* left: 231px; */
+        margin-left: calc(50% - 17px);
         position: absolute;
         width: fit-content;
     }
