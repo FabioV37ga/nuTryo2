@@ -17,4 +17,14 @@
         width: 5px
     }
 
+    .refeicao-tipo-list {
+        width: 330px;
+        top: 58px;
+        left: 0px
+    }
+
+    .refeicao-tipo-list li {
+        width: 42%;
+    }
+
 }

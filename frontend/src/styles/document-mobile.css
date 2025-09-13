@@ -30,4 +30,46 @@
         position: absolute;
         left: 0
     }
+
+    .sideBar {
+        align-items: center;
+        height: 60px;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .sideBar .logo {
+        align-items: center;
+        display: flex;
+        height: 60px;
+        width: 161px;
+    }
+
+    .sideBar .logo .logo-img {
+        width: 55px;
+    }
+
+    .sideBar .logo .logo-text {
+        width: 70px;
+        margin-top: 0
+    }
+
+    .sideBar .user{
+        margin: 0;
+        right: 60px;
+        position: absolute;
+        width: fit-content;
+        height: fit-content;
+    }
+    
+    .user .user-label{
+        display: none;
+    }
+    
+    .sideBar .git{
+        top: 5px;
+        right: 10px;
+        position: absolute;
+        width: fit-content;
+    }
 }

@@ -11,7 +11,7 @@
 
     main{
         display: none;
-        zoom: 80%
+        zoom: 100%
     }
 }
 
@@ -22,7 +22,7 @@
 
     main{
         display: none;
-        zoom: 75%
+        zoom: 90%
     }
 }
 @media (max-width: 395px) {
@@ -32,22 +32,33 @@
 
     main{
         display: none;
-        zoom: 70%
+        zoom: 80%
     }
 }
 
-@media (max-width: 395px) {
+@media (max-width: 330px) {
     .overlay-auth {
+        zoom: 45%
+    }
+
+    main{
+        display: none;
+        zoom: 65%
+    }
+}
+
+@media (max-width: 270px) {
+    .overlay-auth {
+        zoom: 45%
+    }
+
+    main{
+        display: none;
         zoom: 55%
     }
-
-    main{
-        display: none;
-        zoom: 60%
-    }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 230px) {
     .overlay-auth {
         zoom: 45%
     }
