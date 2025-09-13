@@ -1,4 +1,8 @@
 @media (max-width: 985px) {
+    .refeicao {
+        margin-left: 12px;
+    }
+
     .refeicao-list-label {
         font-size: 13px;
         width: 250px
