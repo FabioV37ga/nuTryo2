@@ -1,16 +1,16 @@
-@media (max-width: 1650px) {
+@media (max-width: 1650px) and (min-width: 1470px) {
     main {
         zoom: 90%
     }
 }
 
-@media (max-width: 1470px) {
+@media (max-width: 1470px) and (min-width: 1230px) {
     main {
         zoom: 75%
     }
 }
 
-@media (max-width: 1230px) {
+@media (max-width: 1230px) and (min-width: 985px) {
     main {
         zoom: 60%
     }

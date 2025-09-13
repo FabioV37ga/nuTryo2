@@ -15,6 +15,16 @@
     }
 }
 
+@media (max-width: 450px) {
+    .overlay-auth {
+        zoom: 70%
+    }
+
+    main{
+        display: none;
+        zoom: 75%
+    }
+}
 @media (max-width: 395px) {
     .overlay-auth {
         zoom: 70%
