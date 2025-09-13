@@ -4,25 +4,34 @@ import diaObjeto from "./diaObjeto.js";
 class NutryoFetch {
     static objects: any[]
     static status = 0
+    static username: string;
     private user: string;
 
-    constructor(user: string) {
+    constructor(user: string, username?: string) {
         NutryoFetch.status = 0
+
+        if (username) {
+            NutryoFetch.username = username
+        }
+        console.log(username)
+
         this.user = user
-        this.fetchObjects(this.user)
         diaObjeto.usuario = this.user
+
+
+        this.fetchObjects(this.user)
     }
 
     private async fetchObjects(user: string) {
 
         // console.log(`${backend}/refeicoes/${user}`)
-        try{
+        try {
             const resposta: any = await fetch(`${backend}/refeicoes/${user}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }
-            
+
             })
             const data = await resposta.json()
 
@@ -32,9 +41,9 @@ class NutryoFetch {
             console.log("#NutryoFetch - Dados coletados do usuário atual:")
             console.log(data)
             console.log("-----------------------------------------------------------")
-        }catch(error){
+        } catch (error) {
 
-        }finally{
+        } finally {
             NutryoFetch.status = 1
         }
 
@@ -47,7 +56,7 @@ class NutryoFetch {
         // console.log("teste!")
         // console.log(diaObjeto.diasSalvos)
         for (let dia = 0; dia <= diaObjeto.diasSalvos.length - 1; dia++) {
-            if (diaObjeto.diasSalvos[dia]){
+            if (diaObjeto.diasSalvos[dia]) {
                 // console.log(diaObjeto.diasSalvos[dia])
                 if (data == diaObjeto.diasSalvos[dia]._id) {
 

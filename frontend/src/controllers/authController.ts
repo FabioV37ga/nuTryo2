@@ -17,6 +17,7 @@ class AuthController {
             if (sessao.email && sessao.senha) {
                 const email = sessao.email
                 const senha = sessao.senha
+                const nome = sessao.nome
 
                 // Inicia requisição
                 const resposta = await fetch(`${backend}/auth/login`, {
@@ -30,7 +31,7 @@ class AuthController {
 
 
                     // Realiza fetch dos dados referente ao usuário conectado
-                    const nutryo = new NutryoFetch(sessao.email)
+                    const nutryo = new NutryoFetch(sessao.email, nome)
 
                     // Inicia aplicação fechando janela de autenticação
                     var intervalo = setInterval(() => {
@@ -38,7 +39,7 @@ class AuthController {
 
                             var tela = document.querySelector(".overlay-auth") as HTMLElement
                             tela.style = "display: none"
-                            
+
                             var main = document.querySelector("main") as HTMLElement
                             main.style.display = 'flex'
                             clearInterval(intervalo)
@@ -143,7 +144,7 @@ class AuthController {
                 self.authView.toggleLoading()
 
                 // Inicia requisição
-                const resposta = await fetch("https://nutryo2.onrender.com/auth/login", {
+                const resposta = await fetch(`${backend}/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "Application/json",
@@ -156,9 +157,10 @@ class AuthController {
 
                 // Se os dados forem validos, realiza login
                 if (resposta.ok) {
-                    localStorage.setItem("sessaoNutryo", JSON.stringify({ email, senha }))
+                    var nome = dados.nome
+                    localStorage.setItem("sessaoNutryo", JSON.stringify({ email, senha, nome}))
                     // Realiza fetch dos dados referente ao usuário conectado
-                    const nutryo = new NutryoFetch(dados.email)
+                    const nutryo = new NutryoFetch(dados.email, dados.nome)
 
                     // Inicia aplicação fechando janela de autenticação
                     var intervalo = setInterval(() => {
