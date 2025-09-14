@@ -6,20 +6,21 @@
 - 1. Clone o repositorio com `git clone https://github.com/FabioV37ga/nuTryo2`
 - 2. Instale dependências com `npm install`
 - 3. Defina string de conexão `DB_CONNECTION_STRING` em `./.env` para o endereço do mongoDB
-- 4. Rode o front-end com `npm run start:front`
-- 5. Rode o back-end com `npm run start:back`
+- 4. Rode o back-end com `npm run start:back`
+- 5. Rode o front-end com `npm run start:front`
 
 # Funcionalidades (até agora):
 - Lógica de criação dinâmica de calendário
 - Criação dinamica de elementos referentes a refeições
 - Criação dinamica de elementos referentes a alimentos
-- Sistema de login
 - Sistema de registro
+- Sistema de login/logout
 - Tabela nutricional de +600 alimentos
 - Sistema de pesquisa de alimentos na tabela
 - Calculo automático de macronutrientes e valor nutricional
-- Envio de refeições e alimentos
-- Recebimento de refeições e alimentos
+- Envio de refeições e alimentos do usuário
+- Recebimento de refeições e alimentos do usuário
+- Versão mobile do sistema
 
 # Tecnologias usadas:
 - TypeScript
@@ -41,4 +42,5 @@
 - 6. ~~Criar elementos referentes a itens existêntes no banco~~ ✅
 - 7. ~~Desenvolver sistema de objetos a serem enviados para o banco (referentes ao dia editado)~~ ✅
 - 8. ~~Completar fluxo de envio/recebimento de refeições e alimentos~~ ✅
-- 9. Trabalhar na responsividade para mobile 
+- 9. ~~Trabalhar na responsividade para mobile~~ ✅
+- 10. Desenvolver janela e lógica de estatísticas 
