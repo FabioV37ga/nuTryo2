@@ -13,13 +13,14 @@
 - Lógica de criação dinâmica de calendário
 - Criação dinamica de elementos referentes a refeições
 - Criação dinamica de elementos referentes a alimentos
-- Sistema de login
 - Sistema de registro
+- Sistema de login/logout
 - Tabela nutricional de +600 alimentos
 - Sistema de pesquisa de alimentos na tabela
 - Calculo automático de macronutrientes e valor nutricional
-- Envio de refeições e alimentos
-- Recebimento de refeições e alimentos
+- Envio de refeições e alimentos do usuário
+- Recebimento de refeições e alimentos do usuário
+- Versão mobile do sistema
 
 # Tecnologias usadas:
 - TypeScript
@@ -41,4 +42,5 @@
 - 6. ~~Criar elementos referentes a itens existêntes no banco~~ ✅
 - 7. ~~Desenvolver sistema de objetos a serem enviados para o banco (referentes ao dia editado)~~ ✅
 - 8. ~~Completar fluxo de envio/recebimento de refeições e alimentos~~ ✅
-- 9. Trabalhar na responsividade para mobile 
+- 9. ~~Trabalhar na responsividade para mobile~~ ✅
+- 10. Desenvolver janela e lógica de estatísticas 
