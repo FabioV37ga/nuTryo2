@@ -9,7 +9,8 @@ import RefeicoesView from "./refeicoesView.js";
 declare var $: any;
 class JanelaView {
 
-    // Função responsável por criar um elemento DOM de aba
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Função responsável por criar um elemento DOM de aba
     criaAba(titulo: string, id: number) {
 
         // modelo do elemento a partir dos argumentos fornecidos ao chamar essa função
@@ -51,7 +52,8 @@ class JanelaView {
         return elementoDOMCriado[elementoDOMCriado.length - 1]
     }
 
-    // Seleção visual da aba
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Seleção visual da aba
     selecionaAba(aba: Element) {
         // Armazena elemento de abas selecionaveis do DOM
         const abasSelecionaveis = document.querySelectorAll(".abaSelecionavel")
@@ -64,58 +66,77 @@ class JanelaView {
         // Seleciona a aba chamada como argumento
         aba.classList.add("abaSelecionada")
 
+        // Faz busca pelas informações salvas do usuário
         var nutryoFetch = new NutryoFetch(diaObjeto.usuario)
 
+        // Seleciona elementos de item na página
         var itensDeAlimento = document.querySelectorAll(".alimento-item")
+
+        // Apaga os elementos de alimento na página
         for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
             AlimentoView.apagarAlimento(itensDeAlimento[i])
         }
 
-        // #Mostra conteudo da aba (Entre aba refeições e abas refeição)
+        // ! Mostra conteudo da aba (Entre aba refeições e abas refeição)
 
-        // Aba refeições (referente a janela com as refeições de um dia)
+        // @Aba refeições (referente a janela com as refeições de um dia)
         if (aba.classList.contains("abaRefeicoes")) {
+
+            // Define id da refeição como 1 (Isso auxilia outros lugares da aplicação a terem melhor acesso ao id da refeição sendo manipulada)
             RefeicoesView._id = 1;
 
+            // Chama função para mostrar o conteúdo da aba selecionada
             this.mostrarConteudoAba("refeicoes")
 
+            // Cria elementos da janela referentes a aba selecionada
             var refeicoesController = new RefeicoesController()
             refeicoesController.criarElementosDoDia(CalendarioController.dataSelecionada)
 
-            // criar elementos
+            // apaga elementos
             if (itensDeAlimento)
                 for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
                     AlimentoView.apagarAlimento(itensDeAlimento[i])
                 }
-
         }
 
-        // Aba alimentos (referente a janela de alimentos dentro de uma refeição)
+        // @Aba alimentos (referente a janela de alimentos dentro de uma refeição)
         else {
+            // Chama função para mostrar alimentos da aba selecionada
             this.mostrarConteudoAba("refeicao")
 
+            // Intervalo: só executa quando a requisição dos dados do usuário terminar
             var intervalo = setInterval(() => {
-
                 if (NutryoFetch.status == 1) {
 
+                    // Se houverem itens de alimento...
                     if (itensDeAlimento)
                         for (let i = 1; i <= itensDeAlimento.length - 1; i++) {
+                            // apaga todos
                             AlimentoView.apagarAlimento(itensDeAlimento[i])
                         }
 
+                    // Cria instância de alimento controller, para chamar funções de criação de elementos
                     var alimentoController = new AlimentoController()
+                    // Retorna alimentos da refeição referente a aba selecionada
                     var alimentos = NutryoFetch.retornaAlimentosDaRefeicao(CalendarioController.dataSelecionada, aba.getAttribute("value") as string) as any[]
+                    // Retorna refeição referente ao dia selecionado
                     var refeicao = NutryoFetch.retornaRefeicao(CalendarioController.dataSelecionada, aba.getAttribute("value") as string)
 
+                    // Se houverem alimentos na refeição selecionada...
                     if (alimentos) {
 
+                        // Cria elementos referentes aos alimentos
                         for (let i = 0; i <= alimentos.length - 1; i++) {
                             alimentoController.criarElementosDeAlimento(alimentos[i])
                         }
 
+                        // Se houver refeição...
                         if (refeicao) {
+                            // Elemento "Tipo de refeiçao"
                             var listlabel = document.querySelector(".refeicao-tipo-tipoSelecionado-label") as HTMLElement
+                            // Define o texto do tipo de refeição a partir do tipo buscado no banco
                             listlabel.textContent = refeicao.tipo
+                            // Mostra alimentos da refeição
                             var alimentosAdicionados = document.querySelector(".alimentos") as HTMLElement
                             alimentosAdicionados.style.display = "flex"
                         }
@@ -126,16 +147,19 @@ class JanelaView {
 
             }, 1);
         }
-
+        // Retorna aba criada (Outros lugares do sistema usam)
         return aba
     }
 
-    // Apenas apaga/fecha a aba chamada como argumento
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Apenas apaga/fecha a aba chamada como argumento
     apagaAba(aba: Element) {
         aba.remove()
         this.estilizaAbasAdicionais()
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por apagar todas as abas da janela
     apagaTodasAbas() {
         var abas = document.querySelectorAll(".abaSelecionavel")
         for (let i = 1; i <= abas.length - 1; i++) {
@@ -143,6 +167,8 @@ class JanelaView {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // Método responsável por mostrar conteúdo das abas da janela
     mostrarConteudoAba(tipo: string) {
         const conteudoRefeicoes = document.querySelector(".refeicoes-conteudo") as HTMLElement
         const conteudoRefeicao = document.querySelector(".refeicao-conteudo") as HTMLElement
@@ -162,6 +188,8 @@ class JanelaView {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // Método responsável por adicionar borda arredondada a abas que chegam no limite horizontal da janela (apenas a ultima aba)
     estilizaAbasAdicionais() {
         // Armazena elementos criados em elementoDOMCriado
         var elementoDOMCriado = document.querySelectorAll(".abaSelecionavel")
@@ -171,18 +199,22 @@ class JanelaView {
             elementoDOMCriado[i].classList.remove("abaExtraFinal")
         }
 
+        // Desktop: A janela aguenta 4 abas antes de precisar de estilização especial
         if (window.innerWidth > 985) {
             if (elementoDOMCriado.length >= 5) {
                 elementoDOMCriado[elementoDOMCriado.length - 1].classList.add("abaExtraFinal")
             }
-        } else {
+        } 
+        // Mobile: A janela aguenta 2 abas antes de precisar de estilização especial
+        else {
             if (elementoDOMCriado.length >= 3)
                 elementoDOMCriado[elementoDOMCriado.length - 1].classList.add("abaExtraFinal")
         }
     }
 
-    // Exclusivo mobile
-    esconderJanela(){
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Exclusivo mobile: Esconde a janela (Só cabe uma janela no mobile, então elas ocupam o mesmo espaço)
+    esconderJanela() {
         var janela = document.querySelector(".janela") as HTMLElement
 
         janela.style.display = 'none'
