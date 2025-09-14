@@ -69,7 +69,7 @@ class diaObjeto {
 
     static gerarDia(data: string, usuario: string, corpo: object[]) {
         var objeto = {
-            _id: data,
+            id: data,
             _usuario: diaObjeto.usuario,
             refeicoes: corpo
         }
@@ -117,6 +117,7 @@ class diaObjeto {
         }
         diaObjeto.alimentos.push(objeto)
         diaObjeto.atualizarDia("alimento", String(Number(refeicao) - 1), objeto)
+        console.log(diaObjeto.dia)
     }
 
     static apagarAlimento(refeicao: string, alimento: string) {
@@ -183,7 +184,7 @@ class diaObjeto {
     static editarDia(data: string, corpo: object) {
         // Seleciona dia a ser editado
         for (let i = 0; i <= diaObjeto.diasSalvos.length - 1; i++) {
-            if (diaObjeto.diasSalvos[i]._Id == data) {
+            if (diaObjeto.diasSalvos[i].Id == data) {
                 diaObjeto.diasSalvos[i] = corpo
             }
         }
@@ -191,7 +192,7 @@ class diaObjeto {
 
     static postarOuEditar() {
         for (let i = 0; i <= diaObjeto.diasSalvos.length - 1; i++) {
-            if (diaObjeto.dia._id == diaObjeto.diasSalvos[i]._id) {
+            if (diaObjeto.dia.id == diaObjeto.diasSalvos[i].id) {
                 diaObjeto.editarDiaBanco()
                 return
             }
@@ -202,7 +203,7 @@ class diaObjeto {
     static async editarDiaBanco() {
         console.log("Já existe, não postar, editar.")
         try {
-            const requisicao = await fetch(`${backend}/refeicoes/${diaObjeto.usuario}/${diaObjeto.dia._id}`, {
+            const requisicao = await fetch(`${backend}/refeicoes/${diaObjeto.usuario}/${diaObjeto.dia.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

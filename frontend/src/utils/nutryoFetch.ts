@@ -12,8 +12,8 @@ class NutryoFetch {
 
         if (username) {
             NutryoFetch.username = username
+            console.log(username)
         }
-        console.log(username)
 
         this.user = user
         diaObjeto.usuario = this.user
@@ -49,7 +49,7 @@ class NutryoFetch {
     static retornaRefeicoesDoDia(data: string) {
         for (let dia = 0; dia <= diaObjeto.diasSalvos.length - 1; dia++) {
             if (diaObjeto.diasSalvos[dia]) {
-                if (data == diaObjeto.diasSalvos[dia]._id) {
+                if (data == diaObjeto.diasSalvos[dia].id) {
 
                     return diaObjeto.diasSalvos[dia].refeicoes
                 }

@@ -20,7 +20,8 @@ const refeicaoSchema = new mongoose.Schema({
 
 // Documento principal: refeições de um dia para um usuário
 const refeicoesDoDiaSchema = new mongoose.Schema({
-    _id: { type: String, required: true },  // id = data do registro, ex: "03-09-25"
+    // _id: { type: Number, auto: true },  // id = Chave unica
+    id: { type: String, required: true },  // id = data do registro, ex: "03-09-25"
     _usuario: { type: String, required: true },
     refeicoes: [refeicaoSchema]
 });

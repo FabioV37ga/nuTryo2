@@ -4,9 +4,10 @@ import AuthView from "../views/authView.js";
 import { backend } from "../utils/connection.js"
 
 class AuthController {
-    private authView = new AuthView()
+    private authView:AuthView;
 
     constructor() {
+        this.authView = new AuthView()
         // Adiciona funções de click
         this.adicionaEventosDeClick()
         // Verifica se há sessão salva no cache, dispensa login
@@ -37,6 +38,8 @@ class AuthController {
                 })
                 // Se houver match com a sessão salva no cache...
                 if (resposta.ok) {
+                    // Chama função para definir informações do perfil
+                    this.authView.definePerfil(sessao.email, nome)
 
                     // Realiza fetch dos dados referente ao usuário conectado
                     const nutryo = new NutryoFetch(sessao.email, nome)
@@ -52,7 +55,7 @@ class AuthController {
                             // Mostra janela principal da aplicação
                             var main = document.querySelector("main") as HTMLElement
                             main.style.display = 'flex'
-                            
+
                             // limpa intervalo
                             clearInterval(intervalo)
                         }
@@ -185,7 +188,7 @@ class AuthController {
                     headers: {
                         "Content-Type": "Application/json",
                     },
-                    body: JSON.stringify({ email, senha})
+                    body: JSON.stringify({ email, senha })
                 })
 
                 // Armazena em dados
@@ -197,8 +200,11 @@ class AuthController {
                     // Salva nome do usuário
                     var nome = dados.nome
 
+                    // Chama função para definir informações do perfil
+                    self.authView.definePerfil(dados.email, dados.nome)
+
                     // Salva sessão e cache
-                    localStorage.setItem("sessaoNutryo", JSON.stringify({ email, senha, nome}))
+                    localStorage.setItem("sessaoNutryo", JSON.stringify({ email, senha, nome }))
 
                     // Realiza fetch dos dados referente ao usuário conectado
                     const nutryo = new NutryoFetch(dados.email, dados.nome)
@@ -223,7 +229,7 @@ class AuthController {
                     self.exibeMensagemDeAuth("login")
                 }
             } catch (error) {
-
+                console.log(error)
             } finally {
                 // Esconde tela de carregamento
                 self.authView.toggleLoading()
@@ -299,6 +305,9 @@ class AuthController {
                 }
                 // Sucesso: Exibe mensagem de registro bem-sucedido
                 self.exibeMensagemDeAuth("sucess-register")
+
+                //  Chama função para definir informações do perfil
+                self.authView.definePerfil(email, nome)
             } catch (error) {
                 // Erro no registro
                 console.log("Erro no registro")

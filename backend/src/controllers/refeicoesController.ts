@@ -45,16 +45,16 @@ class RefeicoesController {
     static async editarRefeicao(req: Request, res: Response) {
         try {
             const user = req.params._usuario;
-            const diaId = req.params._id;
+            const diaId = req.params.id;
             const diaAtualizado = req.body; // todo o objeto do dia, incluindo _id, _usuario e refeicoes
 
-            if (!diaAtualizado || diaAtualizado._id !== diaId) {
+            if (!diaAtualizado || diaAtualizado.id !== diaId) {
                 return res.status(400).json({ message: "Objeto do dia inválido" });
             }
 
             // Substitui o documento do dia inteiro
             const resultado = await refeicoes.findOneAndReplace(
-                { _usuario: user, _id: diaId },
+                { _usuario: user, id: diaId },
                 diaAtualizado,
                 { new: true } // retorna o documento atualizado
             );
