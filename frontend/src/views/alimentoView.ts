@@ -120,21 +120,35 @@ class AlimentoView {
         $(".alimentos-adicionados").append(elemento)
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Função responsável por apagar o alimento visualmente
     static apagarAlimento(elemento: Element) {
+
+        // Armazena o ID do alimento a ser apagado
         var idApagado: number = parseInt(elemento.getAttribute("value") as string)
+
+        // Armazena elementos de alimentos que ainda ficarão na página
         var elementosRestantes = document.querySelectorAll(".alimento-item")
+
+        // Remove classes de estilização do elemento a ser apagado
         if (elemento.classList.contains("editando")) {
             elemento.classList.remove("editando")
         }
+
+        // Se ainda houverem alimentos restantes...
         if (elementosRestantes) {
+            // Subtrai o ID deles em 1 (apenas os que tinham ID maior do que o alimento apagado)
             for (let i = idApagado; i <= elementosRestantes.length - 1; i++) {
                 elementosRestantes[i].setAttribute("value", String(parseInt(elementosRestantes[i].getAttribute("value") as string) - 1))
             }
         }
-        elemento.remove()
 
+        // Por fim, remove o alimento referente ao ID
+        elemento.remove()
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Mostra/esconde janela de edição do alimento
     toggleJanelaDeEdicao(botao: Element) {
         // Marca referencias de elementos
         var iconeClicavel = botao.parentElement?.children[0].children[0] as Element
@@ -169,18 +183,28 @@ class AlimentoView {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Mostra resultados (alimento pesquisado) na lista de alimentos de pesquisa
     mostraResultadosNaLista(dados: object[] | any, elemento: Element) {
+
+        // Marca elemento de lista
         const lista = elemento.parentElement?.parentElement?.children[2] as HTMLElement;
+
+        // Inicializa array de elementos do itens de pesquisa
         var resultadoItens: Array<HTMLElement> = [];
 
+        // Coloca o resultado da pesquisa no array
         for (let i = 0; i <= 14; i++) {
             resultadoItens.push(lista.children[i] as HTMLElement)
         }
 
-
+        // Primeiro esconde os resultados da pesquisa anterior
         this.escondeResultadosNaLista(lista)
 
+        // Depois mostra a janela de pesquisa, vazia
         lista.style.display = 'flex'
+
+        // Mostra resultados do array
         for (let i = 0; i <= 14; i++) {
             // Separa dados a serem impressos na lista
             var dado = dados[i]
@@ -189,33 +213,36 @@ class AlimentoView {
                 var calorias = dado.calorias
                 var proteinas = dado.proteinas
 
-                // var textoFormatado = `${dados[i].nome} • ${formataDado(calorias)}kcal • ${formataDado(proteinas)}g Prots •`
                 var textoFormatado = `${dados[i].nome}`
 
                 resultadoItens[i].style.display = 'initial'
                 resultadoItens[i].textContent = textoFormatado
                 resultadoItens[i].setAttribute("value", id)
             }
-
+            // para o loop quando chega no ultimo item do array (o maximo de itens mostrados é 15)
             if (dados.length - 1 == i) {
                 return
             }
         }
-
-        function formataDado(dado: number) {
-            return parseInt(dado.toFixed(0))
-        }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por selecionar visualmente um alimento da lista de pesquisa
     selecionaItemAlimento(elemento: HTMLFormElement) {
         var texto = elemento.parentElement?.parentElement?.children[1].children[0] as HTMLFormElement
         texto.value = elemento.textContent
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por apagar elementos da lista de pesquisa (útil para fazer nova pesquisa e limpar resultados anteriores)
     escondeResultadosNaLista(elemento: HTMLElement) {
+        // Elemento da lista
         const lista = elemento
+
+        // Inicializa array de resultados de itens
         var resultadoItens: Array<HTMLElement> = [];
 
+        // Coloca resultados no array
         for (let i = 0; i <= 14; i++) {
             resultadoItens.push(lista.children[i] as HTMLElement)
         }
@@ -223,12 +250,14 @@ class AlimentoView {
         // Reinicia estilização da lista
         lista.style.display = 'none'
 
+        // esconde resultados
         for (let i = 0; i <= 14; i++) {
             resultadoItens[i].style.display = 'none'
         }
-
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por preencher visualmente os campos de macronutrientes de um alimento
     preencheMacros(elemento: Element, calorias: string, proteinas: string, gorduras: string, carboidratos: string) {
         var campoCalorias = elemento.children[0].children[1]
         var campoProteinas = elemento.children[1].children[1]
@@ -241,6 +270,8 @@ class AlimentoView {
         campoCarbo.textContent = carboidratos
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por atualizar visualmente um alimento (Dados de valor nutricional)
     atualizarAlimento(elemento: Element, dados: any) {
         var titulo = elemento as HTMLElement
 
