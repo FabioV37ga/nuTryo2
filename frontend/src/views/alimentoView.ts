@@ -118,15 +118,11 @@ class AlimentoView {
             `
 
         $(".alimentos-adicionados").append(elemento)
-        // var alimentoController = new AlimentoController()
-        // alimentoController.adicionarEventosDeClick()
     }
 
     static apagarAlimento(elemento: Element) {
         var idApagado: number = parseInt(elemento.getAttribute("value") as string)
         var elementosRestantes = document.querySelectorAll(".alimento-item")
-        // console.log("apagando elemento:")
-        // console.log(elemento)
         if (elemento.classList.contains("editando")) {
             elemento.classList.remove("editando")
         }
@@ -174,14 +170,10 @@ class AlimentoView {
     }
 
     mostraResultadosNaLista(dados: object[] | any, elemento: Element) {
-
-        // console.log("!!!!!!!!!!!!!!!!!!!!!!!")
-        // console.log(elemento.parentElement?.parentElement?.children[2])
         const lista = elemento.parentElement?.parentElement?.children[2] as HTMLElement;
         var resultadoItens: Array<HTMLElement> = [];
 
         for (let i = 0; i <= 14; i++) {
-            // console.log(lista.children[i])
             resultadoItens.push(lista.children[i] as HTMLElement)
         }
 
@@ -216,8 +208,6 @@ class AlimentoView {
     }
 
     selecionaItemAlimento(elemento: HTMLFormElement) {
-        // console.log(elemento.textContent)
-        // console.log(elemento.parentElement?.parentElement?.children[1].children[0])
         var texto = elemento.parentElement?.parentElement?.children[1].children[0] as HTMLFormElement
         texto.value = elemento.textContent
     }
@@ -227,7 +217,6 @@ class AlimentoView {
         var resultadoItens: Array<HTMLElement> = [];
 
         for (let i = 0; i <= 14; i++) {
-            // console.log(lista.children[i])
             resultadoItens.push(lista.children[i] as HTMLElement)
         }
 
@@ -241,8 +230,6 @@ class AlimentoView {
     }
 
     preencheMacros(elemento: Element, calorias: string, proteinas: string, gorduras: string, carboidratos: string) {
-        // console.log(elemento)
-        // console.log(`Calorias: ${calorias}kcal, Proteinas: ${proteinas}g, Gorduras: ${gorduras}g, Carbos: ${carboidratos}g`)
         var campoCalorias = elemento.children[0].children[1]
         var campoProteinas = elemento.children[1].children[1]
         var campoCarbo = elemento.children[2].children[1]

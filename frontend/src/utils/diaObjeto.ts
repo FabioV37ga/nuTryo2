@@ -116,14 +116,7 @@ class diaObjeto {
             gorduras: gorduras
         }
         diaObjeto.alimentos.push(objeto)
-        // diaObjeto.refeicoes[Number(refeicao) - 1].alimentos.push(objeto)
         diaObjeto.atualizarDia("alimento", String(Number(refeicao) - 1), objeto)
-        // diaObjeto.gerarDia(
-        //     CalendarioController.dataSelecionada,
-        //     diaObjeto.usuario,
-        //     diaObjeto.refeicoes
-        // )
-        // console.log(diaObjeto.refeicoes)
     }
 
     static apagarAlimento(refeicao: string, alimento: string) {
@@ -131,7 +124,6 @@ class diaObjeto {
         console.log(alimentos)
         var alimentosFinal: any[] = []
         for (let i = 0; i <= alimentos.length - 1; i++) {
-            // console.log("antes: " + alimentos[i]._id + ", depois: " + Number(alimento))
             if (Number(alimentos[i]._id) != Number(alimento))
                 alimentosFinal.push(alimentos[i])
         }
@@ -156,7 +148,6 @@ class diaObjeto {
 
     static apagarRefeicao(refeicao: string) {
         var refeicoes = diaObjeto.dia.refeicoes
-        // console.log(refeicoes)
         var refeicoesFinais: any[] = []
 
         for (let i = 0; i <= refeicoes.length - 1; i++) {

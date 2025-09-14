@@ -23,8 +23,6 @@ class NutryoFetch {
     }
 
     private async fetchObjects(user: string) {
-
-        // console.log(`${backend}/refeicoes/${user}`)
         try {
             const resposta: any = await fetch(`${backend}/refeicoes/${user}`, {
                 method: "GET",
@@ -46,18 +44,11 @@ class NutryoFetch {
         } finally {
             NutryoFetch.status = 1
         }
-
-
-
-        // let refeicoes = await resposta.json();
     }
 
     static retornaRefeicoesDoDia(data: string) {
-        // console.log("teste!")
-        // console.log(diaObjeto.diasSalvos)
         for (let dia = 0; dia <= diaObjeto.diasSalvos.length - 1; dia++) {
             if (diaObjeto.diasSalvos[dia]) {
-                // console.log(diaObjeto.diasSalvos[dia])
                 if (data == diaObjeto.diasSalvos[dia]._id) {
 
                     return diaObjeto.diasSalvos[dia].refeicoes

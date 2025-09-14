@@ -17,8 +17,6 @@ class RefeicoesView extends JanelaView {
         var stringAlimentos: string = "";
 
         if (refeicao) {
-            // console.log(refeicao)
-
             tipo = refeicao.tipo ? refeicao.tipo : ""
             var alimentos = refeicao.alimentos
 

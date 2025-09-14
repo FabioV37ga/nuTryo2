@@ -8,16 +8,17 @@ class CalendarioView {
     anoAtual: number;
 
     constructor(data: Date) {
+        // Inicializa e atribui valores de data aos atributos da classe
         const dataLocal = new Date(data)
         this.mesAtual = dataLocal.getMonth() + 1;
-        // this.mesAtual = 1;
         this.diaAtual = dataLocal.getDate();
         this.diaAtualSemana = dataLocal.getDay()
         this.anoAtual = dataLocal.getFullYear()
-        // this.anoAtual = 2003;
         this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay()
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por criar elementos de dia do calendario, totalizando 42 dias
     criarElementos() {
         // Inicializa elemento dia a ser inserido no calendario
         var dia: string = '<a class="dia"></a>';
@@ -25,13 +26,13 @@ class CalendarioView {
         for (let i = 0; i <= 41; i++) {
             $(".calendario-corpo").append(dia);
         }
-
+        // Chama método para adicionar corretamente as datas referente ao mes sendo mostrado
         this.adicionaDatas("atual");
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // Método responsável por adicionar datas aos elementos de dia, referentes ao mes sendo mostrado
     adicionaDatas(tipo?: string) {
-        // Mostra data atual sendo processada
-        // console.log(`${this.diaAtual}/${this.mesAtual}`)
 
         // Armazena dados de mes e ano nas variaveis:
         let mes = this.mesAtual
@@ -45,13 +46,16 @@ class CalendarioView {
                 case "atual":
                     break;
                 case "anterior":
+                    // Reduz o mes em 1, ao chegar em janeiro (1), volta para dezembro (12)
                     mes > 1 ? mes -= 1 : mes = 12;
                     break;
                 case "proximo":
+                    // Aumenta o mes em 1, ao chegar em dezembro (12), volta para janeiro (1)
                     mes < 12 ? mes++ : mes = 1;
                     break;
             }
 
+            // Sessão resposável por retornar quantos dias tem no mês
             // Fevereiro
             if (mes === 2) {
                 // Se for ano bissexto
@@ -73,13 +77,14 @@ class CalendarioView {
             else {
                 return 31;
             }
-            return 0
         }
 
         // Armazena dado da posicao do primeiro dia do mes atual sendo processado
         var posicaoDoPrimeiroDiaDoMes: number = this.posicaoDoPrimeiroDiaDoMes;
+
         // Armazena dia atual em diaDeHoje
         var diaDeHoje: number = this.diaAtual;
+
         // Lista de elementos de dia do DOM
         var elementosDia: NodeListOf<Element> = document.querySelectorAll(".dia");
 
@@ -102,6 +107,7 @@ class CalendarioView {
             // Loop para adicionar numeros aos elementos DOM
             for (let i = posicaoDoPrimeiroDiaDoMes; i <= elementosDia.length - 1; i++) {
 
+                // Atribui estilização especial para o dia atual
                 if (diaImpresso == diaDeHoje) {
                     elementosDia[i].classList.add("diaAtual")
                 }
@@ -117,7 +123,7 @@ class CalendarioView {
                     diaImpresso = 0
 
                 // Trecho responsável por marcar e marcar dias do mês seguinte
-                if (i  > quantidadeDeDias + posicaoDoPrimeiroDiaDoMes - 1) {
+                if (i > quantidadeDeDias + posicaoDoPrimeiroDiaDoMes - 1) {
                     elementosDia[i].classList.remove("mesAtual")
                     elementosDia[i].classList.add("mesSeguinte")
                 }
@@ -142,25 +148,38 @@ class CalendarioView {
         adicionaAosElementos(qtdDiasNoMes("atual"))
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por alterar visualmente a navegação (nome do mês sendo mostrado)
     atualizaHeader() {
-        var label:Element = document.querySelector(".mes-ano-label") as Element
+        // Elemento label
+        var label: Element = document.querySelector(".mes-ano-label") as Element
+
+        // Array com nome dos meses
         const meses = [
             "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
-        const mesString:string = meses[this.mesAtual - 1];
 
+        // String
+        const mesString: string = meses[this.mesAtual - 1];
+
+        // Atribui string ao textcontent do elemento label
         label.textContent = `${mesString} / ${this.anoAtual}`
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por retornar a data selecionada pelo usuário
     retornaDataSelecionada() {
-        // Faz tratamento para seleção precisa
+        // Seleciona todos os elementos de dia do calendário
         var elementosDia: NodeListOf<Element> = document.querySelectorAll(".dia")
 
-        // Dia
+        // @Dia
         // Primeiro inicializa diaSelecionado
         var elementoDiaSelecionado: Element | null = null;
+
+        // E marca o dia atual
         var diaSelecionado: number = this.diaAtual;
+
         // Depois armazena o dia selecionado na variavel
         for (let i = 0; i < 42; i++) {
             if (elementosDia[i].classList.contains("diaSelecionado")) {
@@ -169,11 +188,10 @@ class CalendarioView {
             }
         }
 
-        // console.log(elementoDiaSelecionado)
-
-        // Mes
+        // @Mes
         // Inicializa mesSelecionado
         var mesSelecionado: number = this.mesAtual;
+
         if (elementoDiaSelecionado)
             // Se o dia selecionado pertence ao mes anterior, o mes selecionado é mes - 1
             if (elementoDiaSelecionado.classList.contains("mesAnterior")) {
@@ -188,6 +206,7 @@ class CalendarioView {
                 mesSelecionado = this.mesAtual
             }
 
+        // Retorna valores selecionados
         return {
             "dia": Number(diaSelecionado),
             "mes": mesSelecionado,
@@ -196,6 +215,8 @@ class CalendarioView {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por navegar no calendário (voltar e avançar meses) 
     navegar(direcao: string) {
         switch (direcao) {
             case "frente":
@@ -205,11 +226,14 @@ class CalendarioView {
                 this.mesAtual > 1 ? this.mesAtual-- : (this.mesAtual = 12, this.anoAtual--)
                 break
         }
+        // Essa parte marca a posição da semana (0-6) do dia primeiro do mês navegado
         this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay()
-        this.adicionaDatas()
-        this.atualizaHeader()
-        console.log(`${this.mesAtual}/${this.anoAtual}`)
 
+        // Chama método para adicionar datas do novo mês navegado
+        this.adicionaDatas()
+        
+        // Chama método para atualizar o nome do mês no label
+        this.atualizaHeader()
     }
 }
 // Exporta view para o controlador
