@@ -1,4 +1,6 @@
 class AuthView {
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por alternar visualmente entre a janela de registro e login
     switchRegisterLogin(target: string) {
         
         // Janela de registro
@@ -19,6 +21,8 @@ class AuthView {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável alternar a visualização do loading
     toggleLoading(){
         const spinner = document.querySelector(".auth-loading") as HTMLElement
 
