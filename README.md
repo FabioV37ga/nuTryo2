@@ -6,8 +6,8 @@
 - 1. Clone o repositorio com `git clone https://github.com/FabioV37ga/nuTryo2`
 - 2. Instale dependências com `npm install`
 - 3. Defina string de conexão `DB_CONNECTION_STRING` em `./.env` para o endereço do mongoDB
-- 4. Rode o front-end com `npm run start:front`
-- 5. Rode o back-end com `npm run start:back`
+- 4. Rode o back-end com `npm run start:back`
+- 5. Rode o front-end com `npm run start:front`
 
 # Funcionalidades (até agora):
 - Lógica de criação dinâmica de calendário
