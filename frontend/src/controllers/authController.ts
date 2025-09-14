@@ -5,21 +5,29 @@ import { backend } from "../utils/connection.js"
 
 class AuthController {
     private authView = new AuthView()
+
     constructor() {
+        // Adiciona funções de click
         this.adicionaEventosDeClick()
+        // Verifica se há sessão salva no cache, dispensa login
         this.verificaSessao()
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Função resposável por verificar sessão no cache, dispensa login se houver
     async verificaSessao() {
+
+        // Pega item salvo no cache
         var sessao: AnyObject = JSON.parse(localStorage.getItem("sessaoNutryo") as string) as AnyObject
 
+        // Se houver sessão salva no cache...
         if (sessao) {
             if (sessao.email && sessao.senha) {
                 const email = sessao.email
                 const senha = sessao.senha
                 const nome = sessao.nome
 
-                // Inicia requisição
+                // Inicia requisição com dados do cache
                 const resposta = await fetch(`${backend}/auth/login`, {
                     method: "POST",
                     headers: {
@@ -27,8 +35,8 @@ class AuthController {
                     },
                     body: JSON.stringify({ email, senha })
                 })
+                // Se houver match com a sessão salva no cache...
                 if (resposta.ok) {
-
 
                     // Realiza fetch dos dados referente ao usuário conectado
                     const nutryo = new NutryoFetch(sessao.email, nome)
@@ -37,11 +45,15 @@ class AuthController {
                     var intervalo = setInterval(() => {
                         if (NutryoFetch.objects) {
 
+                            // Esconde janela de autenticação
                             var tela = document.querySelector(".overlay-auth") as HTMLElement
                             tela.style = "display: none"
 
+                            // Mostra janela principal da aplicação
                             var main = document.querySelector("main") as HTMLElement
                             main.style.display = 'flex'
+                            
+                            // limpa intervalo
                             clearInterval(intervalo)
                         }
                     }, 1);
@@ -50,9 +62,13 @@ class AuthController {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // Método responsável por adicionar funções de click
     adicionaEventosDeClick() {
 
-        // # Adiciona evento para trocar a janela entre Registro e Login
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        // # Adiciona evento para trocar a janela de LOGIN para REGISTRO
 
         // Botão 'troca para registro'
         const trocaParaRegistro = document.querySelector(".switchToRegister") as HTMLElement;
@@ -61,10 +77,15 @@ class AuthController {
         if (!trocaParaRegistro.classList.contains("hasEvent")) {
             trocaParaRegistro.classList.add("hasEvent")
 
+            // Adiciona eventos
             trocaParaRegistro.addEventListener("click", () => {
+                // Alterna visualmente entre login e registro na janela de autenticação
                 this.authView.switchRegisterLogin("registro")
             })
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        // # Adiciona evento para trocar a janela de REGISTRO para LOGIN
 
         // Botão 'troca para login'
         const trocaParaLogin = document.querySelector(".switchToLogin") as HTMLElement
@@ -73,38 +94,52 @@ class AuthController {
         if (!trocaParaLogin.classList.contains("hasEvent")) {
             trocaParaLogin.classList.add("hasEvent")
 
+            // Adiciona eventos
             trocaParaLogin.addEventListener("click", () => {
+                // Alterna visualmente entre login e registro na janela de autenticação
                 this.authView.switchRegisterLogin("login")
             })
         }
 
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
         // # Adiciona evento de click para efetuar login
 
         // Botão login
         const botaoLogin = document.querySelector(".submitLogin") as Element
 
+        // Previne adição múltipla de eventos de click
         if (!botaoLogin.classList.contains("hasEvent")) {
             botaoLogin.classList.add("hasEvent")
 
+            // Adiciona eventos
             botaoLogin.addEventListener("click", () => {
+                // Efetua login ao clicar
                 this.logIn()
             })
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
         // # Adiciona evento de click para efetuar registro
 
+        // Botão de registro
         const botaoRegister = document.querySelector(".submitRegistro") as Element
 
+        // Previne adição múltipla de eventos de click
         if (!botaoRegister.classList.contains("hasEvent")) {
             botaoRegister.classList.add("hasEvent")
 
+            // Adiciona eventos
             botaoRegister.addEventListener("click", () => {
+                // Efetua registro ao clicar
                 this.register()
             })
         }
     }
 
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método reponsável por verificar consistencia dos campos de login
     private logIn() {
         // Referencia this em self
         const self = this;
@@ -137,6 +172,7 @@ class AuthController {
         }
 
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
         // # Função de login
         async function efetuaLogin() {
             try {
@@ -149,7 +185,7 @@ class AuthController {
                     headers: {
                         "Content-Type": "Application/json",
                     },
-                    body: JSON.stringify({ email, senha })
+                    body: JSON.stringify({ email, senha})
                 })
 
                 // Armazena em dados
@@ -157,34 +193,47 @@ class AuthController {
 
                 // Se os dados forem validos, realiza login
                 if (resposta.ok) {
+
+                    // Salva nome do usuário
                     var nome = dados.nome
+
+                    // Salva sessão e cache
                     localStorage.setItem("sessaoNutryo", JSON.stringify({ email, senha, nome}))
+
                     // Realiza fetch dos dados referente ao usuário conectado
                     const nutryo = new NutryoFetch(dados.email, dados.nome)
 
                     // Inicia aplicação fechando janela de autenticação
                     var intervalo = setInterval(() => {
                         if (NutryoFetch.objects) {
+                            // Tela de autenticação
                             var tela = document.querySelector(".overlay-auth") as HTMLElement
+
+                            // Esconde tela de autenticação
                             tela.style = "display: none"
+
+                            // Limpa intervalo
                             clearInterval(intervalo)
                         }
                     }, 1);
                 }
                 // Se os dados forem invalidos, exibe mensagem de erro
                 else {
-                    console.log("falha no login")
+                    // Exbe mensagem de erro
                     self.exibeMensagemDeAuth("login")
                 }
             } catch (error) {
 
             } finally {
+                // Esconde tela de carregamento
                 self.authView.toggleLoading()
             }
 
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Função resposavel por garantir consistência dos campos de registro
     private register() {
         // Referencia this em self, para usar dentro da função
         const self = this;
@@ -227,7 +276,8 @@ class AuthController {
             this.exibeMensagemDeAuth("register-mail")
         }
 
-        // Função para efetuar registro
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        // # Função para efetuar registro
         async function efetuaRegistro() {
 
             try {
@@ -243,6 +293,7 @@ class AuthController {
                 // Error 400: Email duplicado
                 if (resposta.status == 400) {
                     console.log("E-mail duplicado")
+                    // Exibe mensagem de erro de email já existente
                     self.exibeMensagemDeAuth("email-duplicado")
                     return
                 }
@@ -256,6 +307,9 @@ class AuthController {
         }
     }
 
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por exibir informações sobre o login e registro
     private exibeMensagemDeAuth(tipo: string) {
 
         // Campo email
@@ -269,27 +323,33 @@ class AuthController {
 
         // Seleção do erro
         switch (tipo) {
+            // Erro de login: dados incorretos ou inexistentes
             case "login":
                 mensagemLogin.textContent = "Dados incorretos ou inexistentes!"
                 mostraEEscondeMensagem(mensagemLogin)
                 break;
+            // Erro de registro: Nome inválido
             case "register-nome":
                 mensagemRegistro.textContent = "Nome inválido."
                 mostraEEscondeMensagem(mensagemRegistro)
                 break
+            // Erro de registro: Email inválido
             case "register-mail":
                 mensagemRegistro.textContent = "Email inválido"
                 mostraEEscondeMensagem(mensagemRegistro)
                 break
+            // Erro de registro: Senha inválida
             case "register-senha":
                 mensagemRegistro.textContent = "Senha inválida"
                 mostraEEscondeMensagem(mensagemRegistro)
                 break
+            // Erro de registro: Email já registrado
             case "email-duplicado":
                 mensagemRegistro.textContent = "Email já cadastrado!"
                 campoEmail.value = ""
                 mostraEEscondeMensagem(mensagemRegistro)
                 break
+            // Sucesso em registro: Conta criada
             case "sucess-register":
                 this.authView.switchRegisterLogin("login")
                 mensagemLogin.textContent = "Conta criada com sucesso! Faça o login."
@@ -297,8 +357,12 @@ class AuthController {
                 break
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        // # Mostra mensagem por 3 segundos, depois esconde
         function mostraEEscondeMensagem(elemento: HTMLElement) {
+            // Mostra mensagem
             elemento.style.display = "initial"
+            // Depois de 3 segundos esconde
             setTimeout(() => {
                 elemento.style.display = "none"
             }, 3000);
