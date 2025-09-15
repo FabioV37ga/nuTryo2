@@ -1,5 +1,10 @@
-Erro no calculo de macronutrientes - regra de 3
+Mobile: Drag no overflow da lista de resultado de pesquisa de alimentos não funciona corretamente
 
------------------
+Sistema/front: Desenvolver tela de estatisticas
+Sistema/back: Desenvolver sistema de cálculo de metas
 
-desenvolver interface mobile
+Sistema/front: Desenvolver sistema de alterar metas
+Sistema/back: Desenvolver lógica pra alterar metas no usuário no banco
+
+Marcar visualmente dias que tem anotações com darkpinkwhite
+Marcar dis atual com lighterblue
