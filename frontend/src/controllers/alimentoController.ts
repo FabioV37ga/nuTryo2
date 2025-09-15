@@ -184,6 +184,42 @@ class AlimentoController extends JanelaController {
         }
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------------
+        // # (Mobile) Garante o funcionamento do scroll - Quando o usuário está digitando no campo de pesquisa, desabilita o scroll dos outros alimentos
+        var janelaPesquisa = document.querySelectorAll(".alimento-selecao-lista") as NodeListOf<HTMLElement>
+
+        for (let i = 0; i <= janelaPesquisa.length - 1; i++) {
+            if (!janelaPesquisa[i].classList.contains("hasFocusEvent")) {
+                janelaPesquisa[i].classList.add("hasFocusEvent")
+
+                janelaPesquisa[i].addEventListener("focus", () => {
+                    if (window.innerWidth <= 1000) {
+
+                        janelaPesquisa[i].scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        })
+
+                        document.body.style.overflow = 'hidden'
+                        document.body.style.position = 'fixed'
+                    }
+                })
+            }
+
+            if (!janelaPesquisa[i].classList.contains("hasBlurEvent")) {
+                janelaPesquisa[i].classList.add("hasBlurEvent")
+
+                janelaPesquisa[i].addEventListener("blur", () => {
+                    if (window.innerWidth <= 1000) {
+
+                        document.body.style.overflow = "initial"
+                        document.body.style.position = 'initial'
+                    }
+                })
+            }
+        }
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------
         // # Preencher o campo "Peso" faz regra de 3 com o valor de consumo inserido
 
         // Armazena elementos de "peso consumido" (input do usuário)
@@ -397,7 +433,7 @@ class AlimentoController extends JanelaController {
 
             // Armazena campo de "Peso consumido" do alimento especifico
             const campoPesoConsumido = elemento.parentElement?.parentElement?.parentElement?.children[1].children[1].children[0] as HTMLFormElement
-            
+
             // Armazena valor textual do elemento de peso consumido 
             var pesoConsumido = campoPesoConsumido.value
             // Faz tratamento do valor de peso consumido
@@ -420,10 +456,10 @@ class AlimentoController extends JanelaController {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // # Método responsável por fazer a regra de 3 a partir dos dados de um alimento em relação ao peso consumido pelo usuário
     private calcularMacros(pesoConsumido: any, pesoReferencia: number, calorias: any, proteinas: any, gorduras: any, carbo: any) {
-        
+
         // A referência é o peso consumido pelo usuário, se o usuário ainda não inseriu um peso, faz com 100g, que é o valor base da tabela de alimentos
         var referencia = pesoReferencia ? pesoReferencia : 100
-        
+
         //  Faz calculos de regra de 3
         var caloriasConsumidas: string = ((pesoConsumido * calorias) / referencia).toFixed(2)
         var proteinasConsumidas: string = ((pesoConsumido * proteinas) / referencia).toFixed(2)
@@ -471,7 +507,7 @@ class AlimentoController extends JanelaController {
                 carboidratos: carboidratos,
                 gorduras: gorduras
             }
-        } 
+        }
         // Se houver algum campo vazio, retorna false
         else {
             return false
