@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href="styles/refeicao.css">
     <link rel="stylesheet" type="text/css" href="styles/refeicoes.css">
     <link rel="stylesheet" type="text/css" href="styles/alimentos.css">
+    <link rel="stylesheet" type="text/css" href="styles/estatisticas.css">
     <link rel="stylesheet" type="text/css" href="styles/janela.css">
     <link rel="stylesheet" type="text/css" href="styles/auth.css">
     <link rel="stylesheet" type="text/css" href="styles/reset.css">
@@ -213,6 +214,171 @@
                 </div>
             </div>
         </section>
+
+        <!-- Janela de estatísticas -->
+        <section class="janela-estatisticas">
+
+            <!-- Título da janela de estatísticas -->
+            <div class="janela-estatisticas-titulo">
+                Estatísticas
+            </div>
+
+            <!-- Seletor de período -->
+            <nav class="janela-estatisticas-nav">
+
+                <!-- Periodo: Diário -->
+                <div class="estatisticas-hoje periodo-selecionado">
+                    <span>
+                        Hoje
+                    </span>
+                </div>
+
+                <!-- Período: Semanal -->
+                <div class="estatisticas-semana">
+                    <span>
+                        Últimos 7 dias
+                    </span>
+                </div>
+
+                <!-- Período: Total -->
+                <div class="estatisticas-totais">
+                    <span>
+                        Totais
+                    </span>
+                </div>
+            </nav>
+
+            <!-- Informações estatísticas -->
+            <div class="sessao-estatisticas-informacoes">
+
+                <!-- Sessão de calorias -->
+                <div class="estatisticas-informacoes informacoes-calorias">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/kcal.png" alt="" srcset="">
+                        Calorias
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-kcal">
+                            1.850 kcal
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <span class="informacoes-meta info-meta-kcal">
+                            2.000 kcal
+                        </span>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress kcal-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sessão de proteínas -->
+                <div class="estatisticas-informacoes informacoes-proteinas">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/prot.png" alt="" srcset="">
+                        Proteínas
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-prots">
+                            95 g
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <span class="informacoes-meta info-meta-prots">
+                            120 g 
+                        </span>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress prot-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sessão de carboidratos -->
+                <div class="estatisticas-informacoes informacoes-carboidratos">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/carb.png" alt="" srcset="">
+                        Carboidratos
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-carbs">
+                            210 g
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <span class="informacoes-meta info-meta-carbs">
+                            250 g
+                        </span>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress carbs-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sessão de gorduras -->
+                <div class="estatisticas-informacoes informacoes-gorduras">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/gord.png" alt="" srcset="">
+                        Gorduras
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-gords">
+                            65 g 
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <span class="informacoes-meta info-meta-gords">
+                            70 g
+                        </span>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress gords-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
 
 
         <!-- Janela a direita (desktop) / Janela aberta ao clicar em um dia (Mobile) -->

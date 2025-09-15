@@ -185,38 +185,38 @@ class AlimentoController extends JanelaController {
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------------
         // # (Mobile) Garante o funcionamento do scroll - Quando o usuário está digitando no campo de pesquisa, desabilita o scroll dos outros alimentos
-        var janelaPesquisa = document.querySelectorAll(".alimento-selecao-lista") as NodeListOf<HTMLElement>
+        // var janelaPesquisa = document.querySelectorAll(".alimento-selecao-lista") as NodeListOf<HTMLElement>
 
-        for (let i = 0; i <= janelaPesquisa.length - 1; i++) {
-            if (!janelaPesquisa[i].classList.contains("hasFocusEvent")) {
-                janelaPesquisa[i].classList.add("hasFocusEvent")
+        // for (let i = 0; i <= janelaPesquisa.length - 1; i++) {
+        //     if (!janelaPesquisa[i].classList.contains("hasFocusEvent")) {
+        //         janelaPesquisa[i].classList.add("hasFocusEvent")
 
-                janelaPesquisa[i].addEventListener("focus", () => {
-                    if (window.innerWidth <= 1000) {
+        //         janelaPesquisa[i].addEventListener("focus", () => {
+        //             if (window.innerWidth <= 1000) {
 
-                        janelaPesquisa[i].scrollIntoView({
-                            behavior: "smooth",
-                            block: "center"
-                        })
+        //                 janelaPesquisa[i].scrollIntoView({
+        //                     behavior: "smooth",
+        //                     block: "center"
+        //                 })
 
-                        document.body.style.overflow = 'hidden'
-                        document.body.style.position = 'fixed'
-                    }
-                })
-            }
+        //                 document.body.style.overflow = 'hidden'
+        //                 document.body.style.position = 'fixed'
+        //             }
+        //         })
+        //     }
 
-            if (!janelaPesquisa[i].classList.contains("hasBlurEvent")) {
-                janelaPesquisa[i].classList.add("hasBlurEvent")
+        //     if (!janelaPesquisa[i].classList.contains("hasBlurEvent")) {
+        //         janelaPesquisa[i].classList.add("hasBlurEvent")
 
-                janelaPesquisa[i].addEventListener("blur", () => {
-                    if (window.innerWidth <= 1000) {
+        //         janelaPesquisa[i].addEventListener("blur", () => {
+        //             if (window.innerWidth <= 1000) {
 
-                        document.body.style.overflow = "initial"
-                        document.body.style.position = 'initial'
-                    }
-                })
-            }
-        }
+        //                 document.body.style.overflow = "initial"
+        //                 document.body.style.position = 'initial'
+        //             }
+        //         })
+        //     }
+        // }
 
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,142 @@
+.janela-estatisticas {
+    display: none;
+    width: 900px;
+    height: 600px;
+    position: absolute;
+    background: var(--pinkWhite);
+    z-index: 3;
+    top: 90px;
+    left: 630px;
+    border-radius: 20px;
+}
+
+.janela-estatisticas-titulo {
+    font-size: 35px;
+    margin: 30px 0 0 35px;
+    color: var(--windowBlue);
+    font-weight: 500;
+}
+
+nav.janela-estatisticas-nav {
+    display: flex;
+    height: 45px;
+    width: 355px;
+    /* justify-content: center; */
+    align-items: center;
+    margin-left: 35px;
+    margin-top: 25px;
+}
+
+nav.janela-estatisticas-nav>* {
+    background: rgb(242 231 218);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--windowBlue)
+}
+
+.estatisticas-hoje {
+    border-radius: 5px 0 0 5px;
+    width: 95px;
+}
+
+.estatisticas-semana {
+    width: 165px;
+}
+
+.estatisticas-totais {
+    border-radius: 0 5px 5px 0;
+    width: 95px;
+}
+
+.sessao-estatisticas-informacoes {
+    width: 825px;
+    height: 390px;
+    margin-top: 35px;
+    margin-left: 35px;
+    /* background: orange; */
+    display: flex;
+    /* justify-content: space-evenly; */
+    flex-wrap: wrap;
+}
+
+.estatisticas-informacoes {
+    width: 399px;
+    height: 45%;
+    background: rgb(255 252 242);
+    border-radius: 13px;
+    box-shadow: 0px 0px 13px -8px rgba(0, 0, 0, 0.67)
+}
+
+.informacoes-calorias,
+.informacoes-carboidratos {
+    margin-right: 26px;
+}
+
+.estatisticas-hoje.periodo-selecionado {
+    background: var(--lightBlue);
+    color: white;
+    border-radius: 5px
+}
+
+.estatisticas-informacoes h1 {
+    margin-top: 25px;
+    margin-left: 20px;
+    font-size: 25px;
+    color: var(--windowBlue);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.estatisticas-informacoes h1 img {
+    width: 22px;
+    margin-right: 8px
+}
+
+.informacoes-valores {
+    /* background: red; */
+    width: calc(100% - 44px);
+    margin-left: 22px;
+    height: 95px;
+    margin-top: 28px;
+    font-size: 29px;
+    color: var(--windowBlue);
+}
+
+.informacoes-consumo {
+    font-weight: 500;
+    font-size: 39px;
+}
+
+.progressBar {
+    width: 100%;
+    height: 16px;
+    margin-top: 20px;
+    border-radius: 6px;
+    background: lightgray;
+}
+
+.progressBar-progress {
+    width: 70%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.kcal-progress {
+    background: rgb(198, 101, 82)
+}
+
+.prot-progress {
+    background: rgb(77 172 129)
+}
+
+.carbs-progress {
+    background: rgb(236 149 71)
+}
+
+.gords-progress {
+    background: rgb(126 97 193)
+}
