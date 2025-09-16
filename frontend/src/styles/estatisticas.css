@@ -17,6 +17,15 @@
     font-weight: 500;
 }
 
+.janela-estatisticas-close {
+    position: absolute;
+    top: 15px;
+    right: 23px;
+    color: var(--lightBlue);
+    font-size: 39px;
+    cursor: pointer;
+}
+
 nav.janela-estatisticas-nav {
     display: flex;
     height: 45px;

@@ -1,6 +1,7 @@
 import diaObjeto from "../utils/diaObjeto.js";
 import NutryoFetch from "../utils/nutryoFetch.js";
 import RefeicoesView from "../views/refeicoesView.js"
+import CalendarioController from "./calendarioController.js";
 import JanelaController from "./janelaController.js";
 
 class RefeicoesController extends JanelaController {
@@ -12,7 +13,9 @@ class RefeicoesController extends JanelaController {
         // Inicializa herança
         super()
         // Chama função para adicionar eventos
-        this.adicionaEventosDeClick()
+        this.adicionaEventosDeClick();
+        // Cria elementos do dia atual (default)
+        this.criarElementosDoDia(CalendarioController.dataSelecionada);
     }
 
 

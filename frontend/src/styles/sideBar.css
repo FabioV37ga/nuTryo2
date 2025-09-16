@@ -116,3 +116,23 @@
     font-size: 23px;
     cursor: pointer;
 }
+
+.estatisticas-ico {
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.estatisticas-ico i {
+    margin-bottom: 5px;
+    font-size: 35px
+}
+
+.estatisticas-ico-label {
+    font-size: 12px;
+    text-transform: uppercase;
+}

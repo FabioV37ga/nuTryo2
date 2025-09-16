@@ -1,9 +1,12 @@
 import NutryoFetch from "../utils/nutryoFetch.js";
 import { backend } from "../utils/connection.js"
 import CalendarioController from "./calendarioController.js";
+import EstatisticasView from "../views/estatisticasView.js";
 
 class EstatisticasController {
+    janelaEstatisticas: HTMLElement;
     botaoAcessarEstatisticas: HTMLElement;
+    botaoFecharEstatisticas: HTMLElement;
 
     caloriasConsumidasElemento: HTMLElement;
     proteinasConsumidasElemento: HTMLElement;
@@ -26,10 +29,15 @@ class EstatisticasController {
 
     periodoSelecionado: String
 
+    estatisticasView: EstatisticasView;
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Construtor
 
     constructor() {
+
+        // Instância de view
+        this.estatisticasView = new EstatisticasView()
 
         // Define o periodo selecionado para "hoje" - valor padrão
         this.periodoSelecionado = "hoje"
@@ -53,6 +61,9 @@ class EstatisticasController {
     // # Método responsável por atribuir elementos da janela de estatísticas aos atributos da classe
 
     defineElementos() {
+
+        // Janela de estatísticas
+        this.janelaEstatisticas = document.querySelector(".janela-estatisticas") as HTMLElement;
 
         // Valores de consumo
         this.caloriasConsumidasElemento = document.querySelector(".info-consumo-kcal") as HTMLElement
@@ -79,6 +90,9 @@ class EstatisticasController {
 
         // Botão no aside para acessar janela de estatísticas
         this.botaoAcessarEstatisticas = document.querySelector(".estatisticas-ico") as HTMLElement
+
+        // Botão para fechar a janela de estatísticas
+        this.botaoFecharEstatisticas = document.querySelector(".janela-estatisticas-close") as HTMLElement
     }
 
 
@@ -88,11 +102,21 @@ class EstatisticasController {
 
     adicionaEventosDeClick() {
 
-        // Botão de acesso à janela de estatísticas
+        // Botão de acesso à janela de estatísticas → abre janela de estatísticas
         this.botaoAcessarEstatisticas.addEventListener("click", () => {
+
+            // Chama método para preencher as estatísticas com os dados obtidos das refeições do período selecionado (Inicializa como dia atual)
             var dados = this.calculaEstatisticas()
-            console.log(dados.caloriasTotais)
             this.preencheEstatisticas(dados)
+
+            // Mostra janela de estatísticas
+            this.janelaEstatisticas.style.display = "initial"
+        })
+
+        // Botão de fechamento da janela de estatísticas → fecha janela de estatísticas
+        this.botaoFecharEstatisticas.addEventListener("click", () => {
+            // Esconde janela de estatísticas
+            this.janelaEstatisticas.style.display = "none"
         })
     }
 
