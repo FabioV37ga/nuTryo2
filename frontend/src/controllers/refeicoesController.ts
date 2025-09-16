@@ -14,8 +14,6 @@ class RefeicoesController extends JanelaController {
         super()
         // Chama função para adicionar eventos
         this.adicionaEventosDeClick();
-        // Cria elementos do dia atual (default)
-        this.criarElementosDoDia(CalendarioController.dataSelecionada);
     }
 
 

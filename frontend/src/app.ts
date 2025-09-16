@@ -16,3 +16,5 @@ const alimentoController = new AlimentoController();
 const refeicoesController = new RefeicoesController();
 const refeicaoController = new RefeicaoController();
 const estatisticasController = new EstatisticasController()
+
+refeicoesController.criarElementosDoDia(CalendarioController.dataSelecionada)
