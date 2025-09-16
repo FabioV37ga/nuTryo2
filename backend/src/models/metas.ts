@@ -8,6 +8,6 @@ const metasSchema = new mongoose.Schema({
   metaGorduras: {type: String, default: 55}
 });
 
-const Metas = mongoose.model("metas", metasSchema)
+const metas = mongoose.model("metas", metasSchema)
 
-export default Metas
+export default metas

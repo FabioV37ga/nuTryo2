@@ -3,6 +3,7 @@ import diaObjeto from "./diaObjeto.js";
 
 class NutryoFetch {
     static objects: any[]
+    static metas: any
     static status = 0
     static username: string;
     private user: string;
@@ -23,12 +24,15 @@ class NutryoFetch {
         diaObjeto.usuario = this.user
 
         // Faz busca dos dias com anotação do usuário a partir do email
-        this.fetchObjects(this.user)
+        this.fetchDias(this.user)
+
+        // Faz busca nas metas do usuário
+        this.fetchMetas(this.user)
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Método responsável por fazer busca no banco de dados pelas anotações do usuário logado
-    private async fetchObjects(user: string) {
+    private async fetchDias(user: string) {
         try {
             // Inicia requisição
             const resposta: any = await fetch(`${backend}/refeicoes/${user}`, {
@@ -42,6 +46,7 @@ class NutryoFetch {
 
             // Salva resultado da requisição aqui (Essa parte é imutavel, serve de comparação)
             NutryoFetch.objects = data
+
             // Salva resultado da pesquisa nos objetos locais (Parte lógica, é aqui que as alterações são feitas antes de serem comparadas e enviadas para o banco de dados)
             diaObjeto.diasSalvos = data
 
@@ -54,6 +59,23 @@ class NutryoFetch {
         } finally {
             // Ao fim da requisição, marca status como 1 (Requisição completa)
             NutryoFetch.status = 1
+        }
+    }
+
+    private async fetchMetas(user: string){
+        try{
+            const resposta: any = await fetch(`${backend}/metas/${user}`,{
+                method: "GET",
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await resposta.json();
+
+            NutryoFetch.metas = data[0];
+        }catch(err){
+
         }
     }
 

@@ -36,13 +36,13 @@ class Autenticar {
 
             const novoUsuario = await Usuario.create(req.body)
 
-            const metasDoUsuario = await Metas.create(email)
+            const metasDoUsuario = await Metas.create({email})
 
             res.status(200).json({"usuario": novoUsuario, "metas": metasDoUsuario})
 
         } catch (error) {
 
-            res.status(500).json(error)
+            res.status(500).json(error.message)
             
         }
     }

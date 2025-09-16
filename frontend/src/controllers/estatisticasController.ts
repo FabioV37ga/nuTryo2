@@ -50,7 +50,7 @@ class EstatisticasController {
 
         // Initervalo lógico: Só calcula as estatisticas quando a requisição por refeições no banco de dados terminar
         var intervalo = setInterval(() => {
-            if (NutryoFetch.status == 1) {
+            if (NutryoFetch.objects && NutryoFetch.metas) {
                 this.calculaEstatisticas()
                 clearInterval(intervalo)
             }
@@ -108,7 +108,7 @@ class EstatisticasController {
             // Chama método para preencher as estatísticas com os dados obtidos das refeições do período selecionado (Inicializa como dia atual)
             this.selecionaPeriodo("hoje");
             var dados = this.calculaEstatisticas();
-            this.preencheEstatisticas(dados);
+            this.preencheEstatisticasConsumo(dados);
 
             // Mostra janela de estatísticas
             EstatisticasController.janelaEstatisticas.style.display = "initial"
@@ -126,21 +126,21 @@ class EstatisticasController {
         EstatisticasController.statsDiaElemento.addEventListener("click", () => {
             this.selecionaPeriodo("hoje")
             var dados = this.calculaEstatisticas();
-            this.preencheEstatisticas(dados);
+            this.preencheEstatisticasConsumo(dados);
         })
 
         // @Semanal
         EstatisticasController.statsSemanaElemento.addEventListener("click", () => {
             this.selecionaPeriodo("semanal")
             var dados = this.calculaEstatisticas();
-            this.preencheEstatisticas(dados);
+            this.preencheEstatisticasConsumo(dados);
         })
 
         // @Mensal
         EstatisticasController.statsMensalElemento.addEventListener("click", () => {
             this.selecionaPeriodo("mensal")
             var dados = this.calculaEstatisticas();
-            this.preencheEstatisticas(dados);
+            this.preencheEstatisticasConsumo(dados);
         })
     }
 
@@ -155,6 +155,8 @@ class EstatisticasController {
 
         // Salva na variavel as metas nutricionais do usuário (calorias, proteinas, carboidratos e gorduras)
         var metas = this.retornaMetas(this.periodoSelecionado as string) as any
+
+        this.preencheEstatisticasMetas(metas)
 
         // Inicializa variaveis de soma total dos valores nutricionais do período selecionado
         var caloriasTotais: number = 0;
@@ -195,10 +197,11 @@ class EstatisticasController {
                 break;
 
             case "semanal":
+                console.log(metas)
                 break;
 
             case "mensal":
-
+                console.log(metas)
                 break;
         }
 
@@ -234,28 +237,11 @@ class EstatisticasController {
     retornaMetas(periodo: string) {
         // Retorna metas do usuário
         var metas = {
-            "metaCalorias": Number(
-                EstatisticasController.caloriasMetaElemento.textContent.
-                    trim().
-                    replace(".", "").
-                    split(" ")[0]),
-            "metaProteinas": Number(
-                EstatisticasController.proteinasMetaElemento.textContent
-                    .trim()
-                    .replace(".", "")
-                    .split(" ")[0]),
-            "metaCarboidratos": Number(
-                EstatisticasController.carboidratosMetaElemento.textContent
-                    .trim()
-                    .replace(".", "")
-                    .split(" ")[0]),
-            "metaGorduras": Number(
-                EstatisticasController.gordurasMetaElemento.textContent
-                    .trim()
-                    .replace(".", "")
-                    .split(" ")[0])
+            "metaCalorias": Number(NutryoFetch.metas.metaCalorias),
+            "metaProteinas": Number(NutryoFetch.metas.metaProteinas),
+            "metaCarboidratos": Number(NutryoFetch.metas.metaCarboidratos),
+            "metaGorduras": Number(NutryoFetch.metas.metaGorduras)
         }
-        console.log(metas)
 
         switch (periodo) {
             case "hoje":
@@ -282,9 +268,9 @@ class EstatisticasController {
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
-    // # Método responsável por preencher informações de estatística na página (Valores de consumo e porcentagem de conclusão)
+    // # Método responsável por preencher informações estatísticas de consumo na página (Valores de consumo e porcentagem de conclusão)
 
-    preencheEstatisticas(dados: any) {
+    preencheEstatisticasConsumo(dados: any) {
 
         // Calorias
         EstatisticasController.caloriasConsumidasElemento.textContent = `${dados.caloriasTotais.toFixed(0)} kcal`
@@ -300,7 +286,15 @@ class EstatisticasController {
 
         // Gorduras
         EstatisticasController.gordurasConsumidasElemento.textContent = `${dados.gordurasTotais.toFixed(0)} g`
-        EstatisticasController.porcentagemGorduras.style.width = dados.porcentagemCalorias + "%"
+        EstatisticasController.porcentagemGorduras.style.width = dados.porcentagemGorduras + "%"
+    }
+
+    preencheEstatisticasMetas(metas: any) {
+        EstatisticasController.caloriasMetaElemento.textContent = `${metas.metaCalorias} kcal`
+        EstatisticasController.proteinasMetaElemento.textContent = `${metas.metaProteinas} g`
+        EstatisticasController.carboidratosMetaElemento.textContent = `${metas.metaCarboidratos} g`
+        EstatisticasController.gordurasMetaElemento.textContent = `${metas.metaGorduras} g`
+
     }
 
     selecionaPeriodo(periodo: string) {
