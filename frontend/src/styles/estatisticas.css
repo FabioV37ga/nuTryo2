@@ -52,12 +52,12 @@ nav.janela-estatisticas-nav>* {
 }
 
 .estatisticas-semana {
-    width: 165px;
+    width: 145px
 }
 
 .estatisticas-totais {
     border-radius: 0 5px 5px 0;
-    width: 95px;
+    width: 120px;
 }
 
 .sessao-estatisticas-informacoes {
@@ -84,7 +84,7 @@ nav.janela-estatisticas-nav>* {
     margin-right: 26px;
 }
 
-.estatisticas-hoje.periodo-selecionado {
+.janela-estatisticas-nav .periodo-selecionado {
     background: var(--lightBlue);
     color: white;
     border-radius: 5px
