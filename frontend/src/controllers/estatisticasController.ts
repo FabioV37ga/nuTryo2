@@ -240,7 +240,7 @@ class EstatisticasController {
                     replace(".", "").
                     split(" ")[0]),
             "metaProteinas": Number(
-                EstatisticasController.proteinasConsumidasElemento.textContent
+                EstatisticasController.proteinasMetaElemento.textContent
                     .trim()
                     .replace(".", "")
                     .split(" ")[0]),
@@ -255,6 +255,7 @@ class EstatisticasController {
                     .replace(".", "")
                     .split(" ")[0])
         }
+        console.log(metas)
 
         switch (periodo) {
             case "hoje":
