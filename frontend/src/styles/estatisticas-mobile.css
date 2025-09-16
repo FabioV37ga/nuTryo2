@@ -32,4 +32,12 @@
     nav.janela-estatisticas-nav{
         margin-left: 21px;
     }
+
+    .estatisticas-informacoes h1{
+        font-size: 35px;
+    }
+
+    .estatisticas-informacoes h1 img{
+        width: 30px;
+    }
 }
