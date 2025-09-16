@@ -140,7 +140,7 @@ class EstatisticasController {
         EstatisticasController.statsMensalElemento.addEventListener("click", () => {
             this.selecionaPeriodo("mensal")
             var dados = this.calculaEstatisticas();
-            this.preencheEstatisticasConsumo(dados);
+            // this.preencheEstatisticasConsumo(dados);
         })
     }
 
@@ -223,6 +223,45 @@ class EstatisticasController {
                 break;
 
             case "mensal":
+                console.log("mensal")
+                // Cria data para dia atual
+                var hoje = new Date();
+                hoje.setDate(1)
+
+                // Pega posição do dia primeiro
+                var diaPrimeiro = new Date(hoje)
+
+                // Define mês sendo verificado
+                var mesVerificado = diaPrimeiro.getMonth()
+
+                
+                // Loop para executar em cada dia do mês
+                for (let i = 0; i <= 32; i++){
+
+                    
+                    // (Indice do loop) dia a ser verificado
+                    var diaVerificado = new Date(diaPrimeiro)
+                    
+                    // Incrementa dia a ser verificado
+                    diaVerificado.setDate(diaPrimeiro + i)
+                
+                    // Trava loop se avançar para proximo mês
+                    if (diaVerificado.getMonth() != mesVerificado){
+                        return
+                    }
+
+                    var stringData = `${diaVerificado.getDate()}-${diaVerificado.getMonth() + 1}-${diaVerificado.getFullYear()}`
+                    
+                    var refeicoesDoDia = NutryoFetch.retornaRefeicoesDoDia(stringData) as any
+
+                    console.log(stringData)
+                    if (refeicoesDoDia){
+
+                    }
+
+                        
+                }
+
                 break;
 
         }
