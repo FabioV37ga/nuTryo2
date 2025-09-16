@@ -4,32 +4,32 @@ import CalendarioController from "./calendarioController.js";
 import EstatisticasView from "../views/estatisticasView.js";
 
 class EstatisticasController {
-    janelaEstatisticas: HTMLElement;
-    botaoAcessarEstatisticas: HTMLElement;
-    botaoFecharEstatisticas: HTMLElement;
+    static janelaEstatisticas: HTMLElement;
+    static botaoAcessarEstatisticas: HTMLElement;
+    static botaoFecharEstatisticas: HTMLElement;
 
-    caloriasConsumidasElemento: HTMLElement;
-    proteinasConsumidasElemento: HTMLElement;
-    carboidratosConsumidasElemento: HTMLElement;
-    gordurasConsumidasElemento: HTMLElement;
+    static caloriasConsumidasElemento: HTMLElement;
+    static proteinasConsumidasElemento: HTMLElement;
+    static carboidratosConsumidasElemento: HTMLElement;
+    static gordurasConsumidasElemento: HTMLElement;
 
-    caloriasMetaElemento: HTMLElement;
-    proteinasMetaElemento: HTMLElement;
-    carboidratosMetaElemento: HTMLElement;
-    gordurasMetaElemento: HTMLElement;
+    static caloriasMetaElemento: HTMLElement;
+    static proteinasMetaElemento: HTMLElement;
+    static carboidratosMetaElemento: HTMLElement;
+    static gordurasMetaElemento: HTMLElement;
 
-    porcentagemCalorias: HTMLElement;
-    porcentagemProteinas: HTMLElement;
-    porcentagemCarboidratos: HTMLElement;
-    porcentagemGorduras: HTMLElement;
+    static porcentagemCalorias: HTMLElement;
+    static porcentagemProteinas: HTMLElement;
+    static porcentagemCarboidratos: HTMLElement;
+    static porcentagemGorduras: HTMLElement;
 
-    statsDiaElemento: HTMLElement;
-    statsSemanaElemento: HTMLElement;
-    statsTotalElemento: HTMLElement;
+    static statsDiaElemento: HTMLElement;
+    static statsSemanaElemento: HTMLElement;
+    static statsMensalElemento: HTMLElement;
 
     periodoSelecionado: String
 
-    estatisticasView: EstatisticasView;
+    estatisticasView: EstatisticasView = new EstatisticasView();
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Construtor
@@ -63,36 +63,36 @@ class EstatisticasController {
     defineElementos() {
 
         // Janela de estatísticas
-        this.janelaEstatisticas = document.querySelector(".janela-estatisticas") as HTMLElement;
+        EstatisticasController.janelaEstatisticas = document.querySelector(".janela-estatisticas") as HTMLElement;
 
         // Valores de consumo
-        this.caloriasConsumidasElemento = document.querySelector(".info-consumo-kcal") as HTMLElement
-        this.proteinasConsumidasElemento = document.querySelector(".info-consumo-prots") as HTMLElement
-        this.carboidratosConsumidasElemento = document.querySelector(".info-consumo-carbs") as HTMLElement
-        this.gordurasConsumidasElemento = document.querySelector(".info-consumo-gords") as HTMLElement
+        EstatisticasController.caloriasConsumidasElemento = document.querySelector(".info-consumo-kcal") as HTMLElement
+        EstatisticasController.proteinasConsumidasElemento = document.querySelector(".info-consumo-prots") as HTMLElement
+        EstatisticasController.carboidratosConsumidasElemento = document.querySelector(".info-consumo-carbs") as HTMLElement
+        EstatisticasController.gordurasConsumidasElemento = document.querySelector(".info-consumo-gords") as HTMLElement
 
         // Valores de meta
-        this.caloriasMetaElemento = document.querySelector(".info-meta-kcal") as HTMLElement
-        this.proteinasMetaElemento = document.querySelector(".info-meta-prots") as HTMLElement
-        this.carboidratosMetaElemento = document.querySelector(".info-meta-carbs") as HTMLElement
-        this.gordurasMetaElemento = document.querySelector(".info-meta-gords") as HTMLElement
+        EstatisticasController.caloriasMetaElemento = document.querySelector(".info-meta-kcal") as HTMLElement
+        EstatisticasController.proteinasMetaElemento = document.querySelector(".info-meta-prots") as HTMLElement
+        EstatisticasController.carboidratosMetaElemento = document.querySelector(".info-meta-carbs") as HTMLElement
+        EstatisticasController.gordurasMetaElemento = document.querySelector(".info-meta-gords") as HTMLElement
 
         // Barras de progresso
-        this.porcentagemCalorias = document.querySelector(".kcal-progress") as HTMLElement
-        this.porcentagemProteinas = document.querySelector(".prot-progress") as HTMLElement
-        this.porcentagemCarboidratos = document.querySelector(".carbs-progress") as HTMLElement
-        this.porcentagemGorduras = document.querySelector(".gords-progress") as HTMLElement
+        EstatisticasController.porcentagemCalorias = document.querySelector(".kcal-progress") as HTMLElement
+        EstatisticasController.porcentagemProteinas = document.querySelector(".prot-progress") as HTMLElement
+        EstatisticasController.porcentagemCarboidratos = document.querySelector(".carbs-progress") as HTMLElement
+        EstatisticasController.porcentagemGorduras = document.querySelector(".gords-progress") as HTMLElement
 
         // Navegação (tipos de periodo)
-        this.statsDiaElemento = document.querySelector(".estatisticas-hoje") as HTMLElement
-        this.statsSemanaElemento = document.querySelector(".estatisticas-semana") as HTMLElement
-        this.statsTotalElemento = document.querySelector(".estatisticas-totais") as HTMLElement
+        EstatisticasController.statsDiaElemento = document.querySelector(".estatisticas-hoje") as HTMLElement
+        EstatisticasController.statsSemanaElemento = document.querySelector(".estatisticas-semana") as HTMLElement
+        EstatisticasController.statsMensalElemento = document.querySelector(".estatisticas-totais") as HTMLElement
 
         // Botão no aside para acessar janela de estatísticas
-        this.botaoAcessarEstatisticas = document.querySelector(".estatisticas-ico") as HTMLElement
+        EstatisticasController.botaoAcessarEstatisticas = document.querySelector(".estatisticas-ico") as HTMLElement
 
         // Botão para fechar a janela de estatísticas
-        this.botaoFecharEstatisticas = document.querySelector(".janela-estatisticas-close") as HTMLElement
+        EstatisticasController.botaoFecharEstatisticas = document.querySelector(".janela-estatisticas-close") as HTMLElement
     }
 
 
@@ -103,26 +103,50 @@ class EstatisticasController {
     adicionaEventosDeClick() {
 
         // Botão de acesso à janela de estatísticas → abre janela de estatísticas
-        this.botaoAcessarEstatisticas.addEventListener("click", () => {
+        EstatisticasController.botaoAcessarEstatisticas.addEventListener("click", () => {
 
             // Chama método para preencher as estatísticas com os dados obtidos das refeições do período selecionado (Inicializa como dia atual)
-            var dados = this.calculaEstatisticas()
-            this.preencheEstatisticas(dados)
+            this.selecionaPeriodo("hoje");
+            var dados = this.calculaEstatisticas();
+            this.preencheEstatisticas(dados);
 
             // Mostra janela de estatísticas
-            this.janelaEstatisticas.style.display = "initial"
+            EstatisticasController.janelaEstatisticas.style.display = "initial"
         })
 
         // Botão de fechamento da janela de estatísticas → fecha janela de estatísticas
-        this.botaoFecharEstatisticas.addEventListener("click", () => {
+        EstatisticasController.botaoFecharEstatisticas.addEventListener("click", () => {
             // Esconde janela de estatísticas
-            this.janelaEstatisticas.style.display = "none"
+            EstatisticasController.janelaEstatisticas.style.display = "none"
+        })
+
+        // Seletores de período -----------------------------------------------------------
+
+        // @Hoje
+        EstatisticasController.statsDiaElemento.addEventListener("click", () => {
+            this.selecionaPeriodo("hoje")
+            var dados = this.calculaEstatisticas();
+            this.preencheEstatisticas(dados);
+        })
+
+        // @Semanal
+        EstatisticasController.statsSemanaElemento.addEventListener("click", () => {
+            this.selecionaPeriodo("semanal")
+            var dados = this.calculaEstatisticas();
+            this.preencheEstatisticas(dados);
+        })
+
+        // @Mensal
+        EstatisticasController.statsMensalElemento.addEventListener("click", () => {
+            this.selecionaPeriodo("mensal")
+            var dados = this.calculaEstatisticas();
+            this.preencheEstatisticas(dados);
         })
     }
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
-    // # Método responsável por calcular estatísticas a partir do período selecionado (hoje, semanal, total)
+    // # Método responsável por calcular estatísticas a partir do período selecionado (hoje, semanal, mensal)
 
     calculaEstatisticas() {
 
@@ -130,7 +154,7 @@ class EstatisticasController {
         var diasSalvos = NutryoFetch.objects
 
         // Salva na variavel as metas nutricionais do usuário (calorias, proteinas, carboidratos e gorduras)
-        var metas = this.retornaMetas()
+        var metas = this.retornaMetas(this.periodoSelecionado as string) as any
 
         // Inicializa variaveis de soma total dos valores nutricionais do período selecionado
         var caloriasTotais: number = 0;
@@ -158,7 +182,6 @@ class EstatisticasController {
 
                         // Retorna alimentos da refeição indice
                         var alimento = NutryoFetch.retornaAlimentosDaRefeicao(stringData, String(i + 1)) as any
-                        console.log(alimento)
 
                         // Loop para executar sobre todos os alimentos da refeição
                         for (let a = 0; a <= alimento.length - 1; a++) {
@@ -169,6 +192,13 @@ class EstatisticasController {
                         }
                     }
                 }
+                break;
+
+            case "semanal":
+                break;
+
+            case "mensal":
+
                 break;
         }
 
@@ -201,14 +231,52 @@ class EstatisticasController {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Método responsável por retornar as metas definidas pelo usuário (Assumem valor padrão se o usuário não altera-las)
 
-    retornaMetas() {
+    retornaMetas(periodo: string) {
         // Retorna metas do usuário
-        return {
-            "metaCalorias": Number(this.caloriasMetaElemento.textContent.trim().replace(".", "").split(" ")[0]),
-            "metaProteinas": Number(this.proteinasConsumidasElemento.textContent.trim().replace(".", "").split(" ")[0]),
-            "metaCarboidratos": Number(this.carboidratosMetaElemento.textContent.trim().replace(".", "").split(" ")[0]),
-            "metaGorduras": Number(this.gordurasMetaElemento.textContent.trim().replace(".", "").split(" ")[0])
+        var metas = {
+            "metaCalorias": Number(
+                EstatisticasController.caloriasMetaElemento.textContent.
+                    trim().
+                    replace(".", "").
+                    split(" ")[0]),
+            "metaProteinas": Number(
+                EstatisticasController.proteinasConsumidasElemento.textContent
+                    .trim()
+                    .replace(".", "")
+                    .split(" ")[0]),
+            "metaCarboidratos": Number(
+                EstatisticasController.carboidratosMetaElemento.textContent
+                    .trim()
+                    .replace(".", "")
+                    .split(" ")[0]),
+            "metaGorduras": Number(
+                EstatisticasController.gordurasMetaElemento.textContent
+                    .trim()
+                    .replace(".", "")
+                    .split(" ")[0])
         }
+
+        switch (periodo) {
+            case "hoje":
+                return metas;
+
+            case "semanal":
+                return {
+                    metaCalorias: metas.metaCalorias * 7,
+                    metaProteinas: metas.metaProteinas * 7,
+                    metaCarboidratos: metas.metaCarboidratos * 7,
+                    metaGorduras: metas.metaGorduras * 7
+                };
+
+            case "mensal":
+                return {
+                    metaCalorias: metas.metaCalorias * 30,
+                    metaProteinas: metas.metaProteinas * 30,
+                    metaCarboidratos: metas.metaCarboidratos * 30,
+                    metaGorduras: metas.metaGorduras * 30
+                };
+        }
+
     }
 
 
@@ -218,20 +286,26 @@ class EstatisticasController {
     preencheEstatisticas(dados: any) {
 
         // Calorias
-        this.caloriasConsumidasElemento.textContent = `${dados.caloriasTotais.toFixed(0)} kcal`
-        this.porcentagemCalorias.style.width = dados.porcentagemCalorias + "%";
+        EstatisticasController.caloriasConsumidasElemento.textContent = `${dados.caloriasTotais.toFixed(0)} kcal`
+        EstatisticasController.porcentagemCalorias.style.width = dados.porcentagemCalorias + "%";
 
         // Proteinas
-        this.proteinasConsumidasElemento.textContent = `${dados.proteinasTotais.toFixed(0)} g`
-        this.porcentagemProteinas.style.width = dados.porcentagemProteinas + "%"
+        EstatisticasController.proteinasConsumidasElemento.textContent = `${dados.proteinasTotais.toFixed(0)} g`
+        EstatisticasController.porcentagemProteinas.style.width = dados.porcentagemProteinas + "%"
 
         // Carboidratos
-        this.carboidratosConsumidasElemento.textContent = `${dados.carboidratosTotais.toFixed(0)} g`
-        this.porcentagemCarboidratos.style.width = dados.porcentagemCarboidratos + "%"
+        EstatisticasController.carboidratosConsumidasElemento.textContent = `${dados.carboidratosTotais.toFixed(0)} g`
+        EstatisticasController.porcentagemCarboidratos.style.width = dados.porcentagemCarboidratos + "%"
 
         // Gorduras
-        this.gordurasConsumidasElemento.textContent = `${dados.gordurasTotais.toFixed(0)} g`
-        this.porcentagemGorduras.style.width = dados.porcentagemCalorias + "%"
+        EstatisticasController.gordurasConsumidasElemento.textContent = `${dados.gordurasTotais.toFixed(0)} g`
+        EstatisticasController.porcentagemGorduras.style.width = dados.porcentagemCalorias + "%"
+    }
+
+    selecionaPeriodo(periodo: string) {
+        this.periodoSelecionado = periodo
+
+        this.estatisticasView.selecionaPeriodo(periodo)
     }
 }
 
