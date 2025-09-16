@@ -166,6 +166,7 @@ class EstatisticasController {
 
         // Switch: Lógica diferente para cada período
         switch (this.periodoSelecionado) {
+
             case "hoje":
                 // Inicia data como a data de hoje
                 var data = new Date()
@@ -185,24 +186,55 @@ class EstatisticasController {
                         // Retorna alimentos da refeição indice
                         var alimento = NutryoFetch.retornaAlimentosDaRefeicao(stringData, String(i + 1)) as any
 
-                        // Loop para executar sobre todos os alimentos da refeição
-                        for (let a = 0; a <= alimento.length - 1; a++) {
-                            caloriasTotais += Number(alimento[a].calorias)
-                            proteinasTotais += Number(alimento[a].proteinas)
-                            carboidratosTotais += Number(alimento[a].carboidratos)
-                            gordurasTotais += Number(alimento[a].gorduras)
-                        }
+                        // Chama função para somar valores das refeições
+                        somaValores(alimento)
                     }
                 }
                 break;
 
             case "semanal":
-                console.log(metas)
+                var hoje = new Date()
+
+                var diaSemanaAtual = hoje.getDay()
+
+                var domingo = new Date(hoje)
+                domingo.setDate(hoje.getDate() - diaSemanaAtual)
+
+                for (let i = 0; i <= 6; i++) {
+                    var diaSemana = new Date(domingo);
+                    diaSemana.setDate(diaSemana.getDate() + i)
+
+                    var stringData = `${diaSemana.getDate()}-${diaSemana.getMonth() + 1}-${diaSemana.getFullYear()}`
+
+                    var refeicoesDoDia = NutryoFetch.retornaRefeicoesDoDia(stringData) as any
+
+                    if (refeicoesDoDia) {
+                        // Loop para executar sobre todas as refeições
+                        for (let i = 0; i <= refeicoesDoDia.length - 1; i++) {
+
+                            // Retorna alimentos da refeição indice
+                            var alimento = NutryoFetch.retornaAlimentosDaRefeicao(stringData, String(i + 1)) as any
+
+                            // Chama função para somar valores das refeições
+                            somaValores(alimento)
+                        }
+                    }
+                }
                 break;
 
             case "mensal":
-                console.log(metas)
                 break;
+
+        }
+
+        function somaValores(alimento: any) {
+            // Loop para executar sobre todos os alimentos da refeição
+            for (let a = 0; a <= alimento.length - 1; a++) {
+                caloriasTotais += Number(alimento[a].calorias)
+                proteinasTotais += Number(alimento[a].proteinas)
+                carboidratosTotais += Number(alimento[a].carboidratos)
+                gordurasTotais += Number(alimento[a].gorduras)
+            }
         }
 
         // Calcula o progresso (em porcentagem) da barra de progresso de cada valor nutricional (fazendo regra de 3)
@@ -245,9 +277,11 @@ class EstatisticasController {
 
         switch (periodo) {
             case "hoje":
+
                 return metas;
 
             case "semanal":
+
                 return {
                     metaCalorias: metas.metaCalorias * 7,
                     metaProteinas: metas.metaProteinas * 7,
@@ -256,6 +290,7 @@ class EstatisticasController {
                 };
 
             case "mensal":
+
                 return {
                     metaCalorias: metas.metaCalorias * 30,
                     metaProteinas: metas.metaProteinas * 30,
@@ -289,17 +324,30 @@ class EstatisticasController {
         EstatisticasController.porcentagemGorduras.style.width = dados.porcentagemGorduras + "%"
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por preencher informações estatísticas de meta (Valores a serem atingidos, únicos por usuário)
     preencheEstatisticasMetas(metas: any) {
+        // Calorias
         EstatisticasController.caloriasMetaElemento.textContent = `${metas.metaCalorias} kcal`
+
+        // Proteinas
         EstatisticasController.proteinasMetaElemento.textContent = `${metas.metaProteinas} g`
+
+        // Carboidratos
         EstatisticasController.carboidratosMetaElemento.textContent = `${metas.metaCarboidratos} g`
+
+        // Gorduras
         EstatisticasController.gordurasMetaElemento.textContent = `${metas.metaGorduras} g`
 
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por selecionar o período para calculo de estatísticas
     selecionaPeriodo(periodo: string) {
+        // Seleciona o período passado como parâmetro
         this.periodoSelecionado = periodo
 
+        // Seleciona visualmente o período
         this.estatisticasView.selecionaPeriodo(periodo)
     }
 }
