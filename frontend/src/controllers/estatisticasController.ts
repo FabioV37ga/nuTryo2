@@ -400,18 +400,22 @@ class EstatisticasController {
 
         // Calorias
         EstatisticasController.caloriasConsumidasElemento.textContent = `${dados.caloriasTotais.toFixed(0)} kcal`
+        dados.porcentagemCalorias = dados.porcentagemCalorias <= 100 ? dados.porcentagemCalorias : 100
         EstatisticasController.porcentagemCalorias.style.width = dados.porcentagemCalorias + "%";
 
         // Proteinas
         EstatisticasController.proteinasConsumidasElemento.textContent = `${dados.proteinasTotais.toFixed(0)} g`
+        dados.porcentagemProteinas = dados.porcentagemProteinas <= 100 ? dados.porcentagemProteinas : 100
         EstatisticasController.porcentagemProteinas.style.width = dados.porcentagemProteinas + "%"
 
         // Carboidratos
         EstatisticasController.carboidratosConsumidasElemento.textContent = `${dados.carboidratosTotais.toFixed(0)} g`
+        dados.porcentagemCarboidratos = dados.porcentagemCarboidratos <= 100 ? dados.porcentagemCarboidratos : 100
         EstatisticasController.porcentagemCarboidratos.style.width = dados.porcentagemCarboidratos + "%"
 
         // Gorduras
         EstatisticasController.gordurasConsumidasElemento.textContent = `${dados.gordurasTotais.toFixed(0)} g`
+        dados.porcentagemGorduras = dados.porcentagemGorduras <= 100 ? dados.porcentagemGorduras : 100
         EstatisticasController.porcentagemGorduras.style.width = dados.porcentagemGorduras + "%"
     }
 
@@ -478,17 +482,23 @@ class EstatisticasController {
                 })
             } catch (err) {
 
+            } finally {
+                var atualiza = new NutryoFetch(diaObjeto.usuario)
+
+                var intervaloAtualizacao = setInterval(() => {
+                    if (NutryoFetch.status == 1 && NutryoFetch.metaStatus == 1) {
+                        var dados = this.calculaEstatisticas()
+                        this.preencheEstatisticasConsumo(dados)
+
+
+                        var metas = this.retornaMetas(this.periodoSelecionado as string)
+                        this.preencheEstatisticasMetas(metas)
+
+                        clearInterval(intervaloAtualizacao)
+                    }
+                }, 1);
             }
 
-            var atualiza = new NutryoFetch(diaObjeto.usuario)
-
-            var intervaloAtualizacao = setInterval(() => {
-                if (NutryoFetch.status == 1) {
-                    var dados = this.calculaEstatisticas()
-                    this.preencheEstatisticasConsumo(dados)
-                    clearInterval(intervaloAtualizacao)
-                }
-            }, 1);
 
             clearInterval(EstatisticasController.insertDelay)
         }, 800);

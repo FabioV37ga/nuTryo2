@@ -5,12 +5,14 @@ class NutryoFetch {
     static objects: any[]
     static metas: any
     static status = 0
+    static metaStatus = 0;
     static username: string;
     private user: string;
 
     constructor(user: string, username?: string) {
         // Define status como 0, esse atributo auxilia outros lugares do sistema a só executar trechos de lógica quando o status for 1 (Requisição completa)
         NutryoFetch.status = 0
+        NutryoFetch.metaStatus = 0;
 
         // Se houver nome do usuário passado como parâmetro, define atributo usuário como o nome passado
         if (username) {
@@ -76,6 +78,8 @@ class NutryoFetch {
             NutryoFetch.metas = data[0];
         }catch(err){
 
+        }finally{
+            NutryoFetch.metaStatus = 1;
         }
     }
 
