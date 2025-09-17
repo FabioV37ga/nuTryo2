@@ -15,6 +15,23 @@ class MetasController {
             res.status(500).json({ erro: err.message })
         }
     }
+
+    static async alteraMetas(req: Request, res: Response) {
+        try {
+            const email = req.params.email
+            const alteracoes = req.body
+
+            const resultado = await metas.findOneAndUpdate(
+                { email: email },
+                alteracoes,
+                { new: true }
+            )
+
+            res.status(200).json(resultado)
+        }catch(err){
+            res.status(500).json(err.message)
+        }
+    }
 }
 
 export default MetasController

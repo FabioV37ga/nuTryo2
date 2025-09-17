@@ -2,6 +2,7 @@ import NutryoFetch from "../utils/nutryoFetch.js";
 import { backend } from "../utils/connection.js"
 import CalendarioController from "./calendarioController.js";
 import EstatisticasView from "../views/estatisticasView.js";
+import diaObjeto from "../utils/diaObjeto.js";
 
 class EstatisticasController {
     static janelaEstatisticas: HTMLElement;
@@ -26,6 +27,8 @@ class EstatisticasController {
     static statsDiaElemento: HTMLElement;
     static statsSemanaElemento: HTMLElement;
     static statsMensalElemento: HTMLElement;
+
+    static insertDelay: any;
 
     periodoSelecionado: String
 
@@ -105,13 +108,21 @@ class EstatisticasController {
         // Botão de acesso à janela de estatísticas → abre janela de estatísticas
         EstatisticasController.botaoAcessarEstatisticas.addEventListener("click", () => {
 
-            // Chama método para preencher as estatísticas com os dados obtidos das refeições do período selecionado (Inicializa como dia atual)
-            this.selecionaPeriodo("hoje");
-            var dados = this.calculaEstatisticas();
-            this.preencheEstatisticasConsumo(dados);
+            var fetch = new NutryoFetch(diaObjeto.usuario)
 
-            // Mostra janela de estatísticas
-            EstatisticasController.janelaEstatisticas.style.display = "initial"
+            var intervaloFetch = setInterval(() => {
+                if (NutryoFetch.status == 1) {
+                    // Chama método para preencher as estatísticas com os dados obtidos das refeições do período selecionado (Inicializa como dia atual)
+                    this.selecionaPeriodo("hoje");
+                    var dados = this.calculaEstatisticas();
+                    this.preencheEstatisticasConsumo(dados);
+
+                    // Mostra janela de estatísticas
+                    EstatisticasController.janelaEstatisticas.style.display = "initial"
+                    clearInterval(intervaloFetch)
+                }
+            }, 1);
+
         })
 
         // Botão de fechamento da janela de estatísticas → fecha janela de estatísticas
@@ -136,9 +147,22 @@ class EstatisticasController {
             })
         }
 
+        // Campos de meta
         var camposMeta = document.querySelectorAll(".informacoes-meta input")
+        // Loop para adicionar nos 4 campos
         for (let i = 0; i <= camposMeta.length - 1; i++) {
-            camposMeta[i].addEventListener("blur", (e)=>{
+
+            // Evento de input → envia alterações de meta pro banco
+            camposMeta[i].addEventListener("input", (e) => {
+                e.stopPropagation
+
+                var campoTarget = e.currentTarget as HTMLFormElement
+
+                this.defineMeta(campoTarget)
+            })
+
+            // Evento de blur → clicar fora do elemento desabilita a tag de input
+            camposMeta[i].addEventListener("blur", (e) => {
                 e.stopPropagation
                 var campoTarget = e.currentTarget as any
                 campoTarget.disabled = 'true'
@@ -418,6 +442,60 @@ class EstatisticasController {
         // Seleciona visualmente o período
         this.estatisticasView.selecionaPeriodo(periodo)
     }
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // #
+    async defineMeta(input: HTMLFormElement) {
+        clearInterval(EstatisticasController.insertDelay)
+
+        EstatisticasController.insertDelay = setInterval(() => {
+            var alteracao: object = {}
+
+            if (input.classList.contains("meta-kcal-input")) {
+                alteracao = { "metaCalorias": Number(input.value) }
+            }
+            else if (input.classList.contains("meta-prots-input")) {
+                alteracao = { "metaProteinas": Number(input.value) }
+            }
+            else if (input.classList.contains("meta-carbs-input")) {
+                alteracao = { "metaCarboidratos": Number(input.value) }
+            }
+            else if (input.classList.contains("meta-gords-input")) {
+                alteracao = { "metaGorduras": Number(input.value) }
+            }
+
+
+            console.log("Enviar para o banco: ")
+            console.log(alteracao)
+
+            try {
+                var request = fetch(`${backend}/metas/${diaObjeto.usuario}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "Application/json"
+                    },
+                    body: JSON.stringify(alteracao)
+                })
+            } catch (err) {
+
+            }
+
+            var atualiza = new NutryoFetch(diaObjeto.usuario)
+
+            var intervaloAtualizacao = setInterval(() => {
+                if (NutryoFetch.status == 1) {
+                    var dados = this.calculaEstatisticas()
+                    this.preencheEstatisticasConsumo(dados)
+                    clearInterval(intervaloAtualizacao)
+                }
+            }, 1);
+
+            clearInterval(EstatisticasController.insertDelay)
+        }, 800);
+
+
+    }
+
 }
 
 export default EstatisticasController
