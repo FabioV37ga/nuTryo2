@@ -25,14 +25,15 @@ class JanelaController {
         var abaData = document.querySelector("#data-display") as HTMLElement
 
         // Previne adição múltipla de eventos
-        if (!abaData?.classList.contains("hasEvent")){
+        if (!abaData?.classList.contains("hasEvent")) {
             abaData.classList.add("hasEvent")
 
             // Adiciona eventos de click
-            abaData.addEventListener("click", ()=>{
+            abaData.addEventListener("click", () => {
 
                 // Ao clicar, esconde janela
-                this.janelaView.esconderJanela()
+                if (window.innerWidth <= 985)
+                    this.janelaView.esconderJanela()
             })
         }
 
@@ -44,7 +45,7 @@ class JanelaController {
 
         // Loop para adicionar em todos os elementos
         for (let i = 0; i <= this.abasSelecionaveis.length - 1; i++) {
-            
+
             // evitar adição múltipla de listeners (Elementos que já tem um listener são desconsiderados)
             if (!this.abasSelecionaveis[i].classList.contains("hasEvent")) {
                 this.abasSelecionaveis[i].classList.add("hasEvent");
@@ -74,7 +75,7 @@ class JanelaController {
 
         // Loop para adicionar eventos em todos os closes
         for (let i = 0; i <= this.closeRefeicao.length - 1; i++) {
-            
+
             // Evitar adição múltipla de listeners (Elementos que já tem um listener são desconsiderados)
             if (!this.closeRefeicao[i].classList.contains("hasEvent")) {
                 this.closeRefeicao[i].classList.add("hasEvent")

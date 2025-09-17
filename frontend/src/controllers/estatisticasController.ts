@@ -13,10 +13,10 @@ class EstatisticasController {
     static carboidratosConsumidasElemento: HTMLElement;
     static gordurasConsumidasElemento: HTMLElement;
 
-    static caloriasMetaElemento: HTMLElement;
-    static proteinasMetaElemento: HTMLElement;
-    static carboidratosMetaElemento: HTMLElement;
-    static gordurasMetaElemento: HTMLElement;
+    static caloriasMetaElemento: HTMLFormElement;
+    static proteinasMetaElemento: HTMLFormElement;
+    static carboidratosMetaElemento: HTMLFormElement;
+    static gordurasMetaElemento: HTMLFormElement;
 
     static porcentagemCalorias: HTMLElement;
     static porcentagemProteinas: HTMLElement;
@@ -72,10 +72,10 @@ class EstatisticasController {
         EstatisticasController.gordurasConsumidasElemento = document.querySelector(".info-consumo-gords") as HTMLElement
 
         // Valores de meta
-        EstatisticasController.caloriasMetaElemento = document.querySelector(".info-meta-kcal") as HTMLElement
-        EstatisticasController.proteinasMetaElemento = document.querySelector(".info-meta-prots") as HTMLElement
-        EstatisticasController.carboidratosMetaElemento = document.querySelector(".info-meta-carbs") as HTMLElement
-        EstatisticasController.gordurasMetaElemento = document.querySelector(".info-meta-gords") as HTMLElement
+        EstatisticasController.caloriasMetaElemento = document.querySelector(".info-meta-kcal input") as HTMLFormElement
+        EstatisticasController.proteinasMetaElemento = document.querySelector(".info-meta-prots input") as HTMLFormElement
+        EstatisticasController.carboidratosMetaElemento = document.querySelector(".info-meta-carbs input") as HTMLFormElement
+        EstatisticasController.gordurasMetaElemento = document.querySelector(".info-meta-gords input") as HTMLFormElement
 
         // Barras de progresso
         EstatisticasController.porcentagemCalorias = document.querySelector(".kcal-progress") as HTMLElement
@@ -119,6 +119,31 @@ class EstatisticasController {
             // Esconde janela de estatísticas
             EstatisticasController.janelaEstatisticas.style.display = "none"
         })
+
+        // Botões para editar as metas de consumo do usuário na janela de estatísticas
+        var botoesEditarMeta = document.querySelectorAll(".meta-edit")
+        // Adiciona evento nos 4 botões de edição
+        for (let i = 0; i <= botoesEditarMeta.length - 1; i++) {
+            botoesEditarMeta[i].addEventListener("click", (e) => {
+                e.stopPropagation
+                var botaoPressionado = e.currentTarget as HTMLElement
+                var campoMeta = botaoPressionado.parentElement?.children[2].children[0] as HTMLElement | any
+
+                console.log(campoMeta)
+                campoMeta.disabled = false
+                campoMeta.focus()
+                // campoMeta.style.background = "blue"
+            })
+        }
+
+        var camposMeta = document.querySelectorAll(".informacoes-meta input")
+        for (let i = 0; i <= camposMeta.length - 1; i++) {
+            camposMeta[i].addEventListener("blur", (e)=>{
+                e.stopPropagation
+                var campoTarget = e.currentTarget as any
+                campoTarget.disabled = 'true'
+            })
+        }
 
         // Seletores de período -----------------------------------------------------------
 
@@ -218,7 +243,7 @@ class EstatisticasController {
 
                     // Se houverem refeições no dia...
                     if (refeicoesDoDia) {
-                        
+
                         // Loop para executar sobre todas as refeições
                         for (let i = 0; i <= refeicoesDoDia.length - 1; i++) {
 
@@ -253,10 +278,10 @@ class EstatisticasController {
 
                     // Se houver refeição...
                     if (refeicoesDoDia) {
-                        
+
                         // Loop para executar em todas as refeições
                         for (let i = 0; i <= refeicoesDoDia.length - 1; i++) {
-                            
+
                             // Retorna alimentos da refeição atual do loop
                             var alimento = NutryoFetch.retornaAlimentosDaRefeicao(stringData, String(i + 1)) as any
 
@@ -268,7 +293,7 @@ class EstatisticasController {
                 break;
 
         }
-
+        // # Função responsável por somar valores nutricionais de um periodo para calculo de progresso
         function somaValores(alimento: any) {
             // Loop para executar sobre todos os alimentos da refeição
             for (let a = 0; a <= alimento.length - 1; a++) {
@@ -370,17 +395,18 @@ class EstatisticasController {
     // # Método responsável por preencher informações estatísticas de meta (Valores a serem atingidos, únicos por usuário)
     preencheEstatisticasMetas(metas: any) {
         // Calorias
-        EstatisticasController.caloriasMetaElemento.textContent = `${metas.metaCalorias} kcal`
+        EstatisticasController.caloriasMetaElemento.value = metas.metaCalorias
+        EstatisticasController.caloriasMetaElemento.style.width = metas.metaCalorias.toString().split("").length * 16 + "px"
 
         // Proteinas
-        EstatisticasController.proteinasMetaElemento.textContent = `${metas.metaProteinas} g`
-
+        EstatisticasController.proteinasMetaElemento.value = metas.metaProteinas
+        EstatisticasController.proteinasMetaElemento.style.width = metas.metaProteinas.toString().split("").length * 16 + "px"
         // Carboidratos
-        EstatisticasController.carboidratosMetaElemento.textContent = `${metas.metaCarboidratos} g`
-
+        EstatisticasController.carboidratosMetaElemento.value = metas.metaCarboidratos
+        EstatisticasController.carboidratosMetaElemento.style.width = metas.metaCarboidratos.toString().split("").length * 16 + "px"
         // Gorduras
-        EstatisticasController.gordurasMetaElemento.textContent = `${metas.metaGorduras} g`
-
+        EstatisticasController.gordurasMetaElemento.value = metas.metaGorduras
+        EstatisticasController.gordurasMetaElemento.style.width = metas.metaGorduras.toString().split("").length * 16 + "px"
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
