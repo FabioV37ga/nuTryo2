@@ -40,4 +40,16 @@
     .estatisticas-informacoes h1 img{
         width: 30px;
     }
+
+    .informacoes-consumo{
+        font-size: 40px;
+    }
+
+    .informacoes-valores{
+        font-size: 32px;
+    }
+
+    .meta-edit{
+        font-size: 35px;
+    }
 }

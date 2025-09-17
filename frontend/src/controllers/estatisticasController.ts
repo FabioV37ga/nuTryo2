@@ -193,22 +193,32 @@ class EstatisticasController {
                 break;
 
             case "semanal":
+                // Cria data para o dia atual
                 var hoje = new Date()
 
+                // Pega o dia da semana do dia atual
                 var diaSemanaAtual = hoje.getDay()
 
+                // Pega o dia do mês referente ao domingo dessa semana
                 var domingo = new Date(hoje)
                 domingo.setDate(hoje.getDate() - diaSemanaAtual)
 
                 for (let i = 0; i <= 6; i++) {
+                    // Define o dia inicial da busca como o domingo da semana relacionada
                     var diaSemana = new Date(domingo);
+
+                    // Incrementa data até completar 7 dias (Domingo → Sábado)
                     diaSemana.setDate(diaSemana.getDate() + i)
 
+                    // // String data (para pesquisar refeição nos objetos)
                     var stringData = `${diaSemana.getDate()}-${diaSemana.getMonth() + 1}-${diaSemana.getFullYear()}`
 
+                    // Faz busca das refeições do dia atual do loop
                     var refeicoesDoDia = NutryoFetch.retornaRefeicoesDoDia(stringData) as any
 
+                    // Se houverem refeições no dia...
                     if (refeicoesDoDia) {
+                        
                         // Loop para executar sobre todas as refeições
                         for (let i = 0; i <= refeicoesDoDia.length - 1; i++) {
 
@@ -223,34 +233,38 @@ class EstatisticasController {
                 break;
 
             case "mensal":
-                console.log("mensal")
                 // Cria data para dia atual
-                var hoje = new Date();
-                hoje.setDate(1)
+                var dataAtual = new Date();
 
-                // Pega posição do dia primeiro
-                var diaPrimeiro = new Date(hoje)
+                // Marca o mês a ser verificado
+                var mesAtual = dataAtual.getMonth()
 
-                // Define mês sendo verificado
-                var mesVerificado = diaPrimeiro.getMonth()
+                // Marca o ano a ser verificado
+                var anoAtual = dataAtual.getFullYear()
 
                 // Loop para executar em cada dia do mês
-                for (let i = 0; i <= 32; i++) {
+                for (let i = 1; i <= 31; i++) {
 
-                    var stringData = `${i}-${mesVerificado + 1}-${hoje.getFullYear()}`
+                    // String data (para pesquisar refeição nos objetos)
+                    var stringData = `${i}-${mesAtual + 1}-${anoAtual}`
 
+                    // Faz busca das refeições
                     var refeicoesDoDia = NutryoFetch.retornaRefeicoesDoDia(stringData) as any
 
+                    // Se houver refeição...
                     if (refeicoesDoDia) {
-                        for(let i = 0; i<= refeicoesDoDia.length - 1;i++){
+                        
+                        // Loop para executar em todas as refeições
+                        for (let i = 0; i <= refeicoesDoDia.length - 1; i++) {
+                            
+                            // Retorna alimentos da refeição atual do loop
                             var alimento = NutryoFetch.retornaAlimentosDaRefeicao(stringData, String(i + 1)) as any
 
+                            // Soma valores nutricionais
                             somaValores(alimento)
                         }
                     }
-
                 }
-
                 break;
 
         }
