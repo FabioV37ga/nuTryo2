@@ -125,9 +125,15 @@
 }
 
 .diaAtual.mesAtual{
-    background: var(--highlightPinkWhite) !important
+    /* background: var(--highlightPinkWhite) !important */
+    font-weight: 500;
+    /* font-style: italic; */
 }
 
 .calendario-corpo .dia.diaSelecionado{
     background: var(--lightBlue) !important
+}
+
+.calendario-corpo a.diaComAnotacao{
+    background: var(--lighterBlue) !important;
 }

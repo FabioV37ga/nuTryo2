@@ -1,3 +1,8 @@
+import { getLeadingCommentRanges } from "typescript";
+import CalendarioController from "../controllers/calendarioController.js";
+import diaObjeto from "../utils/diaObjeto.js";
+import NutryoFetch from "../utils/nutryoFetch.js";
+
 declare var $: any;
 
 class CalendarioView {
@@ -149,6 +154,51 @@ class CalendarioView {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // # Método responsável por adicionar estilização a dias do calendário que possuem anotações feitas
+    static async adicionarEfeitosVisuais(mesAtual?:number, anoAtual?:number) {
+
+        // Primeiro abre uma requisição, só executa o resto do método quando houverem dados
+        await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
+
+        // Pega todos os elementos dia do calendário
+        var elementosDia = document.querySelectorAll(".dia")
+
+        // Primeiro reinicia a estilização de dias com anotação
+        for (let i = 0; i <= elementosDia.length - 1; i++) {
+            elementosDia[i].classList.remove("diaComAnotacao")
+        }
+
+        // Loop para executar sob todos os dias do calendário
+        for (let i = 0; i <= elementosDia.length - 1; i++) {
+            
+            // O dia é o texto do dia do calendario
+            var dia = elementosDia[i].textContent;
+
+            // Mes pode ser passado como parâmetro, se não, pega a partir da data selecionada
+            var mes = mesAtual ? mesAtual : Number(CalendarioController.dataSelecionada.split("-")[1])
+            elementosDia[i].classList.contains("mesSeguinte") ? mes++ : null
+            elementosDia[i].classList.contains("mesAnterior") ? mes-- : null
+
+            // Ano pode ser passado como parâmetro, se não, pega a partir da data selecionada
+            var ano = anoAtual ? anoAtual : CalendarioController.dataSelecionada.split("-")[2]
+
+            // String de busca (passada como parametro para retornar refeições de um dia)
+            var stringBusca = `${dia}-${String(mes)}-${String(ano)}`
+
+            // Faz busca por refeições do dia atual do loop nos objetos locais
+            var busca = NutryoFetch.retornaRefeicoesDoDia(stringBusca)
+
+            // Se houver item nos objetos locais
+            if (busca)
+                // Primeiro verifica se não está vazio
+                if (busca.length > 0) {
+                    // Se não estiver vazio, adiciona estilização
+                    elementosDia[i].classList.add("diaComAnotacao")
+                }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // # Método responsável por alterar visualmente a navegação (nome do mês sendo mostrado)
     atualizaHeader() {
         // Elemento label
@@ -231,9 +281,12 @@ class CalendarioView {
 
         // Chama método para adicionar datas do novo mês navegado
         this.adicionaDatas()
-        
+
         // Chama método para atualizar o nome do mês no label
         this.atualizaHeader()
+
+        // Chama método para estilizar dias com anotação
+        CalendarioView.adicionarEfeitosVisuais(this.mesAtual, this.anoAtual) 
     }
 }
 // Exporta view para o controlador

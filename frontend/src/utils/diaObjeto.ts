@@ -2,6 +2,7 @@ import { json } from "stream/consumers";
 import CalendarioController from "../controllers/calendarioController.js";
 import { backend } from "./connection.js";
 import NutryoFetch from "./nutryoFetch.js";
+import CalendarioView from "../views/calendarioView.js";
 
 class diaObjeto {
     static diasSalvos: any[] = [];
@@ -30,9 +31,33 @@ class diaObjeto {
 
             console.log("#diaObjeto - post bem sucedido")
             console.log("#diaObjeto - Iniciando nova requisição de get com novos itens...")
+
+            CalendarioView.adicionarEfeitosVisuais()
         } catch (error) {
             console.log("#diaObjeto - Erro no post")
         }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------
+    // Método responsável por fazer edições em dias salvos no banco de dados
+    static async editarDiaBanco() {
+
+        try {
+            // Inicia requisição de edição de item
+            const requisicao = await fetch(`${backend}/refeicoes/${diaObjeto.usuario}/${diaObjeto.dia.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(diaObjeto.dia)
+            })
+            
+        } catch (error) {
+            
+        }
+        // Ao fim da requisição de edição, faz nova requisição para buscar a lista de itens atualizada no banco
+        await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
+        CalendarioView.adicionarEfeitosVisuais()
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -181,7 +206,7 @@ class diaObjeto {
 
         // Por fim, atribui o array de objetos sem o item apagado ao objeto de dia local
         diaObjeto.dia.refeicoes[Number(refeicao) - 1].alimentos = alimentosFinal
-        
+
         // Depois de excluir o objeto, chama função para postar ou editar
         diaObjeto.postarOuEditar()
 
@@ -233,7 +258,7 @@ class diaObjeto {
     // Método responsável por editar o objeto de dia local
     static editarDia(data: string, corpo: object) {
         for (let i = 0; i <= diaObjeto.diasSalvos.length - 1; i++) {
-            
+
             // Seleciona dia a ser editado
             if (diaObjeto.diasSalvos[i].Id == data) {
                 // Define o corpo do dia (Refeicoes > alimentos)
@@ -259,36 +284,14 @@ class diaObjeto {
         diaObjeto.postarDiaBanco()
     }
 
-
-    // ------------------------------------------------------------------------------------------------------------------------------------------------------
-    // Método responsável por fazer edições em dias salvos no banco de dados
-    static async editarDiaBanco() {
-
-        try {
-            // Inicia requisição de edição de item
-            const requisicao = await fetch(`${backend}/refeicoes/${diaObjeto.usuario}/${diaObjeto.dia.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(diaObjeto.dia)
-            })
-        } catch (error) {
-
-        }
-        // Ao fim da requisição de edição, faz nova requisição para buscar a lista de itens atualizada no banco
-        new NutryoFetch(diaObjeto.usuario)
-    }
-
-
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Método responsável por editar o tipo de uma refeição nos objetos locais
     static editarTipoRefeicao(idRefeicao: string, novoTipo: string) {
-        
+
         // Seleciona refeicao a ser editada no banco
         for (let refeicao = 0; refeicao <= diaObjeto.dia.refeicoes.length - 1; refeicao++) {
             if (Number(diaObjeto.dia.refeicoes[refeicao]._id) == Number(idRefeicao)) {
-                
+
                 // Troca o tipo a partir do argumento passado
                 diaObjeto.dia.refeicoes[refeicao].tipo = novoTipo
 

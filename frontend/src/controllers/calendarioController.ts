@@ -13,6 +13,7 @@ class CalendarioController {
 
         // Cria elementos do calendário
         this.calendarioView.criarElementos()
+        
 
         // Chama função para adicionar eventos de click aos elementos criados
         this.adicionaEventosDeClick()
@@ -38,6 +39,8 @@ class CalendarioController {
                         NutryoFetch.retornaRefeicoesDoDia(CalendarioController.dataSelecionada) :
                         []
                 )
+
+                CalendarioView.adicionarEfeitosVisuais()
 
                 // limpa intervalo
                 clearInterval(intervalo)
