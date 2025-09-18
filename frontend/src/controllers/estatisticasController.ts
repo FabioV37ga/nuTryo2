@@ -168,7 +168,7 @@ class EstatisticasController {
         // @Hoje
         EstatisticasController.statsDiaElemento.addEventListener("click", async () => {
             this.selecionaPeriodo("hoje")
-            var dados = this.calculaEstatisticas();
+            var dados = await this.calculaEstatisticas();
             this.preencheEstatisticasConsumo(dados);
         })
 
