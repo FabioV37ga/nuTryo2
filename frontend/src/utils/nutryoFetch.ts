@@ -2,6 +2,7 @@ import { backend } from "../utils/connection.js"
 import diaObjeto from "./diaObjeto.js";
 
 class NutryoFetch {
+    static nutryo:NutryoFetch;
     static objects: any[]
     static metas: any
     static status = 0
@@ -30,11 +31,13 @@ class NutryoFetch {
 
         // Faz busca nas metas do usuário
         this.fetchMetas(this.user)
+
+        NutryoFetch.nutryo = this
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Método responsável por fazer busca no banco de dados pelas anotações do usuário logado
-    private async fetchDias(user: string) {
+    async fetchDias(user: string) {
         try {
             // Inicia requisição
             const resposta: any = await fetch(`${backend}/refeicoes/${user}`, {
@@ -56,6 +59,7 @@ class NutryoFetch {
             // console.log("#NutryoFetch - Dados coletados do usuário atual:")
             // console.log(data)
             // console.log("-----------------------------------------------------------")
+            return data;
         } catch (error) {
 
         } finally {
@@ -64,7 +68,7 @@ class NutryoFetch {
         }
     }
 
-    private async fetchMetas(user: string){
+    async fetchMetas(user: string){
         try{
             const resposta: any = await fetch(`${backend}/metas/${user}`,{
                 method: "GET",

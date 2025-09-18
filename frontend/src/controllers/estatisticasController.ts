@@ -106,23 +106,17 @@ class EstatisticasController {
     adicionaEventosDeClick() {
 
         // Botão de acesso à janela de estatísticas → abre janela de estatísticas
-        EstatisticasController.botaoAcessarEstatisticas.addEventListener("click", () => {
+        EstatisticasController.botaoAcessarEstatisticas.addEventListener("click", async () => {
+            // Chama método para preencher as estatísticas com os dados obtidos das refeições do período selecionado (Inicializa como dia atual)
+            await NutryoFetch.nutryo.fetchMetas(diaObjeto.usuario)
 
-            var fetch = new NutryoFetch(diaObjeto.usuario)
+            this.selecionaPeriodo("hoje");
+            var dados = await this.calculaEstatisticas();
+            this.preencheEstatisticasConsumo(dados);
 
-            var intervaloFetch = setInterval(() => {
-                if (NutryoFetch.status == 1) {
-                    // Chama método para preencher as estatísticas com os dados obtidos das refeições do período selecionado (Inicializa como dia atual)
-                    this.selecionaPeriodo("hoje");
-                    var dados = this.calculaEstatisticas();
-                    this.preencheEstatisticasConsumo(dados);
-
-                    // Mostra janela de estatísticas
-                    EstatisticasController.janelaEstatisticas.style.display = "initial"
-                    clearInterval(intervaloFetch)
-                }
-            }, 1);
-
+            // Mostra janela de estatísticas
+            EstatisticasController.janelaEstatisticas.style.display = "initial"
+            // clearInterval(intervaloFetch)
         })
 
         // Botão de fechamento da janela de estatísticas → fecha janela de estatísticas
@@ -172,23 +166,23 @@ class EstatisticasController {
         // Seletores de período -----------------------------------------------------------
 
         // @Hoje
-        EstatisticasController.statsDiaElemento.addEventListener("click", () => {
+        EstatisticasController.statsDiaElemento.addEventListener("click", async () => {
             this.selecionaPeriodo("hoje")
             var dados = this.calculaEstatisticas();
             this.preencheEstatisticasConsumo(dados);
         })
 
         // @Semanal
-        EstatisticasController.statsSemanaElemento.addEventListener("click", () => {
+        EstatisticasController.statsSemanaElemento.addEventListener("click", async () => {
             this.selecionaPeriodo("semanal")
-            var dados = this.calculaEstatisticas();
+            var dados = await this.calculaEstatisticas();
             this.preencheEstatisticasConsumo(dados);
         })
 
         // @Mensal
-        EstatisticasController.statsMensalElemento.addEventListener("click", () => {
+        EstatisticasController.statsMensalElemento.addEventListener("click", async () => {
             this.selecionaPeriodo("mensal")
-            var dados = this.calculaEstatisticas();
+            var dados = await this.calculaEstatisticas();
             this.preencheEstatisticasConsumo(dados);
         })
     }
@@ -197,10 +191,8 @@ class EstatisticasController {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // # Método responsável por calcular estatísticas a partir do período selecionado (hoje, semanal, mensal)
 
-    calculaEstatisticas() {
-
-        // Salva na variavel objetos de DIA do usuário conectado
-        var diasSalvos = NutryoFetch.objects
+    async calculaEstatisticas() {
+        await NutryoFetch.nutryo.fetchMetas(diaObjeto.usuario)
 
         // Salva na variavel as metas nutricionais do usuário (calorias, proteinas, carboidratos e gorduras)
         var metas = this.retornaMetas(this.periodoSelecionado as string) as any
@@ -448,31 +440,40 @@ class EstatisticasController {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
-    // #
+    // # Método responsável por definir valores de meta do usuário a partir de mudanças nos campos de meta na janela de estatísticas
     async defineMeta(input: HTMLFormElement) {
+
+        // Inicia limpando o delay de busca
         clearInterval(EstatisticasController.insertDelay)
 
-        EstatisticasController.insertDelay = setInterval(() => {
+        // Cria um delay para evitar requisições múltiplas consecutivas (delay de requisição)
+        EstatisticasController.insertDelay = setInterval(async () => {
+
+            // Inicia objeto de alteração vazio
             var alteracao: object = {}
 
+            // Alterações nas metas de caloria
             if (input.classList.contains("meta-kcal-input")) {
                 alteracao = { "metaCalorias": Number(input.value) }
             }
+
+            // Alterações nas metas de proteinas
             else if (input.classList.contains("meta-prots-input")) {
                 alteracao = { "metaProteinas": Number(input.value) }
             }
+
+            // Alterações nas metas de carboidratos
             else if (input.classList.contains("meta-carbs-input")) {
                 alteracao = { "metaCarboidratos": Number(input.value) }
             }
+
+            // Alterações nas metas de gorduras
             else if (input.classList.contains("meta-gords-input")) {
                 alteracao = { "metaGorduras": Number(input.value) }
             }
 
-
-            console.log("Enviar para o banco: ")
-            console.log(alteracao)
-
             try {
+                // Inicia requisição
                 var request = fetch(`${backend}/metas/${diaObjeto.usuario}`, {
                     method: "PUT",
                     headers: {
@@ -480,28 +481,24 @@ class EstatisticasController {
                     },
                     body: JSON.stringify(alteracao)
                 })
+
+                // Depois da edição das metas no banco, retorna objeto do banco atualizado
+                await NutryoFetch.nutryo.fetchMetas(diaObjeto.usuario)
+
+                // Preenche as estatísticas de consumo com as alterações feitas pelo usuário
+                var consumo = await this.calculaEstatisticas()
+                this.preencheEstatisticasConsumo(consumo)
+
+                // Preenche as estatísticas de metas com as alterações feitas pelo usuário
+                var metas = this.retornaMetas(this.periodoSelecionado as string)
+                this.preencheEstatisticasMetas(metas)
             } catch (err) {
-
-            } finally {
-                var atualiza = new NutryoFetch(diaObjeto.usuario)
-
-                var intervaloAtualizacao = setInterval(() => {
-                    if (NutryoFetch.status == 1 && NutryoFetch.metaStatus == 1) {
-                        var dados = this.calculaEstatisticas()
-                        this.preencheEstatisticasConsumo(dados)
-
-
-                        var metas = this.retornaMetas(this.periodoSelecionado as string)
-                        this.preencheEstatisticasMetas(metas)
-
-                        clearInterval(intervaloAtualizacao)
-                    }
-                }, 1);
+                console.log(err)
             }
 
-
+            // Limpa delay de requisição
             clearInterval(EstatisticasController.insertDelay)
-        }, 800);
+        }, 650);
 
 
     }
