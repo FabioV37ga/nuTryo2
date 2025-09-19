@@ -516,7 +516,7 @@ class AlimentoController extends JanelaController {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     //  # Método responsável por enviar alimentos para o tratamento de objetos local (Um passo antes de enviar para o banco)
-    private enviaAlimento(elemento: HTMLElement, valores: any) {
+    private async enviaAlimento(elemento: HTMLElement, valores: any) {
 
         console.log("#AlimentoController - Mudanças no alimento detectadas, fazendo envio das atualizações")
 
@@ -524,34 +524,23 @@ class AlimentoController extends JanelaController {
         if (valores) {
 
             // Atualiza os alimentos do usuário conectado (no caso de alguma alteração ter sido feita na sessão atual)
-            var busca = new NutryoFetch(diaObjeto.usuario)
-            // Define status como 0, só vira 1 quando a requisição termina.
-            NutryoFetch.status = 0
+            await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
 
-            // Esse intervalo é responsável por só executar quando a busca terminar
-            var intervaloBusca = setInterval(() => {
-                // Se o status for 1 (requisição completa)
-                if (NutryoFetch.status == 1) {
+            // Armazena em "RefeicaoAtual" o id da refeição que está sendo manipulada
+            var refeicaoAtual: any = document.querySelector(".refeicao-tipo")?.getAttribute("value") as string
 
-                    // Armazena em "RefeicaoAtual" o id da refeição que está sendo manipulada
-                    var refeicaoAtual: any = document.querySelector(".refeicao-tipo")?.getAttribute("value") as string
+            // Gera um objeto de alimento (local)
+            diaObjeto.gerarAlimento(
+                refeicaoAtual,
+                String(Number(elemento.getAttribute("value"))) as string,
+                valores.nome,
+                valores.peso,
+                valores.calorias,
+                valores.proteinas,
+                valores.carboidratos,
+                valores.gorduras
+            )
 
-                    // Gera um objeto de alimento (local)
-                    diaObjeto.gerarAlimento(
-                        refeicaoAtual,
-                        String(Number(elemento.getAttribute("value"))) as string,
-                        valores.nome,
-                        valores.peso,
-                        valores.calorias,
-                        valores.proteinas,
-                        valores.carboidratos,
-                        valores.gorduras
-                    )
-
-                    // Limpa o intervalo
-                    clearInterval(intervaloBusca)
-                }
-            }, 1);
         }
     }
 }

@@ -181,7 +181,7 @@ class CalendarioView {
 
             // Ano pode ser passado como parâmetro, se não, pega a partir da data selecionada
             var ano = anoAtual ? anoAtual : CalendarioController.dataSelecionada.split("-")[2]
-            console.log(`${dia} / ${mes} / ${ano}`)
+            // console.log(`${dia} / ${mes} / ${ano}`)
 
             // String de busca (passada como parametro para retornar refeições de um dia)
             var stringBusca = `${dia}-${String(mes)}-${String(ano)}`
@@ -193,7 +193,7 @@ class CalendarioView {
             if (busca)
                 // Primeiro verifica se não está vazio
                 if (busca.length > 0) {
-                    console.log("↑ possui!")
+                    // console.log("↑ possui!")
                     // Se não estiver vazio, adiciona estilização
                     elementosDia[i].classList.add("diaComAnotacao")
                 }

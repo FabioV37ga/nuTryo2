@@ -452,24 +452,31 @@ class EstatisticasController {
             // Inicia objeto de alteração vazio
             var alteracao: object = {}
 
-            // Alterações nas metas de caloria
-            if (input.classList.contains("meta-kcal-input")) {
-                alteracao = { "metaCalorias": Number(input.value) }
-            }
+            switch (true) {
 
-            // Alterações nas metas de proteinas
-            else if (input.classList.contains("meta-prots-input")) {
-                alteracao = { "metaProteinas": Number(input.value) }
-            }
+                // Alterações nas metas de calorias
+                case input.classList.contains("meta-kcal-input"):
 
-            // Alterações nas metas de carboidratos
-            else if (input.classList.contains("meta-carbs-input")) {
-                alteracao = { "metaCarboidratos": Number(input.value) }
-            }
+                    alteracao = { "metaCalorias": Number(input.value) }
+                    break;
 
-            // Alterações nas metas de gorduras
-            else if (input.classList.contains("meta-gords-input")) {
-                alteracao = { "metaGorduras": Number(input.value) }
+                // Alterações nas metas de proteinas
+                case input.classList.contains("meta-prots-input"):
+
+                    alteracao = { "metaProteinas": Number(input.value) }
+                    break;
+
+                // Alterações nas metas de carboidratos
+                case input.classList.contains("meta-carbs-input"):
+
+                    alteracao = { "metaCarboidratos": Number(input.value) }
+                    break;
+
+                // Alterações nas metas de gorduras
+                case input.classList.contains("meta-gords-input"):
+
+                    alteracao = { "metaGorduras": Number(input.value) }
+                    break;
             }
 
             try {

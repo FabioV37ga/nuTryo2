@@ -9,12 +9,12 @@ import EstatisticasController from "./controllers/estatisticasController.js";
 
 
 const janelaController = new JanelaController();
-const authController = new AuthController();
 const sideBarController = new SideBarController();
 const calendarioController = new CalendarioController();
 const alimentoController = new AlimentoController();
 const refeicoesController = new RefeicoesController();
 const refeicaoController = new RefeicaoController();
 const estatisticasController = new EstatisticasController()
+const authController = new AuthController();
 
 refeicoesController.criarElementosDoDia(CalendarioController.dataSelecionada)
