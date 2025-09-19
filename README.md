@@ -1,6 +1,6 @@
 # Pré requisitos
 - 1. Node.js
-- 2. Database no `cloud.mongodb.com` com collections `refeicoes` e `usuarios`
+- 2. Database no `cloud.mongodb.com` com collections `refeicoes`, `usuarios` e `metas`
 
 # Instalando:
 - 1. Clone o repositorio com `git clone https://github.com/FabioV37ga/nuTryo2`
