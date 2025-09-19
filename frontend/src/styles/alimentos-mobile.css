@@ -6,7 +6,6 @@
 
     .alimentos-adicionados {
         text-align: -webkit-center;
-        /* align-items: center; */
     }
 
     .alimentos-adicionados::-webkit-scrollbar {
@@ -47,7 +46,6 @@
         100% {
             border-radius: 10px 10px 10px 10px 10px;
             margin-bottom: 10px;
-            /* background-color: blue; */
         }
     }
 

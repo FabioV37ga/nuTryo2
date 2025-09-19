@@ -80,7 +80,6 @@
 
 .auth-inputs-register,
 .auth-inputs-login {
-    /* background:red; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -115,14 +114,11 @@
     padding: 20px 65px;
     border-radius: 10px;
     box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-    /* sem sombra inicialmente */
     transition: box-shadow 0.3s ease;
-    /* suaviza a transição */
 }
 
 .auth-enviar:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65);
-    /* sombra leve ao hover */
 }
 
 .auth-switch {

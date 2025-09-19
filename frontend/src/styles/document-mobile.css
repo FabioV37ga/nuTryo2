@@ -68,7 +68,6 @@
 
     .sideBar .git {
         top: 705px;
-        /* left: 231px; */
         margin-left: calc(50% - 17px);
         position: absolute;
         width: fit-content;

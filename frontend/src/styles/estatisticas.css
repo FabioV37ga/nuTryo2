@@ -30,7 +30,6 @@ nav.janela-estatisticas-nav {
     display: flex;
     height: 45px;
     width: 355px;
-    /* justify-content: center; */
     align-items: center;
     margin-left: 35px;
     margin-top: 25px;
@@ -66,9 +65,7 @@ nav.janela-estatisticas-nav>* {
     height: 390px;
     margin-top: 35px;
     margin-left: 35px;
-    /* background: orange; */
     display: flex;
-    /* justify-content: space-evenly; */
     flex-wrap: wrap;
 }
 
@@ -115,7 +112,6 @@ nav.janela-estatisticas-nav>* {
 }
 
 .informacoes-valores {
-    /* background: red; */
     width: calc(100% - 44px);
     margin-left: 22px;
     height: 95px;

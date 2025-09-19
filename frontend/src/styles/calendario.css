@@ -1,7 +1,4 @@
 .calendario {
-    /* display: flex;
-    justify-content: center;
-    align-items: flex-start; */
     flex-wrap: wrap;
     width: 400px;
     height: 600px;
@@ -16,7 +13,6 @@
     width: 400px;
     height: 70px;
     background: var(--lightBlue);
-    /* background: red; */
     border-radius: 20px 20px 0 0;
     display: flex;
     justify-content: center;
@@ -30,7 +26,6 @@
     width: fit-content;
     height: 40px;
     border-radius: 10px;
-    /* background: red; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,7 +75,6 @@
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
-    /* background: red; */
 }
 
 .calendario-corpo-semana {
@@ -125,9 +119,7 @@
 }
 
 .diaAtual.mesAtual{
-    /* background: var(--highlightPinkWhite) !important */
     font-weight: 500;
-    /* font-style: italic; */
 }
 
 .calendario-corpo .dia.diaSelecionado{

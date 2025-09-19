@@ -22,7 +22,6 @@
 }
 
 .aba {
-    /* background: var(--lightBlue); */
     cursor: pointer;
     display: flex;
     text-align: center;
@@ -33,14 +32,12 @@
     text-decoration: none;
     color: white;
     font-size: 17px;
-    /* margin-right: 5px; */
     -webkit-box-shadow: 1px 0px 1px -1px #000000;
     box-shadow: 1px 0px 1px -1px #000000;
     position: relative;
 }
 
 .refeicao-fechar {
-    /* font-weight: 0; */
     position: absolute;
     font-size: 15px;
     right: 4px;

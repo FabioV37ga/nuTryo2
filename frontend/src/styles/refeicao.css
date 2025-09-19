@@ -1,6 +1,5 @@
 .refeicao-conteudo {
     display: none;
-    /* display: flex; */
     width: 95%;
     height: calc(100% - 115px);
     margin-top: 20px;
@@ -15,7 +14,6 @@
     align-items: center;
     width: 278px;
     height: 65px;
-    /* background: var(--lightBlue); */
     border-radius: 10px;
     position: relative;
 }
@@ -32,7 +30,6 @@
 
 .refeicao-tipo-tipoSelecionado {
     width: calc(100% - 80px);
-    /* background: var(--pinkWhite); */
     color: var(--highlightTextBlue);
     background: rgb(237 225 205);
     height: 47px;
@@ -62,8 +59,6 @@
     top: 10px;
     left: 273px;
     background: var(--pinkWhite);
-    /* display: flex
-; */
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
