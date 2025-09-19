@@ -1,4 +1,1 @@
 Mobile: Drag no overflow da lista de resultado de pesquisa de alimentos não funciona corretamente
-
-Marcar visualmente dias que tem anotações com darkpinkwhite
-Marcar dia atual com lighterblue

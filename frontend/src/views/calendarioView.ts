@@ -155,7 +155,7 @@ class CalendarioView {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // # Método responsável por adicionar estilização a dias do calendário que possuem anotações feitas
-    static async adicionarEfeitosVisuais(mesAtual?:number, anoAtual?:number) {
+    static async adicionarEfeitosVisuais(mesAtual?: number, anoAtual?: number) {
 
         // Primeiro abre uma requisição, só executa o resto do método quando houverem dados
         await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
@@ -170,17 +170,18 @@ class CalendarioView {
 
         // Loop para executar sob todos os dias do calendário
         for (let i = 0; i <= elementosDia.length - 1; i++) {
-            
+
             // O dia é o texto do dia do calendario
             var dia = elementosDia[i].textContent;
 
             // Mes pode ser passado como parâmetro, se não, pega a partir da data selecionada
-            var mes = mesAtual ? mesAtual : Number(CalendarioController.dataSelecionada.split("-")[1])
-            elementosDia[i].classList.contains("mesSeguinte") ? mes++ : null
-            elementosDia[i].classList.contains("mesAnterior") ? mes-- : null
+            var mes = mesAtual ? mesAtual : CalendarioController.paginaMes
+            elementosDia[i].classList.contains("mesSeguinte") ? mes += 1 : null
+            elementosDia[i].classList.contains("mesAnterior") ? mes -= 1 : null
 
             // Ano pode ser passado como parâmetro, se não, pega a partir da data selecionada
             var ano = anoAtual ? anoAtual : CalendarioController.dataSelecionada.split("-")[2]
+            console.log(`${dia} / ${mes} / ${ano}`)
 
             // String de busca (passada como parametro para retornar refeições de um dia)
             var stringBusca = `${dia}-${String(mes)}-${String(ano)}`
@@ -192,6 +193,7 @@ class CalendarioView {
             if (busca)
                 // Primeiro verifica se não está vazio
                 if (busca.length > 0) {
+                    console.log("↑ possui!")
                     // Se não estiver vazio, adiciona estilização
                     elementosDia[i].classList.add("diaComAnotacao")
                 }
@@ -276,6 +278,9 @@ class CalendarioView {
                 this.mesAtual > 1 ? this.mesAtual-- : (this.mesAtual = 12, this.anoAtual--)
                 break
         }
+        // Marca a página atual do calendário (referente ao mês atual sendo mostrado)
+        CalendarioController.paginaMes = this.mesAtual
+    
         // Essa parte marca a posição da semana (0-6) do dia primeiro do mês navegado
         this.posicaoDoPrimeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual - 1, 1).getDay()
 
@@ -286,7 +291,7 @@ class CalendarioView {
         this.atualizaHeader()
 
         // Chama método para estilizar dias com anotação
-        CalendarioView.adicionarEfeitosVisuais(this.mesAtual, this.anoAtual) 
+        CalendarioView.adicionarEfeitosVisuais(this.mesAtual, this.anoAtual)
     }
 }
 // Exporta view para o controlador

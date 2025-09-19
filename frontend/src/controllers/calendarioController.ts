@@ -8,12 +8,13 @@ import JanelaController from "./janelaController.js";
 class CalendarioController {
     private data: Date = new Date();
     private calendarioView = new CalendarioView(this.data);
+    static paginaMes: number = new Date().getMonth() + 1;
     static dataSelecionada: string;
     constructor() {
 
         // Cria elementos do calendário
         this.calendarioView.criarElementos()
-        
+
 
         // Chama função para adicionar eventos de click aos elementos criados
         this.adicionaEventosDeClick()
@@ -109,7 +110,7 @@ class CalendarioController {
 
                 // Armazena o display de data da janela
                 var display: Element = document.querySelector("#data-display") as Element
-                
+
                 // Troca o display da data selecionada da janela pelo dia selecionado
                 display.textContent =
                     `${String(dataSelecionada.dia).padStart(2, "0")}/${String(dataSelecionada.mes).padStart(2, "0")}/${dataSelecionada.ano}`

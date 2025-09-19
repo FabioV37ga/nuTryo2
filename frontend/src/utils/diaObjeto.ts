@@ -27,7 +27,7 @@ class diaObjeto {
                 body: JSON.stringify(diaObjeto.dia)
             })
             // Faz nova requisição do backend para atualizar dados locais depois de ter postado o dia novo
-            var nutryoFetch = new NutryoFetch(diaObjeto.usuario)
+            await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
 
             console.log("#diaObjeto - post bem sucedido")
             console.log("#diaObjeto - Iniciando nova requisição de get com novos itens...")
