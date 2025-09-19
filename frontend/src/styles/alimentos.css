@@ -30,7 +30,7 @@
     height: 335px;
     overflow-y: scroll;
     overscroll-behavior: contain
-    /* background: red; */
+        /* background: red; */
 }
 
 .alimentos-adicionados::-webkit-scrollbar {
@@ -146,6 +146,10 @@
     margin-top: 5px;
 }
 
+.model-alimento {
+    cursor: pointer;
+}
+
 .model-alimento .alimento-label {
     color: white !important;
 }
@@ -177,7 +181,7 @@
     transition: max-height 0.35s,
         border-color 0s,
         opacity 0.4s;
-    
+
 }
 
 .alimento-consumo,

@@ -17,7 +17,7 @@ class AlimentoController extends JanelaController {
     constructor() {
         super()
         // Define botão de adicionar novo alimento
-        this.botaoAdicionarAlimento = document.querySelector(".botao-adicionar-alimento") as Element;
+        this.botaoAdicionarAlimento = document.querySelector(".model-alimento") as Element;
         // Define botões de aditar alimentos já existentes
         this.botaoEditarAlimento = document.querySelectorAll(".botao-editar-alimento") as NodeListOf<Element>
         // Define botões de remover alimentos já existentes
