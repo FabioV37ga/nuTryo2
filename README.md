@@ -152,7 +152,7 @@ nuTryo2/
 
 Para uma compreensão detalhada da arquitetura do frontend, estrutura de componentes, fluxo de dados e correlações entre arquivos, consulte a documentação completa:
 
-**[📄 Frontend Architecture Guide (PDF)](./doc/FRONTEND_ARCHITECTURE.pdf)**  
+**[📄 Frontend Architecture Guide (PDF)](./docs/FRONTEND_ARCHITECTURE.pdf)**  
 
 Este documento inclui:
 - 🏗️ Estrutura completa de diretórios
