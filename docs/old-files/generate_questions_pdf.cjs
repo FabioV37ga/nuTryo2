@@ -2,9 +2,12 @@ const fs = require('fs');
 const { PDFDocument, StandardFonts } = require('pdf-lib');
 
 async function run() {
-  const mdPath = '.doc/frontend_questoes.md';
-  if (!fs.existsSync(mdPath)) { console.error('Arquivo não encontrado'); process.exit(1); }
-  const markdown = fs.readFileSync(mdPath, 'utf8');
+  const mdPath = process.argv[2] || './frontend_questoes.md';
+  if (!fs.existsSync(mdPath)) { console.error('Arquivo não encontrado:', mdPath); process.exit(1); }
+  let markdown = fs.readFileSync(mdPath, 'utf8');
+  
+  // Remove todos os caracteres não-ASCII (apenas mantém ASCII printável)
+  markdown = markdown.replace(/[^\x00-\x7F]/g, '');
 
   const pdfDoc = await PDFDocument.create();
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -16,7 +19,12 @@ async function run() {
   const lineHeight = 16;
   const maxChars = 95;
 
-  drawText(page, 'Questionário Frontend (Professor)', 50, y, fontBold, 18);
+  // Título baseado no nome do arquivo
+  const titulo = mdPath.includes('TECNICA') 
+    ? 'NuTryo - Documentação Técnica Completa'
+    : 'Questionário Frontend (Professor)';
+  
+  drawText(page, titulo, 50, y, fontBold, 18);
   y -= 28;
 
   // Processa linhas mantendo **bold**
@@ -40,8 +48,9 @@ async function run() {
   }
 
   const pdfBytes = await pdfDoc.save();
-  fs.writeFileSync('.doc/frontend_questoes.pdf', pdfBytes);
-  console.log('PDF gerado em .doc/frontend_questoes.pdf');
+  const outputPath = mdPath.replace('.md', '.pdf');
+  fs.writeFileSync(outputPath, pdfBytes);
+  console.log('✅ PDF gerado com sucesso:', outputPath);
 }
 
 function drawText(page, text, x, y, font, size) {
@@ -85,4 +94,13 @@ function breakSegments(segments, maxChars) {
   return lines;
 }
 
-run().catch(e => { console.error(e); process.exit(1); });
+async function main() {
+  try {
+    await run();
+  } catch (e) {
+    console.error('Erro ao gerar PDF:', e.message);
+    process.exit(1);
+  }
+}
+
+main();
