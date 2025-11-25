@@ -142,7 +142,8 @@ class diaObjeto {
 
                 // Localiza o alimento a ser atualizado a partir do LOCAL passado como parâmetro
                 const alimentos = diaObjeto.dia.refeicoes[Number(local)].alimentos;
-                const index = alimentos.findIndex((item: any) => item._id === objeto._id);
+                // Use numeric comparison so we don't depend on ID being string or number
+                const index = alimentos.findIndex((item: any) => Number(item._id) === Number(objeto._id));
 
                 // Atualiza alimento:
                 if (index !== -1) {
@@ -214,7 +215,8 @@ class diaObjeto {
 
         // Inicializa objeto de refeição
         var objeto = {
-            _id: id,
+            // Normalize id to number so internal representation is consistent
+            _id: Number(id),
             tipo: tipo,
             alimentos: alimentos
         }
@@ -248,7 +250,8 @@ class diaObjeto {
 
         // Cria objeto de alimento com os parâmetros fornecidos
         var objeto = {
-            _id: id,
+            // Ensure alimento ID is stored as a number consistently
+            _id: Number(id),
             alimento: nome,
             peso: peso,
             calorias: calorias,
@@ -293,8 +296,9 @@ class diaObjeto {
 
         // Decremente o ID dos alimentos que tinham ID maior do ID apagado, isso garante a ordem crescente dos IDS dos alimentos da lista
         for (let i = 0; i <= alimentosFinal.length - 1; i++) {
-            if (Number(alimentosFinal[i]._id) > Number(alimento)) {
-                alimentosFinal[i]._id = String(Number(alimentosFinal[i]._id) - 1)
+                if (Number(alimentosFinal[i]._id) > Number(alimento)) {
+                // Keep _id as number (do not convert to string)
+                alimentosFinal[i]._id = Number(alimentosFinal[i]._id) - 1
             }
         }
 
@@ -333,7 +337,8 @@ class diaObjeto {
         // Isso garante sequência contínua: 1, 2, 3, 4...
         for (let i = 0; i <= refeicoesFinais.length - 1; i++) {
             if (Number(refeicoesFinais[i]._id) > Number(refeicao)) {
-                refeicoesFinais[i]._id = String(Number(refeicoesFinais[i]._id) - 1)
+                // Keep _id as number (do not convert to string)
+                refeicoesFinais[i]._id = Number(refeicoesFinais[i]._id) - 1
             }
         }
 

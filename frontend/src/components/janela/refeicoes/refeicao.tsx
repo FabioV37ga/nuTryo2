@@ -106,7 +106,8 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
         setAlimentos(prev => {
             const newId = prev.length + 1;
             const uid = `local-alimento-${Date.now()}`;
-            const novoAlimento = { _id: null, alimento: 'Novo alimento', peso: 0, calorias: 0, proteinas: 0, carbos: 0, gorduras: 0, id: newId, uid } as any;
+            // Assign a numeric provisional _id so newly added items have a stable ID
+            const novoAlimento = { _id: Number(newId), alimento: 'Novo alimento', peso: 0, calorias: 0, proteinas: 0, carbos: 0, gorduras: 0, id: newId, uid } as any;
             console.log(`ADD Alimento:`, novoAlimento);
             return [...prev, novoAlimento];
         });
@@ -185,10 +186,11 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
                         const alimentosExistem = refeicaoExiste?.alimentos?.length > 0;
 
                         // Se não existem alimentos ainda, usa gerarAlimento (primeiro alimento da refeição)
-                        if (!alimentosExistem) {
+                            if (!alimentosExistem) {
+                            // Pass numbers to gerarAlimento so diaObjeto stores numeric _id
                             diaObjeto.gerarAlimento(
-                                String(refeicaoIdentificador),
-                                String(itemAlterado.id),
+                                Number(refeicaoIdentificador),
+                                Number(itemAlterado.id),
                                 itemAlterado.alimento ?? 'Novo alimento',
                                 itemAlterado.peso ?? 0,
                                 itemAlterado.calorias ?? 0,
@@ -199,7 +201,7 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
                             console.log(diaObjeto.dia)
                         } else {
                             // Se já existem alimentos, usa atualizarDia() para adicionar/atualizar normalmente
-                            if (!itemAlterado._id) itemAlterado._id = String(itemAlterado.id);
+                            if (!itemAlterado._id) itemAlterado._id = Number(itemAlterado.id);
                             const objetoAlimento = {
                                 _id: itemAlterado._id,
                                 alimento: itemAlterado.alimento,
