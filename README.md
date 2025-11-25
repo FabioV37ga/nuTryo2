@@ -24,7 +24,7 @@
 
 # Tecnologias usadas:
 - TypeScript
-- Jquery
+- React
 - Node.js
 - mongoDB
 - Leitura de XLSX
