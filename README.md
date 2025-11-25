@@ -13,6 +13,7 @@
 [Tecnologias](#-tecnologias) •
 [Instalação](#-instalação) •
 [Desenvolvimento](#-desenvolvimento) •
+[Documentação](#-documentação) •
 [Roadmap](#-roadmap)
 
 </div>
@@ -144,6 +145,22 @@ nuTryo2/
 │
 └── package.json
 ```
+
+## 📚 Documentação
+
+### Arquitetura do Frontend
+
+Para uma compreensão detalhada da arquitetura do frontend, estrutura de componentes, fluxo de dados e correlações entre arquivos, consulte a documentação completa:
+
+**[📄 Frontend Architecture Guide (PDF)](./FRONTEND_ARCHITECTURE.pdf)**
+
+Este documento inclui:
+- 🏗️ Estrutura completa de diretórios
+- 🧩 Hierarquia e especificação de componentes
+- 🔄 Fluxo de dados e estado
+- 🔗 Mapa de dependências entre arquivos
+- ⚙️ Controladores e utilitários
+- 📊 Diagramas de arquitetura
 
 ## 🗺️ Roadmap
 
