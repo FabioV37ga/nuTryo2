@@ -139,6 +139,7 @@ Interface **limpa e objetiva** com foco na experiência do usuário.
 - Navegação mensal intuitiva
 - **Indicadores visuais** de dias com registros
 - Seleção rápida de datas
+- Sincronização com estatísticas
 
 ## 🍽️ Gestão de Refeições
 
@@ -153,11 +154,33 @@ Interface **limpa e objetiva** com foco na experiência do usuário.
 - Valores nutricionais precisos
 - **Cálculo dinâmico** por peso
 
-## 📊 Estatísticas
+## 📊 Estatísticas Nutricionais
 
-- Visualização de metas vs consumo
-- Distribuição de macronutrientes
-- Histórico temporal
+### Sistema Inteligente de Acompanhamento
+
+**Períodos Flexíveis**
+- **Hoje**: Visão diária do consumo atual
+- **Essa semana**: Totais de domingo a sábado
+- **Último mês**: Consolidação mensal completa
+
+**Fichas de Macronutrientes**
+- 🔥 **Calorias** - Meta vs consumo com barra de progresso
+- 💪 **Proteínas** - Acompanhamento em gramas
+- 🍞 **Carboidratos** - Controle de energia
+- 🥑 **Gorduras** - Balanço lipídico
+
+**Recursos Avançados**
+- **Metas editáveis** com ajuste dinâmico de largura do input
+- **Cálculo automático** multiplicado por período (7 dias na semana, ~30 no mês)
+- **Persistência no backend** - metas sincronizadas entre dispositivos
+- **Barras de progresso visuais** limitadas a 100% para melhor UX
+- **Feedback em tempo real** sem necessidade de salvar manualmente
+
+**Arquitetura de Cálculo**
+- Controller dedicado (`EstatisticasController`)
+- Processamento de `diaObjeto.diasSalvos` por intervalo de datas
+- Agregação proporcional por peso de alimento
+- Arredondamento inteligente de valores
 
 ---
 
@@ -170,7 +193,10 @@ Interface **limpa e objetiva** com foco na experiência do usuário.
 3. **Adiciona refeição** → Botão "+" → Escolhe tipo
 4. **Adiciona alimento** → Busca "arroz" → Seleciona → Define peso (150g)
 5. **Macros calculados automaticamente** → Proteínas, carbos, gorduras, calorias
-6. **Visualiza estatísticas** → Progresso em relação às metas
+6. **Visualiza estatísticas** → Clique em "Estatísticas"
+   - Vê progresso diário, semanal ou mensal
+   - Edita metas clicando no ícone de lápis
+   - Barras de progresso mostram % atingido
 
 ✅ **Total: 6 cliques para registrar uma refeição completa**
 
@@ -204,9 +230,10 @@ Interface **limpa e objetiva** com foco na experiência do usuário.
 ## Próximas Implementações
 
 ### Curto Prazo (1-2 meses)
-- ✅ **Gráficos interativos** de evolução temporal
-- ✅ **Exportação de relatórios** PDF
-- ✅ **Modo offline** completo
+- ✅ **Sistema de estatísticas completo** (implementado)
+- 📊 **Gráficos interativos** de evolução temporal
+- 📄 **Exportação de relatórios** PDF
+- 💾 **Modo offline** completo
 
 ### Médio Prazo (3-6 meses)
 - 🔄 **Migração para microserviços**
