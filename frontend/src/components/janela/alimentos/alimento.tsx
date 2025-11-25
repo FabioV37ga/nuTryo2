@@ -12,11 +12,13 @@ interface AlimentoProps {
     carbos?: number;
     gorduras?: number;
     onDelete?: (id: number, refeicaoId?: number) => void;
-    onUpdate?: (id: number, changes: { alimento?: string; peso?: number }) => void;
+    onUpdate?: (id: number, changes: { alimento?: string; peso?: number; calorias?: number; proteinas?: number; carbos?: number; gorduras?: number }) => void;
 }
 
 function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gorduras, onDelete, onUpdate }: AlimentoProps) {
     const [editando, setEditando] = useState(false);
+    // nome local (controlado) para permitir digitação sem salvar
+    const [nomeLocal, setNomeLocal] = useState(nome ?? "");
     // peso local (controlado) para cálculo imediato
     const [pesoLocal, setPesoLocal] = useState<number | string>(peso ?? "");
     // estado para armazenar resultados da busca
@@ -38,7 +40,8 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
 
     // handler do input de alimento: busca alimentos ao digitar com debounce
     async function handleAlimentoInputChange(valor: string) {
-        onUpdate && onUpdate(id, { alimento: valor });
+        // Atualiza apenas localmente (não notifica parent ainda)
+        setNomeLocal(valor);
         
         if (valor.trim().length > 0) {
             const resultados = await BuscarAlimentos.buscar(valor);
@@ -54,12 +57,8 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
         // armazena o alimento selecionado para uso nos cálculos
         setAlimentoSelecionado(alimento);
         
-        // atualiza o nome do alimento
-        onUpdate && onUpdate(id, { alimento: alimento.nome });
-        
-        // reseta o peso para 100g ao selecionar um novo alimento
-        setPesoLocal(100);
-        onUpdate && onUpdate(id, { peso: 100 });
+        // Atualiza nome local
+        setNomeLocal(alimento.nome);
         
         // mapeia os campos da API para os campos esperados (lipidios → gorduras, carboidrato → carbos)
         const gorduras = alimento.lipidios ?? alimento.gorduras ?? 0;
@@ -81,6 +80,19 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
         const g = Math.round((pesoParaCalculo * (baseGord || 0)) / referencia);
 
         setMacrosCalculados({ calorias: c, proteinas: p, carbos: cb, gorduras: g });
+        
+        // reseta o peso para 100g ao selecionar um novo alimento
+        setPesoLocal(100);
+        
+        // atualiza nome, peso E macros calculados em uma única chamada
+        onUpdate && onUpdate(id, { 
+            alimento: alimento.nome, 
+            peso: 100,
+            calorias: c,
+            proteinas: p,
+            carbos: cb,
+            gorduras: g
+        });
         
         // fecha a lista de resultados
         setResultadoBusca([]);
@@ -151,13 +163,15 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
 
     // inicializa pesoLocal e macros ao montar/receber props
     useEffect(() => {
+        // Sincroniza nome local com prop
+        setNomeLocal(nome ?? "");
         // Não mostrar 0 no input — se o peso for 0 ou ausente, exibe vazio.
         setPesoLocal(peso && Number(peso) !== 0 ? peso : "");
         // usa o elemento DOM atual para obter data-* (se disponível)
         const root = document.querySelector(`[data-value=\"${id}\"]`) as HTMLElement | null;
         const calculados = calculaMacrosAPartirDoElemento(root, Number(peso ?? 0));
         setMacrosCalculados(calculados);
-    }, [peso, calorias, proteinas, carbos, gorduras]);
+    }, [peso, calorias, proteinas, carbos, gorduras, nome]);
 
     return (
         <div className={`alimento-item ${editando ? 'editando' : ''}`} data-value={id}>
@@ -166,7 +180,7 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
             </a>
             <span className="alimento-label">
                 <h1>
-                    {nome ? nome : "Novo alimento"}</h1>
+                    {nomeLocal ? nomeLocal : "Novo alimento"}</h1>
                 {/* Mostrar peso atual: prioriza pesoLocal (input), senão usa peso prop se >0 */}
                 {(pesoLocal !== "" && pesoLocal !== null) ? `${pesoLocal} g • ` : (peso && Number(peso) > 0 ? `${peso} g • ` : "")}
                 {/* Mostrar macros calculados (inteiros) */}
@@ -193,9 +207,10 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
                         <span className="selecao-valor">
                             <input type="text" 
                             id="selecao-valor-texto" 
-                            value={nome ?? ''} 
+                            value={nomeLocal} 
                             className="selecao-valor-texto" 
                             placeholder="Selecione alimento" 
+                            autoComplete="off"
                             onChange={(e) => handleAlimentoInputChange(e.target.value)} />
                         </span>
                         {resultadoBusca.length > 0 && <ListaAlimentos alimentos={resultadoBusca} onSelect={handleSelectAlimento} />}
@@ -205,7 +220,7 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
                             Peso:
                         </div>
                         <div className="peso-valor">
-                            <input type="number" id="peso-valor-texto" className="peso-valor-texto" placeholder="Peso consumido" value={pesoLocal ?? ''} onChange={handlePesoChange} />
+                            <input type="number" id="peso-valor-texto" className="peso-valor-texto" placeholder="Peso consumido" value={pesoLocal ?? ''} autoComplete="off" onChange={handlePesoChange} />
                         </div>
                     </div>
                 </div>

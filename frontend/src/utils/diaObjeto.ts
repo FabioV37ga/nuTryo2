@@ -136,7 +136,7 @@ class diaObjeto {
     static gerarRefeicao(id: number, tipo: string, alimentos: any[]) {
 
         // Define o atributo refeições da classe como objeto vazio
-        diaObjeto.refeicoes = []
+        // diaObjeto.refeicoes = []
 
         // Define atributo alimentos da classe como objeto vazio
         diaObjeto.alimentos = []

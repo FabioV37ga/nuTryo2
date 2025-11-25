@@ -24,15 +24,16 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
 
     const [refeicoes, setRefeicoes] = useState<any[]>([]);
 
+    // Função para carregar refeições (extraída para poder ser chamada manualmente)
+    async function fetchRefeicoes() {
+        const res = await NutryoFetch.retornaRefeicoesDoDia(CalendarioController.dataSelecionada) as any[] | null;
+        const list = res ?? [];
+        const normalized = list.map((r: any, idx: number) => ({ ...r, id: idx + 1, uid: r._id ?? `local-${Date.now()}-${idx}` }));
+        setRefeicoes(normalized);
+    }
 
     // Carregar refeições ao mudar a data selecionada
     useEffect(() => {
-        async function fetchRefeicoes() {
-            const res = await NutryoFetch.retornaRefeicoesDoDia(CalendarioController.dataSelecionada) as any[] | null;
-            const list = res ?? [];
-            const normalized = list.map((r: any, idx: number) => ({ ...r, id: idx + 1, uid: r._id ?? `local-${Date.now()}-${idx}` }));
-            setRefeicoes(normalized);
-        }
         fetchRefeicoes();
     }, [CalendarioController.dataSelecionada])
 
@@ -47,6 +48,11 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
             const newId = prev.length + 1;
             const uid = `local-${Date.now()}`;
             const novaRefeicao = { _id: null, tipo: 'Nova Refeição', alimentos: [], id: newId, uid } as any;
+            
+            // Gera refeição no diaObjeto para sincronização com backend
+            diaObjeto.gerarRefeicao(newId, 'Nova Refeição', []);
+            console.log(diaObjeto.dia)
+            
             return [...prev, novaRefeicao];
         });
     }
@@ -55,6 +61,18 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
     function handleRemoveRefeicao(id: number) {
         const target = Number(id);
         diaObjeto.apagarRefeicao(id.toString())
+        
+        // Fecha a aba da refeição removida (se estiver aberta)
+        setAbas(prev => {
+            const abaParaRemover = prev.find(a => Number(a.id) === target);
+            if (abaParaRemover) {
+                const filtered = prev.filter(a => a.uid !== abaParaRemover.uid);
+                // Seleciona a aba "Refeições" após fechar
+                return filtered.map(a => ({ ...a, ativa: Number(a.id) === 0 }));
+            }
+            return prev;
+        });
+        
         setRefeicoes(prev => {
             const filtered = prev.filter(r => Number(r.id) !== target);
             return filtered.map((r, i) => ({ ...r, id: i + 1 }));
@@ -63,6 +81,9 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
 
     // Estado para abas
     const [abas, setAbas] = useState<any[]>([{ id: 0, titulo: 'Refeições', uid: 'tab-refeicoes', ativa: true }]);
+    
+    // Estado para forçar refresh do componente Refeicao quando dados mudam
+    const [refreshKey, setRefreshKey] = useState(0);
 
     function abrirAbaEdicao(id: number, titulo?: string) {
         // verifica se já existe uma aba para essa refeição
@@ -96,7 +117,14 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
     // Função para selecionar aba
     function selecionarAba(uid: string) {
         console.log("Aba selecionada:", uid);
+        console.log("Estado de diaObjeto.dia ao selecionar aba:", diaObjeto.dia);
+        
+        // Recarrega refeições do backend antes de trocar de aba
+        fetchRefeicoes();
+        
         setAbas(prev => prev.map(a => ({ ...a, ativa: a.uid === uid })));
+        // Incrementa refreshKey para forçar remontagem do componente Refeicao
+        setRefreshKey(prev => prev + 1);
     }
 
 
@@ -194,11 +222,13 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
 
             {/* Conteúdo de uma refeição (renderizado como sibling de refeicoes-conteudo) */}
             {(() => {
-                const ativa = abas.find((a: any) => a.ativa)?.id ?? 0;
+                const abaAtiva = abas.find((a: any) => a.ativa);
+                const ativa = abaAtiva?.id ?? 0;
                 // só renderiza Refeicao se uma aba de edição estiver ativa (id !== 0)
                 if (Number(ativa) !== 0) {
                     const refeicaoSelecionada = refeicoes.find((r: any) => Number(r.id) === Number(ativa));
-                    return <Refeicao refeicao={refeicaoSelecionada} onTipoChange={handleTipoChange} />;
+                    // key com refreshKey força remontagem quando aba é selecionada, carregando dados atualizados
+                    return <Refeicao key={`${abaAtiva?.uid}-${refreshKey}`} refeicao={refeicaoSelecionada} onTipoChange={handleTipoChange} onRefreshNeeded={fetchRefeicoes} />;
                 }
                 return null;
             })()}

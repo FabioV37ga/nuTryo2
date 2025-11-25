@@ -11,9 +11,10 @@ import diaObjeto from "../../../utils/diaObjeto.ts"
 interface RefeicaoProps {
     refeicao?: any;
     onTipoChange?: (refeicaoId: number, novoTipo: string) => void;
+    onRefreshNeeded?: () => void;
 }
 
-function Refeicao({ refeicao, onTipoChange }: RefeicaoProps) {
+function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
     const tipo = refeicao?.tipo ?? 'Selecione o tipo';
     const [listaAberta, setListaAberta] = useState(false);
     const [alimentos, setAlimentos] = useState<any[]>([]);
@@ -21,7 +22,12 @@ function Refeicao({ refeicao, onTipoChange }: RefeicaoProps) {
     // Buscar alimentos da refeição ao montar ou quando mudar a refeição selecionada
     useEffect(() => {
         if (refeicao?._id) {
-            const alimentosBuscados = NutryoFetch.retornaAlimentosDaRefeicao(CalendarioController.dataSelecionada, refeicao._id);
+            // Busca primeiro do diaObjeto local (mais atualizado), depois do NutryoFetch (cache)
+            const refeicaoIndex = Number(refeicao._id) - 1;
+            const refeicaoNoDiaObjeto = diaObjeto.dia?.refeicoes?.[refeicaoIndex];
+            const alimentosBuscados = refeicaoNoDiaObjeto?.alimentos ?? 
+                                      NutryoFetch.retornaAlimentosDaRefeicao(CalendarioController.dataSelecionada, refeicao._id);
+            
             // Normalizar alimentos com id sequencial (1..N) e uid estável
             const normalized = (alimentosBuscados || []).map((a: any, idx: number) => {
                 // truncar/ignorar decimais vindos do backend
@@ -77,14 +83,21 @@ function Refeicao({ refeicao, onTipoChange }: RefeicaoProps) {
         });
     }
 
-    // Função para atualizar um alimento (nome / peso)
-    function handleUpdateAlimento(id: number, changes: { alimento?: string; peso?: number }) {
+    // Função para atualizar um alimento (nome / peso / macros)
+    function handleUpdateAlimento(id: number, changes: { alimento?: string; peso?: number; calorias?: number; proteinas?: number; carbos?: number; gorduras?: number }) {
         setAlimentos(prev => {
             const updated = prev.map(a => {
                 if (Number(a.id) !== Number(id)) return a;
                 const next = { ...a } as any;
                 if (changes.alimento !== undefined) next.alimento = changes.alimento;
                 if (changes.peso !== undefined) next.peso = Math.trunc(Number(changes.peso)) || 0;
+                if (changes.calorias !== undefined) next.calorias = Math.trunc(Number(changes.calorias)) || 0;
+                if (changes.proteinas !== undefined) next.proteinas = Math.trunc(Number(changes.proteinas)) || 0;
+                if (changes.carbos !== undefined) {
+                    next.carbos = Math.trunc(Number(changes.carbos)) || 0;
+                    next.carboidratos = next.carbos;
+                }
+                if (changes.gorduras !== undefined) next.gorduras = Math.trunc(Number(changes.gorduras)) || 0;
                 return next;
             });
 
@@ -95,21 +108,42 @@ function Refeicao({ refeicao, onTipoChange }: RefeicaoProps) {
                     const localIndex = String(Number(refeicaoIdentificador) - 1); // índice da refeição no array
                     const itemAlterado = updated.find(a => Number(a.id) === Number(id));
                     if (itemAlterado) {
-                        // Garante _id estável se ainda não existir
-                        if (!itemAlterado._id) itemAlterado._id = String(itemAlterado.id);
-                        const objetoAlimento = {
-                            _id: itemAlterado._id,
-                            alimento: itemAlterado.alimento,
-                            peso: itemAlterado.peso ?? 0,
-                            calorias: itemAlterado.calorias ?? 0,
-                            proteinas: itemAlterado.proteinas ?? 0,
-                            carboidratos: itemAlterado.carboidratos ?? itemAlterado.carbos ?? 0,
-                            gorduras: itemAlterado.gorduras ?? 0
-                        };
-                        diaObjeto.atualizarDia("alimento", localIndex, objetoAlimento);
+                        // Verifica se a refeição já existe em diaObjeto.dia
+                        const refeicaoExiste = diaObjeto.dia?.refeicoes?.[Number(localIndex)];
+                        const alimentosExistem = refeicaoExiste?.alimentos?.length > 0;
+
+                        // Se não existem alimentos ainda, usa gerarAlimento (primeiro alimento da refeição)
+                        if (!alimentosExistem) {
+                            diaObjeto.gerarAlimento(
+                                String(refeicaoIdentificador),
+                                String(itemAlterado.id),
+                                itemAlterado.alimento ?? 'Novo alimento',
+                                itemAlterado.peso ?? 0,
+                                itemAlterado.calorias ?? 0,
+                                itemAlterado.proteinas ?? 0,
+                                itemAlterado.carboidratos ?? itemAlterado.carbos ?? 0,
+                                itemAlterado.gorduras ?? 0
+                            );
+                            console.log(diaObjeto.dia)
+                        } else {
+                            // Se já existem alimentos, usa atualizarDia normalmente
+                            if (!itemAlterado._id) itemAlterado._id = String(itemAlterado.id);
+                            const objetoAlimento = {
+                                _id: itemAlterado._id,
+                                alimento: itemAlterado.alimento,
+                                peso: itemAlterado.peso ?? 0,
+                                calorias: itemAlterado.calorias ?? 0,
+                                proteinas: itemAlterado.proteinas ?? 0,
+                                carboidratos: itemAlterado.carboidratos ?? itemAlterado.carbos ?? 0,
+                                gorduras: itemAlterado.gorduras ?? 0
+                            };
+                            diaObjeto.atualizarDia("alimento", localIndex, objetoAlimento);
+                            console.log(diaObjeto.dia)
+                        }
                     }
                 }
             } catch (e) {
+                console.log(diaObjeto.dia)
                 console.warn("Falha ao sincronizar alimento em diaObjeto", e);
             }
             return updated;

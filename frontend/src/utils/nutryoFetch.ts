@@ -30,13 +30,14 @@ class NutryoFetch {
 
         diaObjeto.diasSalvos = data;
 
+        console.log(data)
         return data;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Método responsável por retornar os objetos de refeição do dia passado como parâmetro
     static retornaRefeicoesDoDia(data: string) {
-        console.log("Buscando refeições do dia: " + data);
+        // console.log("Buscando refeições do dia: " + data);
         // Busca o dia nos objetos locais
         for (let dia = 0; dia <= diaObjeto.diasSalvos.length - 1; dia++) {
 
