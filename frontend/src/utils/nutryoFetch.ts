@@ -1,95 +1,42 @@
-import { backend } from "../utils/connection.js"
-import diaObjeto from "./diaObjeto.js";
+import { backend } from "./connection";
+import diaObjeto from "./diaObjeto";
 
 class NutryoFetch {
-    static nutryo:NutryoFetch;
-    static objects: any[]
-    static metas: any
-    static status = 0
-    static metaStatus = 0;
-    static username: string;
-    private user: string;
+    static objects: any[] = [];
+    static metas: any;
+    static username: string = '';
+    static email: string = '';
 
-    constructor(user: string, username?: string) {
-        // Define status como 0, esse atributo auxilia outros lugares do sistema a só executar trechos de lógica quando o status for 1 (Requisição completa)
-        NutryoFetch.status = 0
-        NutryoFetch.metaStatus = 0;
 
-        // Se houver nome do usuário passado como parâmetro, define atributo usuário como o nome passado
-        if (username) {
-            NutryoFetch.username = username
-            console.log(username)
-        }
+    static async iniciar(email: string, nome?: string) {
+        NutryoFetch.username = nome ? nome : '';
+        NutryoFetch.email = email;
 
-        // Define o user como o email passado como atributo em user
-        this.user = user
-        // Também define o email do objeto local
-        diaObjeto.usuario = this.user
-
-        // Faz busca dos dias com anotação do usuário a partir do email
-        this.fetchDias(this.user)
-
-        // Faz busca nas metas do usuário
-        this.fetchMetas(this.user)
-
-        NutryoFetch.nutryo = this
+        return await NutryoFetch.fetchDias(email);
+        // NutryoFetch.fetchMetas(email);
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------------------------------------
-    // Método responsável por fazer busca no banco de dados pelas anotações do usuário logado
-    async fetchDias(user: string) {
-        try {
-            // Inicia requisição
-            const resposta: any = await fetch(`${backend}/refeicoes/${user}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
+    static async fetchDias(email: string) {
+        const resposta = await fetch(`${backend}/refeicoes/${email}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
 
-            })
-            const data = await resposta.json()
+        const data = await resposta.json();
 
-            // Salva resultado da requisição aqui (Essa parte é imutavel, serve de comparação)
-            NutryoFetch.objects = data
+        NutryoFetch.objects = data;
 
-            // Salva resultado da pesquisa nos objetos locais (Parte lógica, é aqui que as alterações são feitas antes de serem comparadas e enviadas para o banco de dados)
-            diaObjeto.diasSalvos = data
+        diaObjeto.diasSalvos = data;
 
-            // Logs
-            // console.log("#NutryoFetch - Dados coletados do usuário atual:")
-            // console.log(data)
-            // console.log("-----------------------------------------------------------")
-            return data;
-        } catch (error) {
-
-        } finally {
-            // Ao fim da requisição, marca status como 1 (Requisição completa)
-            NutryoFetch.status = 1
-        }
-    }
-
-    async fetchMetas(user: string){
-        try{
-            const resposta: any = await fetch(`${backend}/metas/${user}`,{
-                method: "GET",
-                headers:{
-                    "Content-Type": "application/json"
-                }
-            });
-
-            const data = await resposta.json();
-
-            NutryoFetch.metas = data[0];
-        }catch(err){
-
-        }finally{
-            NutryoFetch.metaStatus = 1;
-        }
+        return data;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Método responsável por retornar os objetos de refeição do dia passado como parâmetro
     static retornaRefeicoesDoDia(data: string) {
+        console.log("Buscando refeições do dia: " + data);
         // Busca o dia nos objetos locais
         for (let dia = 0; dia <= diaObjeto.diasSalvos.length - 1; dia++) {
 
@@ -105,7 +52,7 @@ class NutryoFetch {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
     // Método responsável por retornar uma refeição especifica a partir da data e ID da refeição (passadas como parâmetro)
     static retornaRefeicao(data: string, refeicao: string) {
-        
+
         // Primeiro pega todas as refeições do dia passado como parametro
         var refeicoes = NutryoFetch.retornaRefeicoesDoDia(data)
 
@@ -145,4 +92,4 @@ class NutryoFetch {
     }
 }
 
-export default NutryoFetch
+export default NutryoFetch;

@@ -1,18 +1,7 @@
 {
-    "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "dist",
-        "target": "ES6",
-        "noEmitOnError": true,
-        "noImplicitAny": true,
-        "removeComments": true,
-        "strictNullChecks": true,
-        "allowSyntheticDefaultImports": true,
-        "module":"NodeNext",
-        "moduleResolution": "nodenext",
-        
-    },
-    "include": [
-        "src/**/*"
-    ]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

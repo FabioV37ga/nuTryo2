@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Viewport, impede zoom -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+
+    <!-- Mobile: Cor da aba inferior de navegação -->
+    <meta name="theme-color" content="#112f38">
+
+    <!-- iOS / Safari (funciona quando o site é adicionado à tela inicial) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Título da pagina -->
+    <title>NuTryo 2.0</title>
+
+    <!-- Icone da aplicação -->
+    <link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Estilização desktop -->
+    <link rel="stylesheet" type="text/css" href="styles/document.css">
+    <link rel="stylesheet" type="text/css" href="styles/sideBar.css">
+    <link rel="stylesheet" type="text/css" href="styles/calendario.css">
+    <link rel="stylesheet" type="text/css" href="styles/refeicao.css">
+    <link rel="stylesheet" type="text/css" href="styles/refeicoes.css">
+    <link rel="stylesheet" type="text/css" href="styles/alimentos.css">
+    <link rel="stylesheet" type="text/css" href="styles/estatisticas.css">
+    <link rel="stylesheet" type="text/css" href="styles/janela.css">
+    <link rel="stylesheet" type="text/css" href="styles/auth.css">
+    <link rel="stylesheet" type="text/css" href="styles/reset.css">
+
+    <!-- Estilização mobile -->
+    <link rel="stylesheet" type="text/css" href="styles/auth-mobile.css">
+    <link rel="stylesheet" type="text/css" href="styles/sideBar-mobile.css">
+    <link rel="stylesheet" type="text/css" href="styles/alimentos-mobile.css">
+    <link rel="stylesheet" type="text/css" href="styles/refeicoes-mobile.css">
+    <link rel="stylesheet" type="text/css" href="styles/janela-mobile.css">
+    <link rel="stylesheet" type="text/css" href="styles/estatisticas-mobile.css">
+    <link rel="stylesheet" type="text/css" href="styles/document-mobile.css">
+</head>
+
+<body>
+    <!-- Sessão de autenticação -->
+    <section class="overlay-auth">
+
+        <!-- Overlay: Tela de carregamento -->
+        <div class="auth-loading" style="display:none">
+            <i class="fa fa-spinner" aria-hidden="true"></i>
+        </div>
+
+        <!-- Tela de autenticação -->
+        <div class="auth-janela">
+
+            <!-- Registro -->
+            <div class="auth-registro" style="display:none">
+
+                <!-- Header do registro -->
+                <div class="auth-janela-head">
+                    <img src="images/nutryo-logo.png" alt="" srcset="">
+                    <img src="images/nutryo-text.png" alt="" srcset="">
+                </div>
+
+                <!-- Titulo de registro -->
+                <div class="auth-janela-titulo">
+                    Registre sua conta
+                </div>
+
+                <!-- Sessão de inputs (email, usuario e senha) -->
+                <div class="auth-inputs-register">
+                    <form>
+                        <input type="email" class="register-email" placeholder="Email" autocomplete="email">
+                        <input type="text" class="register-usuario" placeholder="Novo usuário" autocomplete="name">
+                        <input type="password" class="register-senha" placeholder="Nova senha"
+                            autocomplete="new-password">
+                    </form>
+                </div>
+
+                <!-- Placeholder de mensagens de aviso (erro/sucesso) -->
+                <span class="registro-erro auth-erro" style="display: none"></span>
+
+                <!-- Botão de enviar registro -->
+                <div class="auth-enviar-container">
+                    <a class="auth-enviar submitRegistro">Registrar</a>
+                </div>
+
+                <!-- Botão de trocar de REGISTRO para LOGIN -->
+                <div class="auth-switch switchToLogin">
+                    Já tem uma conta? <br> <u>Fazer login</u>
+                </div>
+            </div>
+
+            <!-- Login -->
+            <div class="auth-login">
+
+                <!-- Header do login -->
+                <div class="auth-janela-head">
+                    <img src="images/nutryo-logo.png" alt="" srcset="">
+                    <img src="images/nutryo-text.png" alt="" srcset="">
+                </div>
+
+                <!-- Título do login -->
+                <div class="auth-janela-titulo">
+                    Entre na sua conta
+                </div>
+
+                <!-- Sessão de inputs (Email, senha) -->
+                <div class="auth-inputs-login">
+                    <form>
+                        <input type="email" class="login-usuario" placeholder="Email" autocomplete="email">
+                        <input type="password" class="login-senha" placeholder="Senha" autocomplete="current-password">
+                    </form>
+                </div>
+
+                <!-- Placeholder de mensagens de login (erro/sucesso) -->
+                <span class="login-erro auth-erro" style="display: none"></span>
+
+                <!-- Botão de enviar login -->
+                <div class="auth-enviar-container">
+                    <a class="auth-enviar submitLogin">Login</a>
+                </div>
+
+                <!-- Botão de trocar de LOGIN para REGISTRO -->
+                <div class="auth-switch switchToRegister">
+                    Não tem uma conta? <br> <u>Registre-se</u>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conteúdo principal do sistema -->
+    <main>
+        <!-- Aside (desktop) / Header (Mobile)) -->
+        <section class="sideBar">
+            <div class="logo" tabindex="0">
+                <img src="images/nutryo-logo.png" class="logo-img">
+                <img src="images/nutryo-text.png" class="logo-text">
+            </div>
+
+            <!-- Icone do usuário -->
+            <section class="user">
+                <a class="user-click">
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                </a>
+                <div class="user-label">PERFIL</div>
+            </section>
+
+            <!-- Janela de usuário -->
+            <div class="user-janela">
+
+                <!-- Icone de fechar janela de usuário -->
+                <a class="user-janela-close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+
+                <!-- Campo de email do usuário -->
+                <div class="user-janela-email">
+                    <div class="user-janela-email-label">Email:</div>
+                    <span>
+
+                    </span>
+                </div>
+
+                <!-- Campo de nome do usuário -->
+                <div class="user-janela-nome">
+                    <div class="user-janela-nome-label">Usuário:</div>
+                    <span>
+
+                    </span>
+                </div>
+
+                <!-- Botão para fazer logout -->
+                <a class="user-janela-logout">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <!-- Icone de estatísticas -->
+            <section class="estatisticas-ico">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                <div class="estatisticas-ico-label">
+                    Estatísticas
+                </div>
+            </section>
+
+            <!-- Icone de github -->
+            <section class="git">
+                <a href="https://github.com/FabioV37ga/NuTryo2" class="git-click" target="__blank">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+            </section>
+        </section>
+
+        <!-- Sessão calendário -->
+        <section class="calendario">
+
+            <!-- Título do calendário -->
+            <div class="calendario-titulo">Calendário</div>
+
+            <!-- Label com mes/ano -->
+            <div class="calendario-mes-ano">
+                <div class="mes-ano-back">&lt;</div>
+                <div class="mes-ano-label">Setembro / 2025</div>
+                <div class="mes-ano-forward">></div>
+            </div>
+
+            <!-- Corpo do calendário (dias) -->
+            <div class="calendario-corpo">
+                <div class="calendario-corpo-semana">
+                    <div class="dia-semana">dom</div>
+                    <div class="dia-semana">seg</div>
+                    <div class="dia-semana">ter</div>
+                    <div class="dia-semana">qua</div>
+                    <div class="dia-semana">qui</div>
+                    <div class="dia-semana">sex</div>
+                    <div class="dia-semana">sab</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Janela de estatísticas -->
+        <section class="janela-estatisticas">
+
+            <!-- Título da janela de estatísticas -->
+            <div class="janela-estatisticas-titulo">
+                Estatísticas
+            </div>
+
+            <div class="janela-estatisticas-close">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+
+            <!-- Seletor de período -->
+            <nav class="janela-estatisticas-nav">
+
+                <!-- Periodo: Diário -->
+                <div class="estatisticas-hoje periodo-selecionado">
+                    <span>
+                        Hoje
+                    </span>
+                </div>
+
+                <!-- Período: Semanal -->
+                <div class="estatisticas-semana">
+                    <span>
+                        Essa semana
+                    </span>
+                </div>
+
+                <!-- Período: Total -->
+                <div class="estatisticas-totais">
+                    <span>
+                        Último mês
+                    </span>
+                </div>
+            </nav>
+
+            <!-- Informações estatísticas -->
+            <div class="sessao-estatisticas-informacoes">
+
+                <!-- Sessão de calorias -->
+                <div class="estatisticas-informacoes informacoes-calorias">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/kcal.png" alt="" srcset="">
+                        Calorias
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-kcal">
+                            1.850 kcal
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <div class="informacoes-meta info-meta-kcal">
+                            <input type="number" disabled class="meta-kcal-input">
+                            <span>
+                                kcal
+                            </span>
+                        </div>
+                        <div class="meta-edit">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress kcal-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sessão de proteínas -->
+                <div class="estatisticas-informacoes informacoes-proteinas">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/prot.png" alt="" srcset="">
+                        Proteínas
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-prots">
+
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <div class="informacoes-meta info-meta-prots">
+                            <input type="number" disabled class="meta-prots-input">
+                            <span>
+                                g
+                            </span>
+                        </div>
+                        <div class="meta-edit">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress prot-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sessão de carboidratos -->
+                <div class="estatisticas-informacoes informacoes-carboidratos">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/carb.png" alt="" srcset="">
+                        Carboidratos
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-carbs">
+                            210 g
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <div class="informacoes-meta info-meta-carbs">
+                            <input type="number" disabled class="meta-carbs-input">
+                            <span>
+                                g
+                            </span>
+                        </div>
+                        <div class="meta-edit">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress carbs-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sessão de gorduras -->
+                <div class="estatisticas-informacoes informacoes-gorduras">
+                    <!-- Título da sessão -->
+                    <h1>
+                        <img src="images/gord.png" alt="" srcset="">
+                        Gorduras
+                    </h1>
+
+                    <!-- Valores da sessão -->
+                    <div class="informacoes-valores">
+
+                        <!-- Valor consumido pelo usuário -->
+                        <span class="informacoes-consumo info-consumo-gords">
+                            65 g
+                        </span>
+
+                        <!-- Divisor em barra -->
+                        <span class="informacoes-consumo-divisor">/</span>
+
+                        <!-- Valor de meta do usuário -->
+                        <div class="informacoes-meta info-meta-gords">
+                            <input type="number" disabled class="meta-gords-input">
+                            <span>
+                                g
+                            </span>
+                        </div>
+                        <div class="meta-edit">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="progressBar">
+                            <div class="progressBar-progress gords-progress"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Janela a direita (desktop) / Janela aberta ao clicar em um dia (Mobile) -->
+        <section class="janela">
+
+            <!-- Abas de nevegação -->
+            <nav class="janela-abas">
+
+                <!-- Aba 0 = display do dia selecionado -->
+                <a class="aba" id="data-display">02/09/25</a>
+
+                <!-- Aba 1 = Aba das refeições do dia -->
+                <a class="aba abaRefeicoes abaSelecionavel abaSelecionada" value="0">Refeições</a>
+
+                <!-- Abas criadas dinamicamente -->
+            </nav>
+
+            <!-- Conteúdo da janela de refeições (refeições do dia selecionado) -->
+            <section class="refeicoes-conteudo">
+                <!-- Lista de refeições do dia selecionado -->
+                <div class="lista-de-refeicoes">
+                    <!-- Botão de adicionar refeição -->
+                    <div class="refeicao model-refeicao" value="0">
+                        <a class="botao-adicionar-refeicao">+</a>
+                        <span class="refeicao-list-label-add">Adicionar refeição</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conteúdo de uma refeição -->
+            <section class="refeicao-conteudo">
+                <!-- Seletor de tipo da refeição -->
+                <div class="refeicao-tipo">
+                    <div class="refeicao-tipo-label">
+                        tipo:
+                    </div>
+                    <div class="refeicao-tipo-tipoSelecionado">
+                        <span class="refeicao-tipo-tipoSelecionado-label">Selecione o tipo</span>
+                        <span class="refeicao-tipo-list-expandIcon">
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <!-- Itens da lista de tipos de uma refeição -->
+                    <ul class="refeicao-tipo-list listaTipoFechada">
+                        <li>Café da Manhã</li>
+                        <li>Almoço</li>
+                        <li>Lanche da Tarde</li>
+                        <li>Janta</li>
+                        <li>Ceia</li>
+                        <li>Outro</li>
+                    </ul>
+                </div>
+
+                <!-- Sessão de alimentos -->
+                <section class="alimentos" style="display: none">
+
+                    <!-- Título do alimento -->
+                    <div class="alimentos-titulo">Alimentos</div>
+
+                    <!-- Divisor -->
+                    <div class="alimentos-divisor"></div>
+
+                    <!-- Sessão de alimentos adicionados -->
+                    <div class="alimentos-adicionados">
+
+                        <!-- Botão de adicionar alimentos a uma refeição -->
+                        <div class="alimento-item model-alimento">
+                            <a class="botao-adicionar-alimento">+</a>
+                            <span class="alimento-label">Adicionar alimento</span>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

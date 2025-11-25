@@ -1,0 +1,157 @@
+.overlay-auth {
+    width: 100%;
+    height: 100%;
+    background: var(--pinkWhite);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 3;
+}
+
+.auth-loading{
+    animation: spin 1s linear infinite;
+    position:absolute;
+    top: 560px;
+    font-size: 70px;
+    z-index: 4;
+    color: white
+}
+
+.blur{
+    filter: blur(7px) !important
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.auth-janela {
+    box-shadow: 0px 0px 92px 17px rgba(0, 0, 0, 0.67);
+    width: 500px;
+    height: 700px;
+    background: var(--lightBlue);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-janela * {
+    font-family: 'Roboto Condensed', sans-serif
+}
+
+.auth-registro,
+.auth-login {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    ;
+}
+
+.auth-janela-head {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--darkBlue);
+    height: 125px;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    color: white;
+}
+
+.auth-janela-head img {
+    width: 80px
+}
+
+.auth-janela-head img:nth-child(2) {
+    margin-top: -10px
+}
+
+.auth-janela-titulo {
+    position: absolute;
+    top: 160px;
+    color: white;
+    font-size: 20px;
+}
+
+.auth-inputs-register,
+.auth-inputs-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 300px;
+    width: 300px;
+    margin: 5px 0 -10px 0
+}
+
+.auth-inputs-login {
+    height: 150px !important
+}
+
+.auth-inputs-register input,
+.auth-inputs-login input {
+    height: 50px;
+    width: 100%;
+    border: 0;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+.auth-enviar-container {
+    width: 100%;
+    text-align: center;
+}
+
+.auth-enviar {
+    cursor: pointer;
+    background: white;
+    color: var(--lightBlue);
+    padding: 20px 65px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: box-shadow 0.3s ease;
+}
+
+.auth-enviar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65);
+}
+
+.auth-switch {
+    margin-bottom: -15px;
+    cursor: pointer;
+    text-align: center;
+    color: white
+}
+
+.auth-switch span {
+    text-decoration: underline;
+}
+
+form {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.login-erro,
+.registro-erro {
+    position: absolute;
+    color: white;
+}
+
+.login-erro {
+    bottom: 292px;
+}
+
+.registro-erro {
+    bottom: 196px;
+}

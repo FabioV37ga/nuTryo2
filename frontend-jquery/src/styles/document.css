@@ -1,0 +1,39 @@
+:root {
+    --lightBlue: #3a98b9;
+    --lighterBlue: #cae8f3;
+    --darkBlue: #2a728c;
+    --pinkWhite: #fff1dc;
+    --highlightPinkWhite: #ebd8bb;
+    --darkPinkWhite: #d3a57c14;
+    --borderPinkWhite: rgb(247 226 194);
+    --backgroundBlue: #112f38;
+    --highlightTextBlue: rgb(23 94 126);
+    --windowBlue: rgb(22 64 81)
+}
+
+body {
+    height: 100vh;
+}
+
+html,
+body {
+    background: var(--backgroundBlue);
+    overflow: hidden;
+}
+
+main {
+    background: var(--backgroundBlue);
+    position: absolute;
+    top: 0;
+    display: flex;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    scroll-behavior: contain;
+    overflow: hidden;
+}
+
+*,
+*>* {
+    font-family: 'Roboto Condensed', sans-serif;
+}

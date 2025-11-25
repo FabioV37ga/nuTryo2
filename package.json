@@ -5,7 +5,7 @@
   "main": "backend/server.js",
   "type": "module",
   "scripts": {
-    "start:front": "npm run copyToDist:frontend && npm run dev:front && npm-run-all --parallel watch:sync server:front",
+    "start:front": "npm rum --prefix frontend dev",
     "start:back": "npm run dev:back && npm run server:back",
     "server:front": "lite-server --baseDir=frontend/dist",
     "server:back": "nodemon backend/dist/server.js",
@@ -36,6 +36,7 @@
     "mongodb": "^6.19.0",
     "mongoose": "^8.18.0",
     "nodemon": "^3.1.10",
+    "pdf-lib": "^1.17.1",
     "typescript": "^5.9.2",
     "xlsx": "^0.18.5"
   },

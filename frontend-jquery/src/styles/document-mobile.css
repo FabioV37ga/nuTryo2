@@ -1,0 +1,75 @@
+@media (max-width: 1650px) and (min-width: 1470px) {
+    main {
+        zoom: 90%
+    }
+}
+
+@media (max-width: 1470px) and (min-width: 1230px) {
+    main {
+        zoom: 75%
+    }
+}
+
+@media (max-width: 1230px) and (min-width: 985px) {
+    main {
+        zoom: 60%
+    }
+}
+
+@media (max-width: 985px) {
+    body {
+        overflow: hidden;
+    }
+
+    main {
+        display: flex;
+        justify-content: center;
+    }
+
+    .sideBar {
+        position: absolute;
+        left: 0
+    }
+
+    .sideBar {
+        align-items: center;
+        height: 60px;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .sideBar .logo {
+        align-items: center;
+        display: flex;
+        height: 60px;
+        width: 161px;
+    }
+
+    .sideBar .logo .logo-img {
+        width: 55px;
+    }
+
+    .sideBar .logo .logo-text {
+        width: 70px;
+        margin-top: 0
+    }
+
+    .sideBar .user {
+        margin: 0;
+        right: 20px;
+        position: absolute;
+        width: fit-content;
+        height: fit-content;
+    }
+
+    .user .user-label {
+        display: none;
+    }
+
+    .sideBar .git {
+        top: 705px;
+        margin-left: calc(50% - 17px);
+        position: absolute;
+        width: fit-content;
+    }
+}

@@ -1,7 +1,8 @@
-import CalendarioController from "../controllers/calendario/calendarioController.js";
+import { json } from "stream/consumers";
+import CalendarioController from "../controllers/calendarioController.js";
 import { backend } from "./connection.js";
 import NutryoFetch from "./nutryoFetch.js";
-// import CalendarioView from "../views/calendarioView.js";
+import CalendarioView from "../views/calendarioView.js";
 
 class diaObjeto {
     static diasSalvos: any[] = [];
@@ -26,13 +27,12 @@ class diaObjeto {
                 body: JSON.stringify(diaObjeto.dia)
             })
             // Faz nova requisição do backend para atualizar dados locais depois de ter postado o dia novo
-            // await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
-            await NutryoFetch.fetchDias(diaObjeto.usuario)
+            await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
 
             console.log("#diaObjeto - post bem sucedido")
             console.log("#diaObjeto - Iniciando nova requisição de get com novos itens...")
 
-            // CalendarioView.adicionarEfeitosVisuais()
+            CalendarioView.adicionarEfeitosVisuais()
         } catch (error) {
             console.log("#diaObjeto - Erro no post")
         }
@@ -44,7 +44,7 @@ class diaObjeto {
 
         try {
             // Inicia requisição de edição de item
-            const requisicao = await fetch(`${backend}/refeicoes/${NutryoFetch.email}/${diaObjeto.dia.id}`, {
+            const requisicao = await fetch(`${backend}/refeicoes/${diaObjeto.usuario}/${diaObjeto.dia.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -56,9 +56,8 @@ class diaObjeto {
             
         }
         // Ao fim da requisição de edição, faz nova requisição para buscar a lista de itens atualizada no banco
-        // await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
-        await NutryoFetch.fetchDias(diaObjeto.usuario)
-        // CalendarioView.adicionarEfeitosVisuais()
+        await NutryoFetch.nutryo.fetchDias(diaObjeto.usuario)
+        CalendarioView.adicionarEfeitosVisuais()
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -113,21 +112,21 @@ class diaObjeto {
         // Inicializa objeto
         var objeto = {
             id: data,
-            _usuario: usuario,
+            _usuario: diaObjeto.usuario,
             refeicoes: corpo
         }
         // Depois de gerar, pendura no atributo dia da classe
         diaObjeto.dia = objeto
 
         // Logs
-        console.log("#diaObjeto - Objeto dia gerado → " + CalendarioController.dataSelecionada)
+        // console.log("#diaObjeto - Objeto dia gerado → " + CalendarioController.dataSelecionada)
         // if (NutryoFetch.retornaRefeicoesDoDia(CalendarioController.dataSelecionada)) {
         //     console.log("#diaObjeto - Objeto criado tem referência no banco")
         // } else {
         //     console.log("#diaObjeto - Objeto criado não tem referência no banco, iniciando com corpo vazio.")
         // }
 
-        console.log(diaObjeto.dia)
+        // console.log(diaObjeto.dia)
         // console.log("-----------------------------------------------------------")
     }
 
@@ -251,8 +250,8 @@ class diaObjeto {
 
 
         // Logs
-        console.log("#diaObjeto - refeição removida")
-        console.log(diaObjeto.dia)
+        // console.log("#diaObjeto - refeição removida")
+        // console.log(diaObjeto.dia)
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------
