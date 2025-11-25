@@ -244,6 +244,66 @@ Formato: 3 perguntas e respostas por arquivo, estilo professor avaliando React, 
 **Q3:** Vantagem de não misturar com estado React?  
 **A:** Reusabilidade em outros contextos (Node scripts, SSR) e menor dependência de ciclo de render.
 
+## controllers/estatisticas/estatisticasController.ts
+**Q1:** Quais responsabilidades centrais do controller de estatísticas?  
+**A:** Calcular macronutrientes por período (dia, semana, mês), buscar e atualizar metas do usuário, e auxiliar formatação de inputs dinâmicos.  
+
+**Q2:** Por que separar cálculo de largura de input em função específica?  
+**A:** Centraliza lógica de UI dinâmica, facilita ajustes (ex.: mudar fórmula de pixels) e permite reutilização em múltiplas fichas.  
+
+**Q3:** Como o controller processa dados de `diaObjeto` sem criar dependências circulares?  
+**A:** Importa `diaObjeto` como serviço compartilhado, lê `diasSalvos` e calcula agregações sem modificar estado, mantendo unidirecionalidade.
+
+## components/estatisticas/janelaEstatisticas.tsx
+**Q1:** Por que manter dois conjuntos de metas (base e exibidas)?  
+**A:** Metas base (diárias) vêm do backend e permanecem fixas; metas exibidas são multiplicadas por período (semana/mês) para cálculo de progresso correto.  
+
+**Q2:** Como evitar recálculos desnecessários ao trocar período?  
+**A:** Memorizar função `atualizarPeriodo` com `useCallback` e recalcular apenas quando `periodoSelecionado` ou metas base mudarem.  
+
+**Q3:** Qual estratégia para sincronizar metas editadas com backend?  
+**A:** Implementar debounce em `onMetaChange`, acumular mudanças e enviar PUT batch ao perder foco ou após timeout, exibindo feedback de salvamento.
+
+## components/estatisticas/fichas/FichaCalorias.tsx
+**Q1:** Qual responsabilidade única da ficha?  
+**A:** Exibir consumo vs meta de calorias com barra de progresso, input editável e cálculo visual de porcentagem.  
+
+**Q2:** Por que limitar porcentagem a 100% no cálculo da barra?  
+**A:** Evita overflow visual da barra; valores acima da meta não distorcem UI, mas podem ser sinalizados com classe CSS adicional.  
+
+**Q3:** Como melhorar acessibilidade do input de meta?  
+**A:** Adicionar `aria-label` descritivo, role apropriado e validação visual/auditiva de limites aceitáveis (ex.: mínimo 500 kcal).
+
+## components/estatisticas/fichas/FichaProteinas.tsx
+**Q1:** Diferença estrutural entre ficha de proteínas e calorias?  
+**A:** Praticamente nenhuma; variam apenas label, ícone, classe CSS e unidade (g vs kcal), sugerindo oportunidade de componentização genérica.  
+
+**Q2:** Como criar componente genérico reutilizável para todas as fichas?  
+**A:** Extrair `FichaMacro` que recebe props (tipo, consumo, meta, unidade, ícone) e renderiza estrutura uniforme, reduzindo duplicação.  
+
+**Q3:** Qual validação aplicar ao editar meta de proteínas?  
+**A:** Limites fisiológicos razoáveis (ex.: 50-300g), prevenção de negativos e feedback imediato ao sair do range aceitável.
+
+## components/estatisticas/fichas/FichaCarboidratos.tsx
+**Q1:** Por que cada ficha gerencia largura de input dinamicamente?  
+**A:** Adapta UI ao tamanho do valor digitado, melhorando estética e evitando corte de texto ou desperdício de espaço.  
+
+**Q2:** Risco de performance ao recalcular largura a cada onChange?  
+**A:** Mínimo, pois cálculo é trivial (string.length * constante); mas poderia memorizar com `useMemo` se input fosse parte de lista grande.  
+
+**Q3:** Como unificar estilização das barras de progresso?  
+**A:** Criar classe base `.progressBar-progress` e estender com modificadores (`.kcal-progress`, `.prots-progress`) via CSS ou variáveis CSS customizadas.
+
+## components/estatisticas/fichas/FichaGorduras.tsx
+**Q1:** Qual padrão arquitetural aplicado nas fichas de macros?  
+**A:** Componentes controlados (controlled components) recebendo props de estado e callbacks de mudança, delegando controle ao parent.  
+
+**Q2:** Como adicionar funcionalidade de reset de metas a valores padrão?  
+**A:** Botão na janela principal que chama `setMetaXxxBase(valorPadrao)` para todas as metas e dispara recálculo de período.  
+
+**Q3:** Benefício de separar fichas em arquivos individuais?  
+**A:** Code splitting automático (com lazy load), modularidade, facilita testes isolados e permite evoluir cada ficha independentemente (ex.: gráficos).
+
 ---
 
 Fim do questionário.

@@ -130,17 +130,19 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
         // Usa 100g como peso de referência (valores da base são para 100g)
         const pesoParaCalculo = 100;
         
-        const baseCal = alimento.calorias ?? 0;
-        const baseProt = alimento.proteinas ?? 0;
-        const baseCarb = carbos;
-        const baseGord = gorduras;
+        // Converte strings para números com parseFloat para garantir valores corretos
+        const baseCal = parseFloat(String(alimento.calorias ?? 0));
+        const baseProt = parseFloat(String(alimento.proteinas ?? 0));
+        const baseCarb = parseFloat(String(carbos));
+        const baseGord = parseFloat(String(gorduras));
+
+        console.log('Valores base da API:', { baseCal, baseProt, baseCarb, baseGord });
 
         // Os valores do banco já são para 100g, então com peso 100 é direto
-        const referencia = 100;
-        const c = Math.round((pesoParaCalculo * (baseCal || 0)) / referencia);
-        const p = Math.round((pesoParaCalculo * (baseProt || 0)) / referencia);
-        const cb = Math.round((pesoParaCalculo * (baseCarb || 0)) / referencia);
-        const g = Math.round((pesoParaCalculo * (baseGord || 0)) / referencia);
+        const c = Math.round(baseCal || 0);
+        const p = Math.round(baseProt || 0);
+        const cb = Math.round(baseCarb || 0);
+        const g = Math.round(baseGord || 0);
 
         setMacrosCalculados({ calorias: c, proteinas: p, carbos: cb, gorduras: g });
         
@@ -160,9 +162,8 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
         // Fecha a lista de resultados
         setResultadoBusca([]);
         
-        console.log('Alimento selecionado:', alimento);
-        console.log('Peso resetado para: 100g');
-        console.log('Macros calculados:', { calorias: c, proteinas: p, carbos: cb, gorduras: g });
+        console.log('Alimento selecionado:', alimento.nome);
+        console.log('Macros calculados para 100g:', { calorias: c, proteinas: p, carbos: cb, gorduras: g });
     }
 
     /**
@@ -182,10 +183,10 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
     function calculaMacrosAPartirDoElemento(element: HTMLElement | null, pesoConsumido: number) {
         // se há um alimento selecionado recentemente, usa seus valores (mais confiável)
         if (alimentoSelecionado) {
-            const baseCal = alimentoSelecionado.calorias ?? 0;
-            const baseProt = alimentoSelecionado.proteinas ?? 0;
-            const baseCarb = alimentoSelecionado.carboidrato ?? alimentoSelecionado.carbos ?? 0;
-            const baseGord = alimentoSelecionado.lipidios ?? alimentoSelecionado.gorduras ?? 0;
+            const baseCal = parseFloat(String(alimentoSelecionado.calorias ?? 0));
+            const baseProt = parseFloat(String(alimentoSelecionado.proteinas ?? 0));
+            const baseCarb = parseFloat(String(alimentoSelecionado.carboidrato ?? alimentoSelecionado.carbos ?? 0));
+            const baseGord = parseFloat(String(alimentoSelecionado.lipidios ?? alimentoSelecionado.gorduras ?? 0));
 
             const referencia = 100; // Valores base são para 100g
             const c = Math.round((pesoConsumido * (baseCal || 0)) / referencia);
@@ -201,12 +202,12 @@ function Alimento({ id, refeicaoId, nome, peso, calorias, proteinas, carbos, gor
         const ds = selecao?.dataset;
 
         // Busca valores base dos atributos data-* ou props
-        const baseCal = ds && ds.calorias ? Number(ds.calorias) : Number(calorias ?? 0);
-        const baseProt = ds && ds.proteinas ? Number(ds.proteinas) : Number(proteinas ?? 0);
+        const baseCal = ds && ds.calorias ? parseFloat(ds.calorias) : parseFloat(String(calorias ?? 0));
+        const baseProt = ds && ds.proteinas ? parseFloat(ds.proteinas) : parseFloat(String(proteinas ?? 0));
         // Considera variações de nome (carboidrato / carbos / carbo)
-        const baseCarb = ds && (ds.carbo || ds.carboidrato) ? Number(ds.carbo ?? ds.carboidrato) : Number(carbos ?? 0);
+        const baseCarb = ds && (ds.carbo || ds.carboidrato) ? parseFloat(ds.carbo ?? ds.carboidrato ?? '0') : parseFloat(String(carbos ?? 0));
         // Considera variações de nome (lipidios / gorduras)
-        const baseGord = ds && (ds.gorduras || ds.lipidios) ? Number(ds.gorduras ?? ds.lipidios) : Number(gorduras ?? 0);
+        const baseGord = ds && (ds.gorduras || ds.lipidios) ? parseFloat(ds.gorduras ?? ds.lipidios ?? '0') : parseFloat(String(gorduras ?? 0));
 
         const referencia = 100; // Valores base são para 100g
         const c = Math.round((pesoConsumido * (baseCal || 0)) / referencia);

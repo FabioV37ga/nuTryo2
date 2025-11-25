@@ -162,6 +162,20 @@ Este documento inclui:
 - ⚙️ Controladores e utilitários
 - 📊 Diagramas de arquitetura
 
+### Apresentação do Projeto
+
+Pitch de vendas e apresentação executiva do NuTryo para demonstrações acadêmicas e profissionais:
+
+**[📊 Pitch de Apresentação (PDF)](./docs/PITCH_NUTRYO.pdf)**
+
+Este documento inclui:
+- 🎯 Apresentação do produto e proposta de valor
+- 👥 Público-alvo e personas
+- 🚀 Vantagens competitivas (usabilidade, responsividade)
+- 🏗️ Arquitetura técnica e roadmap
+- 📈 Métricas de sucesso e KPIs
+- 💡 Diferenciais e próximos passos
+
 ## 🗺️ Roadmap
 
 ### Concluído ✅
