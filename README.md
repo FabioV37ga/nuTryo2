@@ -1,46 +1,184 @@
-# Pré requisitos
-- 1. Node.js
-- 2. Database no `cloud.mongodb.com` com collections `refeicoes`, `usuarios` e `metas`
+<div align="center">
 
-# Instalando:
-- 1. Clone o repositorio com `git clone https://github.com/FabioV37ga/nuTryo2`
-- 2. Instale dependências com `npm install`
-- 3. Defina string de conexão `DB_CONNECTION_STRING` em `./.env` para o endereço do mongoDB
-- 4. Rode o back-end com `npm run start:back`
-- 5. Rode o front-end com `npm run start:front`
+# 🥗 NuTryo
 
-# Funcionalidades (até agora):
-- Lógica de criação dinâmica de calendário
-- Criação dinamica de elementos referentes a refeições
-- Criação dinamica de elementos referentes a alimentos
-- Sistema de registro
-- Sistema de login/logout
-- Tabela nutricional de +600 alimentos
-- Sistema de pesquisa de alimentos na tabela
-- Calculo automático de macronutrientes e valor nutricional
-- Envio de refeições e alimentos do usuário
-- Recebimento de refeições e alimentos do usuário
-- Versão mobile do sistema
+**Aplicação web para controle nutricional e acompanhamento de refeições diárias**
 
-# Tecnologias usadas:
-- TypeScript
-- React
-- Node.js
-- mongoDB
-- Leitura de XLSX
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
-# Ambiente de desenvolvimento:
-- Servidor que detecta e atualiza mudanças
-- Sistema para que mudanças nos arquivos .html e .css em dist/ atualizem arquivos em src/
+[Recursos](#-recursos) •
+[Tecnologias](#-tecnologias) •
+[Instalação](#-instalação) •
+[Desenvolvimento](#-desenvolvimento) •
+[Roadmap](#-roadmap)
 
-# Todo:
-- 1. ~~Finalizar telas~~ ✅
-- 2. ~~Iniciar lógica do banco de dados (MongoDB)~~ ✅
-- 3. ~~Sistema de login e registro~~ ✅
-- 4. ~~Adicionar tabela de alimentos~~ ✅
-- 5. ~~Lógica para pesquisa de itens na tabela de alimentos~~ ✅
-- 6. ~~Criar elementos referentes a itens existêntes no banco~~ ✅
-- 7. ~~Desenvolver sistema de objetos a serem enviados para o banco (referentes ao dia editado)~~ ✅
-- 8. ~~Completar fluxo de envio/recebimento de refeições e alimentos~~ ✅
-- 9. ~~Trabalhar na responsividade para mobile~~ ✅
-- 10. Desenvolver janela e lógica de estatísticas 
+</div>
+
+---
+
+## 📋 Sobre
+
+NuTryo é uma aplicação full-stack para gerenciamento nutricional que permite aos usuários registrar e acompanhar suas refeições diárias, calcular automaticamente macronutrientes e visualizar estatísticas de consumo. Com uma interface intuitiva e responsiva, oferece suporte completo tanto para desktop quanto mobile.
+
+## ✨ Recursos
+
+### Implementados
+
+- **📅 Calendário Dinâmico**: Navegação intuitiva entre dias, meses e anos
+- **🍽️ Gestão de Refeições**: Criação, edição e remoção de refeições personalizadas
+- **🥑 Gestão de Alimentos**: Sistema completo para adicionar alimentos às refeições
+- **🔐 Autenticação**: Sistema de registro, login e logout com sessão persistente
+- **🔍 Busca de Alimentos**: Pesquisa em tabela nutricional com +600 alimentos
+- **🧮 Cálculo Automático**: Macronutrientes e valores nutricionais calculados em tempo real
+- **💾 Sincronização**: Envio e recebimento automático de dados do servidor
+- **📱 Responsivo**: Interface totalmente adaptada para dispositivos móveis
+- **📊 Estatísticas**: Visualização de métricas nutricionais (em desenvolvimento)
+
+## 🛠 Tecnologias
+
+### Frontend
+- **React 18** - Framework UI
+- **TypeScript** - Tipagem estática
+- **Vite** - Build tool e dev server
+- **CSS Modules** - Estilização componentizada
+
+### Backend
+- **Node.js** - Runtime JavaScript
+- **Express** - Framework web
+- **MongoDB** - Banco de dados NoSQL
+- **Mongoose** - ODM para MongoDB
+- **XLSX** - Processamento de planilhas
+
+### Ferramentas de Desenvolvimento
+- **Hot Reload** - Atualização automática durante desenvolvimento
+- **ESLint** - Linting e formatação de código
+- **Git** - Controle de versão
+
+## 📦 Instalação
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (v16 ou superior)
+- Conta no [MongoDB Atlas](https://cloud.mongodb.com) com collections:
+  - `refeicoes`
+  - `usuarios`
+  - `metas`
+
+### Passos
+
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/FabioV37ga/nuTryo2
+   cd nuTryo2
+   ```
+
+2. **Instale as dependências**
+   ```bash
+   npm install
+   ```
+
+3. **Configure as variáveis de ambiente**
+   
+   Crie um arquivo `.env` na raiz do projeto:
+   ```env
+   DB_CONNECTION_STRING=mongodb+srv://seu-usuario:senha@cluster.mongodb.net/nutryo
+   PORT=3000
+   ```
+
+4. **Inicie o backend**
+   ```bash
+   npm run start:back
+   ```
+
+5. **Inicie o frontend** (em outro terminal)
+   ```bash
+   npm run start:front
+   ```
+
+6. **Acesse a aplicação**
+   
+   Abra seu navegador em `http://localhost:5173`
+
+## 🚀 Desenvolvimento
+
+### Scripts Disponíveis
+
+```bash
+# Iniciar backend em modo desenvolvimento
+npm run start:back
+
+# Iniciar frontend em modo desenvolvimento
+npm run start:front
+
+# Build de produção
+npm run build
+
+# Executar testes
+npm test
+```
+
+### Estrutura do Projeto
+
+```
+nuTryo2/
+├── backend/
+│   ├── src/
+│   │   ├── config/        # Configurações (DB, etc)
+│   │   ├── controllers/   # Lógica de negócio
+│   │   ├── models/        # Modelos Mongoose
+│   │   ├── routes/        # Rotas da API
+│   │   └── utils/         # Utilitários
+│   └── tsconfig.json
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # Componentes React
+│   │   ├── controllers/   # Lógica de negócio
+│   │   ├── styles/        # CSS
+│   │   └── utils/         # Utilitários
+│   ├── public/            # Recursos estáticos
+│   └── vite.config.ts
+│
+└── package.json
+```
+
+## 🗺️ Roadmap
+
+### Concluído ✅
+
+- [x] Finalizar telas e interface
+- [x] Implementar banco de dados (MongoDB)
+- [x] Sistema de login e registro
+- [x] Adicionar tabela de alimentos
+- [x] Lógica de pesquisa de alimentos
+- [x] Sistema de criação dinâmica de elementos
+- [x] Fluxo de envio/recebimento de dados
+- [x] Responsividade mobile
+
+### Em Desenvolvimento 🚧
+
+- [ ] Janela e lógica de estatísticas
+- [ ] Dashboard com gráficos de progresso
+- [ ] Sistema de metas personalizadas
+- [ ] Exportação de relatórios (PDF)
+
+### Planejado 📝
+
+- [ ] Notificações e lembretes
+- [ ] Modo offline com sincronização
+- [ ] Integração com wearables
+- [ ] API pública para desenvolvedores
+- [ ] Aplicativo mobile nativo
+
+---
+
+<div align="center">
+
+**Desenvolvido com ❤️ usando TypeScript e React**
+
+[⬆ Voltar ao topo](#-nutryo)
+
+</div> 
