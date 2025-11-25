@@ -61,6 +61,12 @@ function App() {
   // Controla exibição da janela de estatísticas (alternada com janela de refeições)
   const [mostrarEstatisticas, setMostrarEstatisticas] = useState<boolean>(false);
 
+  // Controla visibilidade da janela no mobile (exibida ao clicar em um dia)
+  const [janelaVisivelMobile, setJanelaVisivelMobile] = useState<boolean>(false);
+
+  // Controla se é a primeira seleção automática de dia (para evitar abrir janela no mobile ao iniciar)
+  const [primeiraSelecao, setPrimeiraSelecao] = useState<boolean>(true);
+
 
   // ================================================
   // RENDERIZAÇÃO
@@ -83,13 +89,28 @@ function App() {
           />
 
           {/* Calendário para seleção de datas */}
-          <Calendario setDataDisplay={setDataDisplay} />
+          <Calendario 
+            setDataDisplay={setDataDisplay} 
+            onDiaClick={() => {
+              if (!primeiraSelecao) {
+                setJanelaVisivelMobile(true);
+              }
+              setPrimeiraSelecao(false);
+            }}
+          />
           
           {/* Alternância entre janela de estatísticas e janela de refeições */}
           {mostrarEstatisticas ? (
-            <JanelaEstatisticas onClose={() => setMostrarEstatisticas(false)} />
+            <JanelaEstatisticas 
+              onClose={() => setMostrarEstatisticas(false)} 
+              visivelMobile={true}
+            />
           ) : (
-            <Janela dataDisplay={dataDisplay} />
+            <Janela 
+              dataDisplay={dataDisplay} 
+              visivelMobile={janelaVisivelMobile}
+              onCloseMobile={() => setJanelaVisivelMobile(false)}
+            />
           )}
         </main>
       )}

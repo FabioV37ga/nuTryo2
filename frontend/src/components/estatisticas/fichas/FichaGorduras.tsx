@@ -7,15 +7,33 @@
  * - Barra de progresso visual
  */
 
+import { useRef } from "react";
 import EstatisticasController from "../../../controllers/estatisticas/estatisticasController";
+import authController from "../../../controllers/auth/authController";
 
 interface FichaGordurasProps {
     consumo: number;
     meta: string;
     onMetaChange: (novoValor: string) => void;
+    editavel?: boolean;
 }
 
-function FichaGorduras({ consumo, meta, onMetaChange }: FichaGordurasProps) {
+function FichaGorduras({ consumo, meta, onMetaChange, editavel = true }: FichaGordurasProps) {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const handleEditClick = () => {
+        inputRef.current?.focus();
+    };
+
+    const handleBlur = async () => {
+        const email = authController.email;
+        if (email) {
+            await EstatisticasController.atualizarMetas(email, {
+                metaGorduras: Number(meta)
+            });
+        }
+    };
+
     // Calcula porcentagem do consumo em relação à meta
     const metaNum = Number(meta) || 1; // Evita divisão por zero
     const porcentagem = Math.min(Math.round((consumo / metaNum) * 100), 100); // Limita a 100%
@@ -42,10 +60,12 @@ function FichaGorduras({ consumo, meta, onMetaChange }: FichaGordurasProps) {
                 {/* Valor de meta do usuário (editável) */}
                 <div className="informacoes-meta info-meta-gords">
                     <input 
+                        ref={inputRef}
                         type="number" 
                         className="meta-gords-input" 
                         value={meta}
                         onChange={(e) => onMetaChange(e.target.value)}
+                        onBlur={handleBlur}
                         style={{ width: EstatisticasController.calcularLarguraInput(meta) }}
                     />
                     <span>
@@ -54,9 +74,11 @@ function FichaGorduras({ consumo, meta, onMetaChange }: FichaGordurasProps) {
                 </div>
                 
                 {/* Ícone de edição */}
-                <div className="meta-edit">
-                    <i className="fa fa-pencil" aria-hidden="true"></i>
-                </div>
+                {editavel && (
+                    <div className="meta-edit" onClick={handleEditClick} style={{ cursor: 'pointer' }}>
+                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                    </div>
+                )}
 
                 {/* Barra de progresso */}
                 <div className="progressBar">

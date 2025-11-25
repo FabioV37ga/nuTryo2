@@ -8,8 +8,8 @@
  */
 
 import { useState, useEffect } from "react";
-import "../../styles/estatisticas/estatisticas-mobile.css"
 import "../../styles/estatisticas/estatisticas.css"
+import "../../styles/estatisticas/estatisticas-mobile.css"
 
 // Componentes de fichas
 import FichaCalorias from "./fichas/FichaCalorias";
@@ -23,9 +23,10 @@ import authController from "../../controllers/auth/authController";
 
 interface JanelaEstatisticasProps {
     onClose?: () => void;
+    visivelMobile?: boolean;
 }
 
-function JanelaEstatisticas({ onClose }: JanelaEstatisticasProps){
+function JanelaEstatisticas({ onClose, visivelMobile }: JanelaEstatisticasProps){
     // ================================================
     // ESTADOS DE PERÍODO
     // ================================================
@@ -173,7 +174,7 @@ function JanelaEstatisticas({ onClose }: JanelaEstatisticasProps){
     }, [carregando]); // Recalcula quando termina de carregar
 
     return (
-        <section className="janela-estatisticas">
+        <section className={`janela-estatisticas ${visivelMobile ? 'janela-estatisticas-visivel-mobile' : ''}`}>
 
             {/* Título da janela de estatísticas */}
             <div className="janela-estatisticas-titulo">
@@ -239,6 +240,7 @@ function JanelaEstatisticas({ onClose }: JanelaEstatisticasProps){
                         consumo={consumoKcal}
                         meta={metaKcal}
                         onMetaChange={setMetaKcal}
+                        editavel={periodoSelecionado === 'hoje'}
                     />
 
                     {/* Ficha de Proteínas */}
@@ -246,6 +248,7 @@ function JanelaEstatisticas({ onClose }: JanelaEstatisticasProps){
                         consumo={consumoProts}
                         meta={metaProts}
                         onMetaChange={setMetaProts}
+                        editavel={periodoSelecionado === 'hoje'}
                     />
 
                     {/* Ficha de Carboidratos */}
@@ -253,6 +256,7 @@ function JanelaEstatisticas({ onClose }: JanelaEstatisticasProps){
                         consumo={consumoCarbs}
                         meta={metaCarbs}
                         onMetaChange={setMetaCarbs}
+                        editavel={periodoSelecionado === 'hoje'}
                     />
 
                     {/* Ficha de Gorduras */}
@@ -260,6 +264,7 @@ function JanelaEstatisticas({ onClose }: JanelaEstatisticasProps){
                         consumo={consumoGords}
                         meta={metaGords}
                         onMetaChange={setMetaGords}
+                        editavel={periodoSelecionado === 'hoje'}
                     />
 
                 </div>

@@ -14,6 +14,12 @@
         left: initial;
         margin: 0 auto;
         width: 400px;
+        display: none;
+        z-index: 10;
+    }
+
+    .janela-estatisticas.janela-estatisticas-visivel-mobile {
+        display: initial;
     }
 
     .sessao-estatisticas-informacoes {

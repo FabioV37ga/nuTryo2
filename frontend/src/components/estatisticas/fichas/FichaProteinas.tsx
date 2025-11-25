@@ -7,15 +7,33 @@
  * - Barra de progresso visual
  */
 
+import { useRef } from "react";
 import EstatisticasController from "../../../controllers/estatisticas/estatisticasController";
+import authController from "../../../controllers/auth/authController";
 
 interface FichaProteinasProps {
     consumo: number;
     meta: string;
     onMetaChange: (novoValor: string) => void;
+    editavel?: boolean;
 }
 
-function FichaProteinas({ consumo, meta, onMetaChange }: FichaProteinasProps) {
+function FichaProteinas({ consumo, meta, onMetaChange, editavel = true }: FichaProteinasProps) {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const handleEditClick = () => {
+        inputRef.current?.focus();
+    };
+
+    const handleBlur = async () => {
+        const email = authController.email;
+        if (email) {
+            await EstatisticasController.atualizarMetas(email, {
+                metaProteinas: Number(meta)
+            });
+        }
+    };
+
     // Calcula porcentagem do consumo em relação à meta
     const metaNum = Number(meta) || 1; // Evita divisão por zero
     const porcentagem = Math.min(Math.round((consumo / metaNum) * 100), 100); // Limita a 100%
@@ -42,10 +60,12 @@ function FichaProteinas({ consumo, meta, onMetaChange }: FichaProteinasProps) {
                 {/* Valor de meta do usuário (editável) */}
                 <div className="informacoes-meta info-meta-prots">
                     <input 
+                        ref={inputRef}
                         type="number" 
                         className="meta-prots-input" 
                         value={meta}
                         onChange={(e) => onMetaChange(e.target.value)}
+                        onBlur={handleBlur}
                         style={{ width: EstatisticasController.calcularLarguraInput(meta) }}
                     />
                     <span>
@@ -54,9 +74,11 @@ function FichaProteinas({ consumo, meta, onMetaChange }: FichaProteinasProps) {
                 </div>
                 
                 {/* Ícone de edição */}
-                <div className="meta-edit">
-                    <i className="fa fa-pencil" aria-hidden="true"></i>
-                </div>
+                {editavel && (
+                    <div className="meta-edit" onClick={handleEditClick} style={{ cursor: 'pointer' }}>
+                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                    </div>
+                )}
 
                 {/* Barra de progresso */}
                 <div className="progressBar">

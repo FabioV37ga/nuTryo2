@@ -26,7 +26,7 @@ import Dia from "./dia";
 import diaObjeto from "../../utils/diaObjeto";
 import NutryoFetch from "../../utils/nutryoFetch";
 
-function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => void }) {
+function Calendario({ setDataDisplay, onDiaClick }: { setDataDisplay?: (data: string) => void; onDiaClick?: () => void }) {
     /**
      * Estado dos dias exibidos no calendário
      * Array contendo objetos: { dia: number, index: number, tipo: "mesAtual" | "mesAnterior" | "mesSeguinte" }
@@ -149,6 +149,11 @@ function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => voi
             objetoDia.usuario,
             objetoDia.corpo
         )
+
+        // Notifica que um dia foi clicado (para exibir janela no mobile)
+        if (onDiaClick) {
+            onDiaClick();
+        }
     }
 
     // Renderização JSX do calendário

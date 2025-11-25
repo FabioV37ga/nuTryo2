@@ -4,11 +4,31 @@
         display: none;
         margin-left: 0px;
         margin-top: 90px;
-        width: 400px
+        width: 400px;
+        z-index: 10;
+    }
+
+    .janela.janela-visivel-mobile {
+        display: initial;
+    }
+
+    .janela-close-mobile {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 30px;
+        color: var(--lightBlue);
+        cursor: pointer;
+        z-index: 11;
     }
 
     #data-display {
         width: 100px;
+    }
+
+    .data-display-mobile-close {
+        cursor: pointer;
     }
 
     .aba {
@@ -18,5 +38,11 @@
 
     .calendario{
         margin-left: 0
+    }
+}
+
+@media (min-width: 986px) {
+    .janela-close-mobile {
+        display: none;
     }
 }

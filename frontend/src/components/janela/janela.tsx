@@ -29,7 +29,7 @@ interface Aba {
     titulo: string;
 }
 
-function Janela({ dataDisplay }: { dataDisplay?: string }) {
+function Janela({ dataDisplay, visivelMobile, onCloseMobile }: { dataDisplay?: string; visivelMobile?: boolean; onCloseMobile?: () => void }) {
 
     // ================================================
     // GERENCIAMENTO DE REFEIÇÕES
@@ -206,13 +206,18 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
 
     return (
         // Janela a direita (desktop) / Janela aberta ao clicar em um dia (Mobile) 
-        <section className="janela">
+        <section className={`janela ${visivelMobile ? 'janela-visivel-mobile' : ''}`}>
+
+            {/* Botão de fechar (apenas mobile) */}
+            <div className="janela-close-mobile" onClick={onCloseMobile}>
+                <i className="fa fa-times" aria-hidden="true"></i>
+            </div>
 
             {/* Abas de nevegação  */}
             <nav className="janela-abas">
 
                 {/* Aba 0 = display do dia selecionado  */}
-                <a className="aba" id="data-display">
+                <a className="aba data-display-mobile-close" id="data-display" onClick={onCloseMobile}>
                     {dataDisplay ?? (CalendarioController.dataSelecionada || '').replaceAll("-", "/")}
                 </a>
 

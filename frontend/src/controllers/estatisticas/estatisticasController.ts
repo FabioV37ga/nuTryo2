@@ -20,8 +20,8 @@ class EstatisticasController {
     static calcularLarguraInput(valor: string | number): string {
         const texto = String(valor || '');
         const numCaracteres = texto.length || 1; // mínimo 1 para evitar width 0
-        // cada caractere ocupa ~12px + 12px fixos adicionais
-        const largura = Math.max(numCaracteres * 12 + 12, 42); // mínimo 42px (30 + 12)
+        // cada caractere ocupa ~12px + 2px extras por caractere + 12px fixos adicionais
+        const largura = Math.max(numCaracteres * 14 + 12, 42); // mínimo 42px
         return `${largura}px`;
     }
 
