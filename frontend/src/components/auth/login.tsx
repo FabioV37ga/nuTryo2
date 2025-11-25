@@ -1,3 +1,20 @@
+/**
+ * Componente Login
+ * 
+ * Formulário de autenticação para usuários existentes.
+ * 
+ * Funcionalidades:
+ * - Inputs para email e senha
+ * - Validação de credenciais via LoginController
+ * - Navegação para tela de registro
+ * - Notificação de sucesso/erro de autenticação
+ * 
+ * @component
+ * @param {object} props
+ * @param {function} props.irParaRegistro - Callback para alternar para tela de registro
+ * @param {function} props.onLoginSuccess - Callback executado após login bem-sucedido
+ */
+
 import { useState } from "react";
 
 import LoginController from "../../controllers/auth/loginController";
@@ -9,12 +26,25 @@ interface LoginProps {
 
 export const Login: React.FC<LoginProps> = ({ irParaRegistro, onLoginSuccess }: LoginProps) => {
 
+    /** Estado para armazenar email digitado */
     const [email, setEmail] = useState<string>("");
+    
+    /** Estado para armazenar senha digitada */
     const [senha, setSenha] = useState<string>("");
+    
+    /**
+     * Processa tentativa de login
+     * 
+     * Processo:
+     * 1. Chama LoginController.login() com credenciais
+     * 2. Se resposta OK, notifica sucesso via onLoginSuccess
+     * 3. Caso contrário, exibe erro (tratado pelo controller)
+     */
     async function handleLogin() {
-        // Chama a função de login passada via props
+        // Tenta fazer login com credenciais fornecidas
         var resposta = await LoginController.login(email, senha)
 
+        // Se login bem-sucedido, notifica componente pai
         if (resposta.ok) {
             onLoginSuccess();
         }

@@ -1,3 +1,12 @@
+/**
+ * Componente raiz da aplicação NuTryo
+ * 
+ * Gerencia:
+ * - Autenticação do usuário
+ * - Renderização condicional (Auth vs Sistema principal)
+ * - Estado global de exibição (Calendário/Janela vs Estatísticas)
+ */
+
 import { useEffect, useState } from 'react'
 
 // Componentes
@@ -8,7 +17,7 @@ import Janela from './components/janela/janela';
 import JanelaEstatisticas from './components/estatisticas/janelaEstatisticas';
 import CalendarioController from './controllers/calendario/calendarioController';
 
-// CSS
+// Estilos globais
 import "./styles/reset.css"
 import "./styles/document.css"
 import "./styles/document-mobile.css"
@@ -20,15 +29,17 @@ import authController from './controllers/auth/authController';
 
 function App() {
 
-  // ------------------------------------------------
-  // Sessão de autenticação
-  // ------------------------------------------------
+  // ================================================
+  // AUTENTICAÇÃO
+  // ================================================
 
-  // Estados
+  // Estado que controla se o usuário está autenticado
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+  
+  // Estado de carregamento durante verificação inicial
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Effect para verificar autenticação ao carregar o componente
+  // Verifica se existe sessão ativa ao montar o componente
   useEffect(() => {
     async function verificarAuth() {
       const temSessao = await authController.verificarSessao();
@@ -38,41 +49,48 @@ function App() {
     verificarAuth();
   }, [])
 
-  // -------------------------------------------------
-  // Sessão de calendário e janela
-  // -------------------------------------------------
+  // ================================================
+  // INTERFACE DO SISTEMA
+  // ================================================
 
-  // Estado para exibir a data selecionada na Janela 
+  // Data formatada para exibição na janela de refeições
   const [dataDisplay, setDataDisplay] = useState<string>(
     (CalendarioController.dataSelecionada || '').replaceAll('-', '/')
   );
+  
+  // Controla exibição da janela de estatísticas (alternada com janela de refeições)
   const [mostrarEstatisticas, setMostrarEstatisticas] = useState<boolean>(false);
 
 
-  // Retorno JSX
+  // ================================================
+  // RENDERIZAÇÃO
+  // ================================================
+
   return (
     <>
-      {/* Renderização condicional de auth - se usuário logar, ou já tiver sessão, não renderiza janela de auth */}
+      {/* Tela de autenticação - exibida apenas para usuários não autenticados */}
       {!authenticated && (
         <Auth onAuthenticated={() => setAuthenticated(true)} />
       )}
 
-      {/* Renderiza sistema quando usuário estiver autenticado */}
+      {/* Sistema principal - exibido apenas para usuários autenticados */}
       {authenticated && (
-        // Conteúdo principal da aplicação
         <main>
-          {/* Sidebar */}
-          <Sidebar onLogout={() => { setAuthenticated(false); setMostrarEstatisticas(false); }} onOpenEstatisticas={() => setMostrarEstatisticas(true)} />
+          {/* Barra lateral com navegação e opções do usuário */}
+          <Sidebar 
+            onLogout={() => { setAuthenticated(false); setMostrarEstatisticas(false); }} 
+            onOpenEstatisticas={() => setMostrarEstatisticas(true)} 
+          />
 
-          {/* Calendario */}
+          {/* Calendário para seleção de datas */}
           <Calendario setDataDisplay={setDataDisplay} />
+          
+          {/* Alternância entre janela de estatísticas e janela de refeições */}
           {mostrarEstatisticas ? (
             <JanelaEstatisticas onClose={() => setMostrarEstatisticas(false)} />
           ) : (
             <Janela dataDisplay={dataDisplay} />
           )}
-          
-
         </main>
       )}
     </>

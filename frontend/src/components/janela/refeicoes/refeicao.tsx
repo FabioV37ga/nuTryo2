@@ -1,3 +1,16 @@
+/**
+ * Componente Refeição
+ * 
+ * Gerencia a exibição e edição de uma refeição individual, incluindo:
+ * - Seleção do tipo de refeição (Café da Manhã, Almoço, etc.)
+ * - Listagem e gerenciamento de alimentos associados
+ * - Adição, remoção e atualização de alimentos
+ * - Sincronização com o objeto de dia local (diaObjeto)
+ * - Cálculo e normalização de valores nutricionais
+ * 
+ * @component
+ */
+
 import { useState, useEffect } from "react"
 import "../../../styles/janela/refeicoes/refeicao.css"
 import "../../../styles/janela/alimentos/alimentos.css"
@@ -8,6 +21,14 @@ import CalendarioController from "../../../controllers/calendario/calendarioCont
 import Alimento from "../alimentos/alimento.tsx"
 import diaObjeto from "../../../utils/diaObjeto.ts"
 
+/**
+ * Props do componente Refeicao
+ * 
+ * @interface RefeicaoProps
+ * @property {any} [refeicao] - Objeto da refeição com _id, tipo e alimentos
+ * @property {function} [onTipoChange] - Callback quando o tipo da refeição muda
+ * @property {function} [onRefreshNeeded] - Callback para solicitar atualização do componente pai
+ */
 interface RefeicaoProps {
     refeicao?: any;
     onTipoChange?: (refeicaoId: number, novoTipo: string) => void;
@@ -15,11 +36,28 @@ interface RefeicaoProps {
 }
 
 function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
+    // Tipo da refeição (Café da Manhã, Almoço, etc.) ou mensagem padrão
     const tipo = refeicao?.tipo ?? 'Selecione o tipo';
+    
+    // Estado para controlar abertura/fechamento do dropdown de tipos de refeição
     const [listaAberta, setListaAberta] = useState(false);
+    
+    // Estado para armazenar a lista de alimentos da refeição com IDs normalizados
     const [alimentos, setAlimentos] = useState<any[]>([]);
 
-    // Buscar alimentos da refeição ao montar ou quando mudar a refeição selecionada
+    /**
+     * Efeito para buscar e normalizar alimentos da refeição
+     * 
+     * Executa quando:
+     * - Componente é montado
+     * - ID da refeição muda
+     * 
+     * Processo:
+     * 1. Busca alimentos do diaObjeto local (mais atualizado)
+     * 2. Caso não encontre, busca do NutryoFetch (cache)
+     * 3. Normaliza valores (trunca decimais, adiciona IDs sequenciais)
+     * 4. Atualiza estado local de alimentos
+     */
     useEffect(() => {
         if (refeicao?._id) {
             // Busca primeiro do diaObjeto local (mais atualizado), depois do NutryoFetch (cache)
@@ -28,9 +66,9 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
             const alimentosBuscados = refeicaoNoDiaObjeto?.alimentos ?? 
                                       NutryoFetch.retornaAlimentosDaRefeicao(CalendarioController.dataSelecionada, refeicao._id);
             
-            // Normalizar alimentos com id sequencial (1..N) e uid estável
+            // Normalizar alimentos com id sequencial (1..N) e uid estável para renderização React
             const normalized = (alimentosBuscados || []).map((a: any, idx: number) => {
-                // truncar/ignorar decimais vindos do backend
+                // Truncar/ignorar decimais vindos do backend para manter valores inteiros
                 const peso = a.peso != null ? Math.trunc(Number(a.peso)) : 0;
                 const calorias = a.calorias != null ? Math.trunc(Number(a.calorias)) : 0;
                 const proteinas = a.proteinas != null ? Math.trunc(Number(a.proteinas)) : 0;
@@ -39,13 +77,13 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
 
                 return {
                     ...a,
-                    id: idx + 1,
-                    uid: a._id ?? `local-alimento-${Date.now()}-${idx}`,
+                    id: idx + 1, // ID sequencial para UI (1, 2, 3...)
+                    uid: a._id ?? `local-alimento-${Date.now()}-${idx}`, // UID estável para key do React
                     peso,
                     calorias,
                     proteinas,
                     carboidratos: carboVal,
-                    carbos: carboVal,
+                    carbos: carboVal, // Mantém ambos os nomes para compatibilidade
                     gorduras
                 };
             });
@@ -55,7 +93,15 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
         }
     }, [refeicao?._id]);
 
-    // Função para adicionar alimento
+    /**
+     * Adiciona um novo alimento vazio à refeição
+     * 
+     * Cria um alimento com:
+     * - ID sequencial (próximo na lista)
+     * - UID único baseado em timestamp
+     * - Valores nutricionais zerados
+     * - Nome placeholder
+     */
     function handleAddAlimento() {
         setAlimentos(prev => {
             const newId = prev.length + 1;
@@ -66,26 +112,52 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
         });
     }
 
-    // Função para remover alimento
+    /**
+     * Remove um alimento da refeição
+     * 
+     * @param {number} alimentoId - ID do alimento a ser removido
+     * @param {number} [refeicaoId] - ID da refeição (opcional)
+     * 
+     * Processo:
+     * 1. Remove do diaObjeto (persistência)
+     * 2. Remove do estado local
+     * 3. Reindexa os IDs sequenciais (1, 2, 3...)
+     */
     function handleRemoveAlimento(alimentoId: number, refeicaoId?: number) {
         const target = Number(alimentoId);
         const refId = refeicaoId ?? refeicao?._id;
         console.log(`REMOVE Alimento id=${target} da Refeição id=${refId}`);
+        
+        // Remove do objeto de dia (persistência otimista)
         if (refId) {
             diaObjeto.apagarAlimento(refId.toString(), target.toString());
         }
+        
+        // Remove do estado local e reindexa IDs
         setAlimentos(prev => {
             const filtered = prev.filter(a => Number(a.id) !== target);
-            const reindexed = filtered.map((a, i) => ({ ...a, id: i + 1 }));
+            const reindexed = filtered.map((a, i) => ({ ...a, id: i + 1 })); // Mantém IDs sequenciais
             console.log(`[Refeição ${refeicao?.id}] Alimentos após remoção e reindexação:`, reindexed);
 
             return reindexed;
         });
     }
 
-    // Função para atualizar um alimento (nome / peso / macros)
+    /**
+     * Atualiza propriedades de um alimento existente
+     * 
+     * @param {number} id - ID do alimento a ser atualizado
+     * @param {object} changes - Objeto com as propriedades a serem alteradas
+     * 
+     * Processo:
+     * 1. Atualiza estado local com novas propriedades
+     * 2. Trunca valores numéricos para inteiros
+     * 3. Sincroniza com diaObjeto para persistência
+     * 4. Usa gerarAlimento() para primeiro alimento, atualizarDia() para demais
+     */
     function handleUpdateAlimento(id: number, changes: { alimento?: string; peso?: number; calorias?: number; proteinas?: number; carbos?: number; gorduras?: number }) {
         setAlimentos(prev => {
+            // Mapeia alimentos, atualizando apenas o que corresponde ao ID fornecido
             const updated = prev.map(a => {
                 if (Number(a.id) !== Number(id)) return a;
                 const next = { ...a } as any;
@@ -95,7 +167,7 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
                 if (changes.proteinas !== undefined) next.proteinas = Math.trunc(Number(changes.proteinas)) || 0;
                 if (changes.carbos !== undefined) {
                     next.carbos = Math.trunc(Number(changes.carbos)) || 0;
-                    next.carboidratos = next.carbos;
+                    next.carboidratos = next.carbos; // Mantém sincronizados
                 }
                 if (changes.gorduras !== undefined) next.gorduras = Math.trunc(Number(changes.gorduras)) || 0;
                 return next;
@@ -105,7 +177,7 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
             try {
                 const refeicaoIdentificador = refeicao?._id != null ? refeicao._id : refeicao?.id;
                 if (refeicaoIdentificador != null) {
-                    const localIndex = String(Number(refeicaoIdentificador) - 1); // índice da refeição no array
+                    const localIndex = String(Number(refeicaoIdentificador) - 1); // Índice da refeição no array
                     const itemAlterado = updated.find(a => Number(a.id) === Number(id));
                     if (itemAlterado) {
                         // Verifica se a refeição já existe em diaObjeto.dia
@@ -126,7 +198,7 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
                             );
                             console.log(diaObjeto.dia)
                         } else {
-                            // Se já existem alimentos, usa atualizarDia normalmente
+                            // Se já existem alimentos, usa atualizarDia() para adicionar/atualizar normalmente
                             if (!itemAlterado._id) itemAlterado._id = String(itemAlterado.id);
                             const objetoAlimento = {
                                 _id: itemAlterado._id,
@@ -150,13 +222,14 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
         });
     }
     return (
-        //  Conteúdo de uma refeição
+        // Conteúdo de uma refeição
         <section className="refeicao-conteudo">
-            {/* Seletor de tipo da refeição  */}
+            {/* Seletor de tipo da refeição */}
             <div className="refeicao-tipo">
                 <div className="refeicao-tipo-label">
                     tipo:
                 </div>
+                {/* Botão que abre/fecha o dropdown de tipos */}
                 <div className={`refeicao-tipo-tipoSelecionado`} role="button" tabIndex={0}
                     onClick={() => setListaAberta(v => !v)}
                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setListaAberta(v => !v); }}>
@@ -165,13 +238,13 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
                         <i className="fa fa-caret-down" aria-hidden="true"></i>
                     </span>
                 </div>
-                {/* Itens da lista de tipos de uma refeição  */}
+                {/* Lista dropdown com os tipos disponíveis de refeição */}
                 <ul className={`refeicao-tipo-list ${listaAberta ? 'listaTipoAberta' : 'listaTipoFechada'}`}>
                     {['Café da Manhã', 'Almoço', 'Lanche da Tarde', 'Janta', 'Ceia', 'Outro'].map((item) => (
                         <li key={item} role="button" tabIndex={0} onClick={() => {
-                            // atualiza label localmente e fecha lista
+                            // Atualiza label localmente e fecha lista
                             setListaAberta(false);
-                            // notifica o parent para atualizar o título da aba e o tipo na refeição
+                            // Notifica o componente pai para atualizar o título da aba e o tipo na refeição
                             if (refeicao && onTipoChange) onTipoChange(refeicao.id, item);
                         }} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setListaAberta(false); if (refeicao && onTipoChange) onTipoChange(refeicao.id, item); } }}>
                             {item}
@@ -180,25 +253,25 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
                 </ul>
             </div>
 
-            {/* Sessão de alimentos  */}
+            {/* Seção de alimentos */}
             <section className="alimentos">
 
-                {/* Título do alimento  */}
+                {/* Título da seção de alimentos */}
                 <div className="alimentos-titulo">Alimentos</div>
 
-                {/* Divisor  */}
+                {/* Divisor visual */}
                 <div className="alimentos-divisor"></div>
 
-                {/* Sessão de alimentos adicionados  */}
+                {/* Seção com lista de alimentos adicionados */}
                 <div className="alimentos-adicionados">
 
-                    {/* Botão de adicionar alimentos a uma refeição  */}
+                    {/* Botão para adicionar novo alimento à refeição */}
                     <div className="alimento-item model-alimento" onClick={handleAddAlimento} role="button" tabIndex={0}>
                         <a className="botao-adicionar-alimento">+</a>
                         <span className="alimento-label">Adicionar alimento</span>
                     </div>
 
-                    {/* Renderizar alimentos da refeição */}
+                    {/* Renderiza cada alimento da refeição como um componente Alimento */}
                     {alimentos.map((alimento: any) => (
                         <Alimento
                             key={alimento.uid}

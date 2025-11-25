@@ -1,13 +1,22 @@
+/**
+ * Componente Janela - Gerenciador de Refeições do Dia
+ * 
+ * Responsabilidades:
+ * - Exibe lista de refeições do dia selecionado
+ * - Gerencia sistema de abas (lista + edição de refeições)
+ * - CRUD de refeições (criar, editar, deletar)
+ * - Sincronização com backend via diaObjeto
+ */
+
 import { useState, useEffect } from "react"
 
-// CSS
+// Estilos
 import "../../styles/janela/janela.css"
 import "../../styles/janela/janela-mobile.css"
 import "../../styles/janela/refeicoes/refeicoes.css"
 import "../../styles/janela/refeicoes/refeicoes-mobile.css"
 
 import CalendarioController from "../../controllers/calendario/calendarioController"
-// import RefeicoesController from "../../controllers/refeicoes/refeicoesController"
 import NutryoFetch from "../../utils/nutryoFetch.ts"
 
 import Refeicoes from "./refeicoes/refeicoes.tsx"
@@ -22,9 +31,17 @@ interface Aba {
 
 function Janela({ dataDisplay }: { dataDisplay?: string }) {
 
+    // ================================================
+    // GERENCIAMENTO DE REFEIÇÕES
+    // ================================================
+
+    // Lista de refeições do dia selecionado
     const [refeicoes, setRefeicoes] = useState<any[]>([]);
 
-    // Função para carregar refeições (extraída para poder ser chamada manualmente)
+    /**
+     * Busca refeições do backend para a data selecionada
+     * Normaliza os dados adicionando IDs sequenciais e UIDs únicos
+     */
     async function fetchRefeicoes() {
         const res = await NutryoFetch.retornaRefeicoesDoDia(CalendarioController.dataSelecionada) as any[] | null;
         const list = res ?? [];
@@ -32,24 +49,31 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
         setRefeicoes(normalized);
     }
 
-    // Carregar refeições ao mudar a data selecionada
+    // Recarrega refeições sempre que a data selecionada mudar
     useEffect(() => {
         fetchRefeicoes();
     }, [CalendarioController.dataSelecionada])
 
-    // Ao mudar a data selecionada, fecha todas as abas (mantém apenas a fixa id=0)
+    // Fecha todas as abas ao mudar de data (exceto aba fixa "Refeições")
     useEffect(() => {
         setAbas([{ id: 0, titulo: 'Refeições', uid: 'tab-refeicoes', ativa: true }]);
     }, [CalendarioController.dataSelecionada]);
 
-    // Função para adicionar refeição
+    // ================================================
+    // CRUD DE REFEIÇÕES
+    // ================================================
+
+    /**
+     * Adiciona nova refeição ao dia
+     * Cria objeto local e sincroniza com backend via diaObjeto
+     */
     function handleAddRefeicao() {
         setRefeicoes(prev => {
             const newId = prev.length + 1;
             const uid = `local-${Date.now()}`;
             const novaRefeicao = { _id: null, tipo: 'Nova Refeição', alimentos: [], id: newId, uid } as any;
             
-            // Gera refeição no diaObjeto para sincronização com backend
+            // Sincroniza com backend
             diaObjeto.gerarRefeicao(newId, 'Nova Refeição', []);
             console.log(diaObjeto.dia)
             
@@ -57,73 +81,96 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
         });
     }
 
-    // Função para remover refeição
+    /**
+     * Remove refeição do dia
+     * @param id - ID da refeição a ser removida
+     */
     function handleRemoveRefeicao(id: number) {
         const target = Number(id);
+        
+        // Remove do backend
         diaObjeto.apagarRefeicao(id.toString())
         
-        // Fecha a aba da refeição removida (se estiver aberta)
+        // Fecha a aba de edição se estiver aberta
         setAbas(prev => {
             const abaParaRemover = prev.find(a => Number(a.id) === target);
             if (abaParaRemover) {
                 const filtered = prev.filter(a => a.uid !== abaParaRemover.uid);
-                // Seleciona a aba "Refeições" após fechar
+                // Retorna para aba "Refeições" (id=0)
                 return filtered.map(a => ({ ...a, ativa: Number(a.id) === 0 }));
             }
             return prev;
         });
         
+        // Remove da lista local e reindexa IDs
         setRefeicoes(prev => {
             const filtered = prev.filter(r => Number(r.id) !== target);
             return filtered.map((r, i) => ({ ...r, id: i + 1 }));
         });
     }
 
-    // Estado para abas
+    // ================================================
+    // SISTEMA DE ABAS
+    // ================================================
+
+    // Lista de abas abertas (aba fixa "Refeições" + abas de edição)
     const [abas, setAbas] = useState<any[]>([{ id: 0, titulo: 'Refeições', uid: 'tab-refeicoes', ativa: true }]);
     
-    // Estado para forçar refresh do componente Refeicao quando dados mudam
+    // Chave para forçar remontagem do componente Refeicao quando necessário
     const [refreshKey, setRefreshKey] = useState(0);
 
+    /**
+     * Abre aba de edição para uma refeição
+     * Reutiliza aba existente se já estiver aberta
+     * @param id - ID da refeição
+     * @param titulo - Título opcional da aba
+     */
     function abrirAbaEdicao(id: number, titulo?: string) {
-        // verifica se já existe uma aba para essa refeição
+        // Verifica se já existe aba para esta refeição
         const existe = abas.find(a => Number(a.id) === Number(id));
         const refeicao = refeicoes.find(r => Number(r.id) === Number(id));
         const abaTitulo = refeicao ? (refeicao.tipo ?? titulo ?? 'Editar') : (titulo ?? 'Editar');
 
         if (existe) {
-            // atualiza e seleciona a aba existente
+            // Seleciona aba existente
             setAbas(prev => prev.map(a => ({ ...a, ativa: a.uid === existe.uid, titulo: a.uid === existe.uid ? abaTitulo : a.titulo })));
             selecionarAba(existe.uid);
             return;
         }
 
-        // cria uma nova aba e seleciona
+        // Cria nova aba e seleciona
         const uid = `aba-${Date.now()}-${id}`;
         setAbas(prev => prev.map(a => ({ ...a, ativa: false })).concat({ id, titulo: abaTitulo, uid, ativa: true }));
         selecionarAba(uid);
     }
 
-    // Função para fechar aba
+    /**
+     * Fecha aba de edição
+     * @param uid - UID único da aba
+     */
     function fecharAba(uid: string) {
         setAbas(prev => {
-            // remove a aba solicitada
             const filtered = prev.filter(a => a.uid !== uid);
-            // garante que a aba fixa (id === 0) fique selecionada após o fechamento
+            // Retorna para aba "Refeições" (id=0)
             return filtered.map(a => ({ ...a, ativa: Number(a.id) === 0 }));
         });
     }
 
-    // Função para selecionar aba
+    /**
+     * Seleciona aba ativa
+     * Recarrega dados do backend antes da troca
+     * @param uid - UID único da aba
+     */
     function selecionarAba(uid: string) {
         console.log("Aba selecionada:", uid);
         console.log("Estado de diaObjeto.dia ao selecionar aba:", diaObjeto.dia);
         
-        // Recarrega refeições do backend antes de trocar de aba
+        // Recarrega dados do backend para garantir sincronização
         fetchRefeicoes();
         
         setAbas(prev => prev.map(a => ({ ...a, ativa: a.uid === uid })));
-        // Incrementa refreshKey para forçar remontagem do componente Refeicao
+        
+        // Força remontagem do componente para exibir dados atualizados
         setRefreshKey(prev => prev + 1);
     }
 
@@ -141,9 +188,13 @@ function Janela({ dataDisplay }: { dataDisplay?: string }) {
 
     // Handler para quando o tipo de uma refeição muda
     function handleTipoChange(refeicaoId: number, novoTipo: string) {
-        // atualiza o tipo da refeição no estado
+        // Atualiza o tipo da refeição no estado local
         setRefeicoes(prev => prev.map(r => Number(r.id) === Number(refeicaoId) ? { ...r, tipo: novoTipo } : r));
-        // títulos das abas serão sincronizados automaticamente pelo useEffect acima
+        
+        // Sincroniza com backend via diaObjeto
+        diaObjeto.editarTipoRefeicao(refeicaoId.toString(), novoTipo);
+        
+        // Títulos das abas serão sincronizados automaticamente pelo useEffect acima
     }
 
 

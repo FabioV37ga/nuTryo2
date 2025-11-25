@@ -1,3 +1,20 @@
+/**
+ * Componente Registro
+ * 
+ * Formulário para cadastro de novos usuários.
+ * 
+ * Funcionalidades:
+ * - Inputs para email, nome de usuário e senha
+ * - Criação de nova conta via RegisterController
+ * - Navegação para tela de login
+ * - Notificação de sucesso/erro de registro
+ * 
+ * @component
+ * @param {object} props
+ * @param {function} props.irParaLogin - Callback para alternar para tela de login
+ * @param {function} props.onRegisterSuccess - Callback executado após registro bem-sucedido
+ */
+
 import { useState } from "react";
 
 import RegisterController from "../../controllers/auth/registerController";
@@ -9,17 +26,31 @@ interface Props {
 
 export const Registro: React.FC<Props> = ({ irParaLogin, onRegisterSuccess}: Props) => {
 
+    /**
+     * Processa tentativa de registro
+     * 
+     * Processo:
+     * 1. Chama RegisterController.register() com dados do usuário
+     * 2. Se resposta OK, notifica sucesso via onRegisterSuccess
+     * 3. Caso contrário, exibe erro (tratado pelo controller)
+     */
     async function handleRegister() {
-        // Chama a função de registro passada via props
+        // Tenta criar nova conta com dados fornecidos
         const resposta = await RegisterController.register(email, senha, usuario)
 
+        // Se registro bem-sucedido, notifica componente pai
         if (resposta.ok){
             onRegisterSuccess()
         }
     }
 
+    /** Estado para armazenar email digitado */
     const [email, setEmail] = useState<string>("");
+    
+    /** Estado para armazenar nome de usuário digitado */
     const [usuario, setUsuario] = useState<string>("");
+    
+    /** Estado para armazenar senha digitada */
     const [senha, setSenha] = useState<string>("");
 
     return (

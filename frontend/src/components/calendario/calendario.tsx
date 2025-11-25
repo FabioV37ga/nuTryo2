@@ -1,3 +1,22 @@
+/**
+ * Componente Calendário
+ * 
+ * Exibe um calendário mensal interativo com navegação entre meses.
+ * 
+ * Funcionalidades:
+ * - Exibe dias do mês atual, anterior e seguinte
+ * - Permite navegação entre meses (setas < >)
+ * - Destaca dia selecionado
+ * - Indica dias com anotações/refeições registradas
+ * - Sincroniza com CalendarioController para gerenciar estado
+ * - Notifica componente pai quando data é selecionada
+ * - Gera objeto de dia via diaObjeto ao selecionar data
+ * 
+ * @component
+ * @param {object} props
+ * @param {function} [props.setDataDisplay] - Callback para atualizar display de data no componente pai
+ */
+
 import { useState, useEffect } from "react";
 
 import "../../styles/calendario/calendario.css"
@@ -8,7 +27,11 @@ import diaObjeto from "../../utils/diaObjeto";
 import NutryoFetch from "../../utils/nutryoFetch";
 
 function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => void }) {
-    // Estado para os dias do calendário
+    /**
+     * Estado dos dias exibidos no calendário
+     * Array contendo objetos: { dia: number, index: number, tipo: "mesAtual" | "mesAnterior" | "mesSeguinte" }
+     * Inicializa com mês/ano atual
+     */
     const [dias, setDias] = useState(() => {
         const dataAtual = new Date();
         return CalendarioController.gerarArrayDias(
@@ -17,13 +40,23 @@ function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => voi
         );
     });
 
-    // Função para navegar entre meses
+    /**
+     * Navega entre meses (anterior ou próximo)
+     * 
+     * @param {"anterior" | "proximo"} direcao - Direção da navegação
+     * 
+     * Atualiza CalendarioController e regenera array de dias
+     */
     function navegarMes(direcao: "anterior" | "proximo") {
         const novosDias = CalendarioController.navegarMes(direcao);
         setDias(novosDias);
     }
 
-    // Estado para dia selecionado (armazenamos dia + mês + ano para poder restaurar ao navegar)
+    /**
+     * Estado do dia selecionado
+     * Armazena dia + mês + ano para poder restaurar ao navegar entre meses
+     * Inicializa com dia atual do CalendarioController
+     */
     const [diaSelecionado, setDiaSelecionado] = useState<{
         dia: number;
         mes: number;
@@ -34,12 +67,15 @@ function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => voi
         ano: CalendarioController.anoSelecionado
     }));
 
-    // useEffect para selecionar o dia ao montar o componente
+    /**
+     * Efeito executado ao montar o componente
+     * Seleciona automaticamente o dia atual ou o primeiro dia do mês
+     */
     useEffect(() => {
         const diaAtualSelecionado = CalendarioController.diaSelecionado;
         const mesAtualSelecionado = CalendarioController.mesSelecionado;
 
-        // Encontrar o dia correspondente no array dias
+        // Encontra o dia correspondente no array de dias
         const diaEncontrado = dias.find(
             (d: any) =>
                 d.dia === diaAtualSelecionado &&
@@ -55,14 +91,25 @@ function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => voi
         }
     }, []);
 
-    // Função para selecionar dia
+    /**
+     * Seleciona um dia no calendário
+     * 
+     * @param {object} dia - Objeto do dia: { dia: number, index: number, tipo: string }
+     * 
+     * Processo:
+     * 1. Se dia pertence ao mês anterior/próximo, navega para esse mês
+     * 2. Atualiza dataSelecionada no CalendarioController
+     * 3. Notifica componente pai para atualizar display
+     * 4. Atualiza estado local de diaSelecionado
+     * 5. Gera objeto de dia via diaObjeto com dados do backend
+     */
     function selecionarDia(dia: { dia: number; index: number; tipo: string }) {
-        // Se o usuário clicar em um dia que pertence ao mês anterior/próximo,
-        // navegamos para esse mês (CalendarioController ajusta mesSelecionado/anoSelecionado)
+        // Se o dia clicado pertence ao mês anterior, navega para esse mês
         if (dia.tipo === "mesAnterior") {
             navegarMes("anterior");
         }
 
+        // Se o dia clicado pertence ao próximo mês, navega para esse mês
         if (dia.tipo === "mesSeguinte") {
             navegarMes("proximo");
         }
@@ -72,28 +119,31 @@ function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => voi
         const mesNum = CalendarioController.mesSelecionado;
         const anoNum = CalendarioController.anoSelecionado;
 
+        // Define data selecionada no formato "dia-mes-ano"
         CalendarioController.dataSelecionada =
             `${diaNum}-${(mesNum + 1)}-${anoNum}`;
         console.log(CalendarioController.dataSelecionada);
 
-        // Atualiza o label da janela
+        // Notifica componente pai para atualizar display (converte - para /)
         if (setDataDisplay) {
             setDataDisplay(CalendarioController.dataSelecionada.replaceAll('-', '/'));
         }
 
-
+        // Atualiza estado local do dia selecionado
         setDiaSelecionado({
             dia: diaNum,
             mes: mesNum,
             ano: anoNum
         });
 
+        // Cria objeto de dia com dados do backend (ou vazio se dia novo)
         var objetoDia = {
             data: `${diaNum}-${(mesNum + 1)}-${anoNum}`,
             usuario: NutryoFetch.email,
             corpo: NutryoFetch.retornaRefeicoesDoDia(`${diaNum}-${(mesNum + 1)}-${anoNum}`) || []
         }
 
+        // Gera objeto de dia no diaObjeto para uso global
         diaObjeto.gerarDia(
             objetoDia.data,
             objetoDia.usuario,
@@ -101,7 +151,7 @@ function Calendario({ setDataDisplay }: { setDataDisplay?: (data: string) => voi
         )
     }
 
-    // Retorno JSX
+    // Renderização JSX do calendário
     return (
         // <!-- Sessão calendário -->
         <section className="calendario">

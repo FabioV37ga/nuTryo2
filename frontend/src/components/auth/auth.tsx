@@ -1,14 +1,27 @@
+/**
+ * Componente Auth
+ * 
+ * Container principal para autenticação de usuários.
+ * 
+ * Funcionalidades:
+ * - Alterna entre telas de Login e Registro
+ * - Exibe overlay de autenticação sobre a aplicação
+ * - Gerencia estado de modo de autenticação (login vs registro)
+ * - Notifica componente pai quando autenticação é bem-sucedida
+ * 
+ * @component
+ * @param {object} props
+ * @param {function} props.onAuthenticated - Callback executado após autenticação bem-sucedida
+ */
+
 import { useState } from "react";
 
 // CSS
 import "../../styles/auth/auth.css";
 
-// componentes
+// Componentes
 import { Registro } from "./registro";
 import { Login } from "./login";
-
-// Controladores
-// import AuthController from "../../controllers/auth/authController";
 
 interface AuthProps {
   onAuthenticated: () => void; // Vem do componente pai
@@ -16,6 +29,7 @@ interface AuthProps {
 
 export const Auth: React.FC<AuthProps> = ({ onAuthenticated }) => {
 
+  /** Estado para controlar modo de autenticação: "login" ou "register" */
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
   return (
