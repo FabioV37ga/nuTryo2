@@ -310,6 +310,20 @@ Este documento inclui:
 - ⚙️ Controladores e utilitários
 - 📊 Diagramas de arquitetura
 
+### Arquitetura do Backend & API
+
+Para uma compreensão detalhada dos microserviços backend, modelos de dados, endpoints e containerização, consulte a documentação completa:
+
+**[📄 Backend & API Architecture Guide (PDF)](./docs/BACKEND_API_ARCHITECTURE.pdf)**
+
+Este documento inclui:
+- 🏗️ Arquitetura de microserviços
+- 📊 Modelos de dados MongoDB e Excel
+- 🔌 Todos os endpoints REST documentados
+- 🐳 Configuração Docker e deploy
+- 🔄 Fluxos de dados e sincronização
+- 📝 Especificações técnicas completas
+
 ### Apresentação do Projeto
 
 Pitch de vendas e apresentação executiva do NuTryo para demonstrações acadêmicas e profissionais:
