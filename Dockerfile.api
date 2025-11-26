@@ -10,11 +10,11 @@ RUN npm install
 # Copiar todo o projeto
 COPY . .
 
-# Build TypeScript do backend
-RUN npm run dev:api
+# Limpar e compilar TypeScript da API
+RUN npm run clearapi:unix && npm run build:api
 
 # Definir porta
-EXPOSE 3001
+EXPOSE 3002
 
-# Rodar backend no container
+# Rodar API no container
 CMD ["node", "api/dist/server.js"]
