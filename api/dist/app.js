@@ -1,14 +1,10 @@
 import express from "express";
-import connect from './config/dbConnect.js';
 import routes from "./routes/index.js";
 import cors from 'cors';
-const connection = await connect();
-connection.on("error", (error) => {
-    console.log("Erro de conexão " + error);
-});
-connection.once("open", () => {
-    console.log("Conexão com o banco feita com sucesso");
-});
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const app = express();
 const allowedOrigins = [
     'http://localhost:3000',
@@ -28,4 +24,7 @@ app.use(cors({
     credentials: true
 }));
 routes(app);
+app.get('/', (req, res) => {
+    res.sendFile(join(__dirname, 'views', 'index.html'));
+});
 export default app;

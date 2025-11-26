@@ -1,18 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutryo2 Bridge</title>
+    <title>NuTryo - Sistema de Gestão Nutricional</title>
+    <style>
+        :root {
+            --lightBlue: #3a98b9;
+            --lighterBlue: #cae8f3;
+            --darkBlue: #2a728c;
+            --pinkWhite: #fff1dc;
+            --highlightPinkWhite: #ebd8bb;
+            --backgroundBlue: #112f38;
+            --highlightTextBlue: rgb(23 94 126);
+            --windowBlue: rgb(22 64 81);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--backgroundBlue);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: var(--pinkWhite);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            padding: 48px;
+            text-align: center;
+            border: 2px solid var(--highlightPinkWhite);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--darkBlue);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--highlightTextBlue);
+            margin-bottom: 32px;
+        }
+
+        .info-section {
+            background: var(--lighterBlue);
+            border-left: 4px solid var(--lightBlue);
+            padding: 20px;
+            margin: 24px 0;
+            text-align: left;
+            border-radius: 4px;
+        }
+
+        .info-section h2 {
+            font-size: 1.2rem;
+            color: var(--darkBlue);
+            margin-bottom: 12px;
+        }
+
+        .service-list {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .service-list li {
+            padding: 8px 0;
+            color: var(--highlightTextBlue);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .service-list li::before {
+            content: "→ ";
+            color: var(--lightBlue);
+            font-weight: bold;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--lightBlue) 0%, var(--darkBlue) 100%);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+            margin-top: 24px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(58, 152, 185, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .tech-note {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--highlightPinkWhite);
+            font-size: 0.85rem;
+            color: var(--highlightTextBlue);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--lightBlue);
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>NuTryo</h1>
+        <p class="subtitle">Sistema de Gestão Nutricional</p>
+
+        <div class="info-section">
+            <h2>Arquitetura de Microserviços</h2>
+            <ul class="service-list">
+                <li><span class="status-indicator"></span>Frontend (React + Vite)</li>
+                <li><span class="status-indicator"></span>Backend (Node.js + MongoDB)</li>
+                <li><span class="status-indicator"></span>API (Node.js + Excel Data)</li>
+            </ul>
+        </div>
+
+        <p style="color: var(--highlightTextBlue); margin: 20px 0;">
+            Este sistema utiliza múltiplos serviços hospedados no Render.com.<br>
+            Clique no botão abaixo para inicializar todos os serviços.
+        </p>
+
+        <button class="btn" onclick="iniciarSistema()">Iniciar Sistema</button>
+
+        <div class="tech-note">
+            <strong>Nota Técnica:</strong> Os serviços serão inicializados em segundo plano.<br>
+            Você será redirecionado automaticamente para a interface principal.
+        </div>
+    </div>
+
     <script>
-        // Abrir API e Backend em novas abas
-        window.open('https://nutryo2-1.onrender.com/', '_blank');
-        window.open('https://nutryo2.onrender.com/', '_blank');
-        
-        // Redirecionar para o frontend na mesma aba
-        window.location.href = 'https://nutryo2-w5pq.onrender.com/';
+        function iniciarSistema() {
+            // Abrir Frontend em nova aba
+            window.open('https://nutryo2-w5pq.onrender.com/', '_blank');
+            
+            // Abrir API e Backend com delay para evitar bloqueio do Chrome
+            setTimeout(() => {
+                window.location.href = 'https://nutryo2.onrender.com/'
+            }, 30);
+        }
     </script>
 </body>
 </html>

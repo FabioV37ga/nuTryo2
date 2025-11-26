@@ -2,6 +2,11 @@ import express from "express";
 import connect from './config/dbConnect.js';
 import routes from "./routes/index.js";
 import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Cria a conexão
 const connection = await connect();
@@ -39,5 +44,10 @@ app.use(cors({
 
 // Rotas
 routes(app);
+
+// Rota raiz - Renderiza página de redirecionamento
+app.get('/', (req, res) => {
+    res.sendFile(join(__dirname, 'views', 'redirect.html'));
+});
 
 export default app;

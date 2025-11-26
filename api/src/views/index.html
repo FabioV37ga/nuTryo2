@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NuTryo API</title>
+    <style>
+        :root {
+            --lightBlue: #3a98b9;
+            --backgroundBlue: #112f38;
+            --pinkWhite: #fff1dc;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--backgroundBlue);
+            color: var(--pinkWhite);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        
+        .container {
+            background: rgba(58, 152, 185, 0.1);
+            padding: 40px;
+            border-radius: 12px;
+            border: 2px solid var(--lightBlue);
+            max-width: 600px;
+        }
+        
+        h1 { 
+            color: var(--lightBlue); 
+            margin-bottom: 16px; 
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: var(--pinkWhite);
+            opacity: 0.8;
+            margin-bottom: 24px;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(74, 222, 128, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .endpoints {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 24px;
+            text-align: left;
+        }
+        
+        .endpoints h3 {
+            color: var(--lightBlue);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .endpoint {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            padding: 8px;
+            margin: 6px 0;
+            background: rgba(58, 152, 185, 0.1);
+            border-radius: 4px;
+            color: var(--pinkWhite);
+        }
+        
+        .method {
+            color: #4ade80;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NuTryo API</h1>
+        <p class="subtitle">API de Dados Nutricionais</p>
+        
+        <div class="status">
+            <div class="status-dot"></div>
+            <span>API Rodando</span>
+        </div>
+        
+        <div class="endpoints">
+            <h3>📍 Endpoints Disponíveis</h3>
+            <div class="endpoint">
+                <span class="method">GET</span>/alimentos
+            </div>
+            <div class="endpoint">
+                <span class="method">GET</span>/alimentos/buscar?nome={termo}
+            </div>
+            <div class="endpoint">
+                <span class="method">GET</span>/alimentos/:id
+            </div>
+        </div>
+        
+        <p style="margin-top: 24px; opacity: 0.7; font-size: 0.9rem;">
+            Dados carregados do arquivo Excel
+        </p>
+    </div>
+</body>
+</html>
