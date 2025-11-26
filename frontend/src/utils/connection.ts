@@ -23,6 +23,7 @@ if (ambiente == 0){
     // URLs de produção no Render
     frontend = 'https://nutryo2-w5pq.onrender.com'
     backend = 'https://nutryo2.onrender.com'
+    api = 'https://nutryo2-1.onrender.com'
 }else{
     // URLs de desenvolvimento local
     frontend = 'http://localhost:3000'
