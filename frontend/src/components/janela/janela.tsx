@@ -15,6 +15,8 @@ import "../../styles/janela/janela.css"
 import "../../styles/janela/janela-mobile.css"
 import "../../styles/janela/refeicoes/refeicoes.css"
 import "../../styles/janela/refeicoes/refeicoes-mobile.css"
+import "../../styles/janela/alimentos/alimentos.css"
+import "../../styles/janela/alimentos/alimentos-mobile.css"
 
 import CalendarioController from "../../controllers/calendario/calendarioController"
 import NutryoFetch from "../../utils/nutryoFetch.ts"

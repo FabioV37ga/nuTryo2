@@ -18,13 +18,13 @@
     }
 
     .refeicao-tipo-list {
-        width: 330px;
-        top: 58px;
-        left: 0px
+        width: 330px !important;
+        top: 58px !important;
+        left: 0px !important
     }
 
     .refeicao-tipo-list li {
-        width: 42%;
+        width: 42% !important;
     }
 
 }
