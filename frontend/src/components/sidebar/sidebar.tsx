@@ -19,8 +19,8 @@
 import { useState } from "react";
 
 // CSS
-import "../../styles/sidebar/sidebar.css"
-import "../../styles/sidebar/sidebar-mobile.css"
+import "../../styles/sidebar/sideBar.css"
+import "../../styles/sidebar/sideBar-mobile.css"
 
 // Componentes
 import Usuario from "./usuario";
