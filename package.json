@@ -10,6 +10,7 @@
     "start:api": "npm run build:api && npm run dev:api",
     "build:front": "npm run --prefix frontend build",
     "build:api": "tsc -p api/tsconfig.json && npm run copy:views:api",
+    "build:api:unix": "tsc -p api/tsconfig.json && npm run copy:views:api:unix",
     "preview:front": "npm run --prefix frontend preview",
     "server:back": "nodemon backend/dist/server.js",
     "server:back:prod": "node backend/dist/server.js",

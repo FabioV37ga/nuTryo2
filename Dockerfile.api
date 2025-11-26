@@ -11,7 +11,7 @@ RUN npm install
 COPY . .
 
 # Limpar e compilar TypeScript da API
-RUN npm run clearapi:unix && npm run build:api
+RUN npm run clearapi:unix && npm run build:api:unix
 
 # Definir porta
 EXPOSE 3002
