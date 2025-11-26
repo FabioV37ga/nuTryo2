@@ -1,4 +1,3 @@
-import type { AnyObject } from "mongoose";
 import { backend } from "../../utils/connection";
 import AuthController from "./authController";
 import NutryoFetch from "../../utils/nutryoFetch.ts";

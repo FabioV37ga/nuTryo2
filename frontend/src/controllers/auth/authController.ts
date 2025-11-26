@@ -7,8 +7,6 @@
  * - Armazenamento de dados do usuário (email, nome)
  */
 
-import type { AnyObject } from "mongoose"
-
 // Controladores
 import LoginController from "./loginController"
 
@@ -27,7 +25,7 @@ class AuthController {
      */
     static async verificarSessao() {
         // Busca sessão salva no localStorage
-        var sessao: AnyObject = JSON.parse(localStorage.getItem("sessaoNutryo") as string) as AnyObject
+        var sessao: Record<string, any> = JSON.parse(localStorage.getItem("sessaoNutryo") as string) as Record<string, any>
 
         if (sessao) {
             if (sessao.email && sessao.senha) {
