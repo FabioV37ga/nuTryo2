@@ -11,7 +11,7 @@ RUN npm install
 COPY . .
 
 # Build TypeScript do backend
-RUN npm run dev:back
+RUN npm run build:back:unix
 
 # Definir porta
 EXPOSE 3001
