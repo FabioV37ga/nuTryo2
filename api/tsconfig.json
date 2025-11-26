@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "target": "es2017",
+        "noEmitOnError": true,
+        "noImplicitAny": true,
+        "removeComments": true,
+        "strictNullChecks": true,
+        "allowSyntheticDefaultImports": true,
+        "module":"NodeNext",
+        "moduleResolution": "nodenext",
+        "esModuleInterop": true
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

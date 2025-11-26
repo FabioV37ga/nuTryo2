@@ -3,18 +3,18 @@ FROM node:24.3-alpine
 
 WORKDIR /app
 
-# Copiar package.json e instalar dependências
-COPY package*.json ./
+# Copiar package.json do frontend e instalar dependências
+COPY frontend/package*.json ./
 RUN npm install
 
-# Copiar todo o projeto
-COPY . .
+# Copiar código fonte do frontend
+COPY frontend/ ./
 
-# Build TypeScript do frontend e copiar arquivos necessários
-RUN npm run copyToDist:frontend:unix && npm run dev:front
+# Build do projeto React com Vite
+RUN npm run build
 
 # Definir porta
 EXPOSE 3000
 
-# Rodar frontend no container
-CMD ["npx", "http-server", "frontend/dist", "-p", "3000"]
+# Servir build de produção
+CMD ["npx", "vite", "preview", "--host", "0.0.0.0", "--port", "3000"]

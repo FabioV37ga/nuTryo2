@@ -16,6 +16,7 @@ if (document.location.toString().includes("onrender")){
 
 var frontend: string;
 var backend: string;
+var api: string
 
 // Configuração por ambiente
 if (ambiente == 0){
@@ -26,7 +27,9 @@ if (ambiente == 0){
     // URLs de desenvolvimento local
     frontend = 'http://localhost:3000'
     backend = 'http://localhost:3001'
+    api = 'http://localhost:3002'
 }
 
 export { frontend }
 export { backend }
+export { api }

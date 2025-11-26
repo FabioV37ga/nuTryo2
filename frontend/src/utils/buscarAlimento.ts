@@ -5,7 +5,7 @@
  * enquanto o usuário digita
  */
 
-import { backend } from "./connection";
+import { api } from "./connection";
 
 class BuscarAlimentos {
     // Timer para controle de debounce
@@ -26,7 +26,7 @@ class BuscarAlimentos {
                 // Só faz requisição se query não estiver vazia
                 if (query.replaceAll(" ", "") !== "") {
                     try {
-                        const resposta = await fetch(`${backend}/alimentos/buscar?nome=${query}`, {
+                        const resposta = await fetch(`${api}/alimentos/buscar?nome=${query}`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json"

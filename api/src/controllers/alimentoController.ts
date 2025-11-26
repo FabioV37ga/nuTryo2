@@ -17,7 +17,7 @@ export default class AlimentoController {
 
     // Carregar Excel na memória
     private static carregarExcel(): Alimento[] {
-        const workbook = XLSX.readFile("backend/src/data/alimentos.xlsx");
+        const workbook = XLSX.readFile("api/src/data/alimentos.xlsx");
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         const data: Alimento[] = XLSX.utils.sheet_to_json(sheet);
