@@ -108,7 +108,6 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
             const uid = `local-alimento-${Date.now()}`;
             // Assign a numeric provisional _id so newly added items have a stable ID
             const novoAlimento = { _id: Number(newId), alimento: 'Novo alimento', peso: 0, calorias: 0, proteinas: 0, carbos: 0, gorduras: 0, id: newId, uid } as any;
-            console.log(`ADD Alimento:`, novoAlimento);
             return [...prev, novoAlimento];
         });
     }
@@ -176,14 +175,27 @@ function Refeicao({ refeicao, onTipoChange, onRefreshNeeded }: RefeicaoProps) {
 
             // Sincroniza alteração com o objeto de dia (persistência otimista)
             try {
-                const refeicaoIdentificador = refeicao?._id != null ? refeicao._id : refeicao?.id;
+                let refeicaoIdentificador = refeicao?._id ?? refeicao?.id;
+                
+                // Se a prop refeicao está undefined, busca a última refeição em diaObjeto
+                if (refeicaoIdentificador == null && diaObjeto.dia?.refeicoes?.length > 0) {
+                    // Usa a última refeição adicionada (mais recente)
+                    const ultimaRefeicao = diaObjeto.dia.refeicoes[diaObjeto.dia.refeicoes.length - 1];
+                    refeicaoIdentificador = ultimaRefeicao._id;
+                }
+                
                 if (refeicaoIdentificador != null) {
                     const localIndex = String(Number(refeicaoIdentificador) - 1); // Índice da refeição no array
                     const itemAlterado = updated.find(a => Number(a.id) === Number(id));
+                    console.log('handleUpdateAlimento - itemAlterado:', itemAlterado);
+                    
                     if (itemAlterado) {
                         // Verifica se a refeição já existe em diaObjeto.dia
                         const refeicaoExiste = diaObjeto.dia?.refeicoes?.[Number(localIndex)];
                         const alimentosExistem = refeicaoExiste?.alimentos?.length > 0;
+                        
+                        console.log('handleUpdateAlimento - refeicaoExiste:', refeicaoExiste);
+                        console.log('handleUpdateAlimento - alimentosExistem:', alimentosExistem);
 
                         // Se não existem alimentos ainda, usa gerarAlimento (primeiro alimento da refeição)
                             if (!alimentosExistem) {

@@ -14,6 +14,8 @@
  * @param {function} [props.onSelect] - Callback executado quando alimento é selecionado
  */
 
+import diaObjeto from "../../../utils/diaObjeto";
+
 interface listaAlimentosProps {
     alimentos: any[];
     onSelect?: (alimento: any) => void;

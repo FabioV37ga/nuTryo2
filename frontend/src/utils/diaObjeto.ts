@@ -62,6 +62,7 @@ class diaObjeto {
      */
     static async postarDiaBanco() {
         console.log("#diaObjeto !!! Requisição de post feita !!!")
+        console.log("#diaObjeto - Dados sendo enviados:", JSON.stringify(diaObjeto.dia, null, 2))
         try {
             // Envia requisição POST ao backend para criar novo dia
             var resposta = await fetch(`${backend}/refeicoes`, {
@@ -71,6 +72,14 @@ class diaObjeto {
                 },
                 body: JSON.stringify(diaObjeto.dia)
             })
+            
+            if (!resposta.ok) {
+                console.log("#diaObjeto - Erro no post, status:", resposta.status)
+                const errorText = await resposta.text()
+                console.log("#diaObjeto - Resposta de erro:", errorText)
+                return
+            }
+            
             // Atualiza cache local com GET após POST bem-sucedido
             await NutryoFetch.fetchDias(diaObjeto.usuario)
 
@@ -78,7 +87,7 @@ class diaObjeto {
             console.log("#diaObjeto - Iniciando nova requisição de get com novos itens...")
 
         } catch (error) {
-            console.log("#diaObjeto - Erro no post")
+            console.log("#diaObjeto - Erro no post:", error)
         }
     }
 

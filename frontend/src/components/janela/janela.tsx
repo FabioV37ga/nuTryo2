@@ -71,7 +71,7 @@ function Janela({ dataDisplay, visivelMobile, onCloseMobile }: { dataDisplay?: s
         setRefeicoes(prev => {
             const newId = prev.length + 1;
             const uid = `local-${Date.now()}`;
-            const novaRefeicao = { _id: null, tipo: 'Nova Refeição', alimentos: [], id: newId, uid } as any;
+            const novaRefeicao = { _id: newId, tipo: 'Nova Refeição', alimentos: [], id: newId, uid } as any;
             
             // Sincroniza com backend
             diaObjeto.gerarRefeicao(newId, 'Nova Refeição', []);
