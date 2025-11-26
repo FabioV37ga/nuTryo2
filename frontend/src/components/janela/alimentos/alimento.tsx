@@ -18,6 +18,9 @@ import { useState, useEffect } from "react";
 import ListaAlimentos from "./listaAlimentos";
 import BuscarAlimentos from "../../../utils/buscarAlimento";
 
+import "../../../styles/janela/alimentos/alimentos.css"
+import "../../../styles/janela/alimentos/alimentos-mobile.css"
+
 /**
  * Props do componente Alimento
  * 
