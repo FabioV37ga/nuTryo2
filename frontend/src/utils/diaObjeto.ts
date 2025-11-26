@@ -246,7 +246,8 @@ class diaObjeto {
      * 2. Adiciona ao buffer temporário
      * 3. Atualiza o dia (converte ID de refeição para índice: refeicao-1)
      */
-    static gerarAlimento(refeicao: string, id: string, nome: string, peso: number, calorias: number, proteinas: number, carboidratos: number, gorduras: number) {
+    // Now expects numeric IDs so internal representation of _id stays numeric
+    static gerarAlimento(refeicao: number, id: number, nome: string, peso: number, calorias: number, proteinas: number, carboidratos: number, gorduras: number) {
 
         // Cria objeto de alimento com os parâmetros fornecidos
         var objeto = {
@@ -263,7 +264,7 @@ class diaObjeto {
         // Adiciona ao buffer temporário de alimentos
         diaObjeto.alimentos.push(objeto)
         // Atualiza o dia (refeicao-1 para converter ID base-1 em índice base-0)
-        diaObjeto.atualizarDia("alimento", String(Number(refeicao) - 1), objeto)
+        diaObjeto.atualizarDia("alimento", String(refeicao - 1), objeto)
     }
 
     /**
